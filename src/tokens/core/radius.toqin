@@ -1,0 +1,64 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "radius",
+  "displayName": "Radius",
+  "description": "Beerush Radius",
+  "tokens": [
+    {
+      "name": "radius",
+      "type": "unit",
+      "description": "Border radius variables",
+      "tokens": [
+        {
+          "name": "circle",
+          "value": "50%"
+        },
+        {
+          "name": "xs",
+          "value": "1px"
+        },
+        {
+          "name": "sm",
+          "value": "2px",
+          "tokens": [
+            {
+              "name": "odd",
+              "value": "3px"
+            }
+          ]
+        },
+        {
+          "name": "md",
+          "value": "4px",
+          "tokens": [
+            {
+              "name": "odd",
+              "value": "5px"
+            }
+          ]
+        },
+        {
+          "name": "lg",
+          "value": "6px",
+          "tokens": [
+            {
+              "name": "odd",
+              "value": "7px"
+            }
+          ]
+        },
+        {
+          "name": "xl",
+          "value": "8px",
+          "tokens": [
+            {
+              "name": "odd",
+              "value": "9px"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "designs": [ ]
+}

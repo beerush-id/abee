@@ -1,0 +1,109 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "card",
+  "displayName": "Cards",
+  "description": "Card Designs",
+  "tokens": [
+    {
+      "name": "card",
+      "description": "Card Tokens",
+      "tokens": [
+        {
+          "name": "background",
+          "value": {
+            "@": "@palette.white",
+            "@dark": "@palette.neutral.900"
+          }
+        },
+        {
+          "name": "shadow",
+          "value": "@shadow.xl"
+        },
+        {
+          "name": "radius",
+          "value": "@radius.lg"
+        },
+        {
+          "name": "gap",
+          "value": "@grid.gap"
+        },
+        {
+          "name": "outer-gap",
+          "value": "@space.xxl"
+        },
+        {
+          "name": "inner-gap",
+          "value": "@space.lg"
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "card",
+      "description": "Card Design",
+      "selectors": [".card"],
+      "layer": "card",
+      "rules": {
+        "display": "flex",
+        "flex-direction": "column",
+        "background": "@card.background",
+        "border-radius": "@card.radius",
+        "overflow": "auto"
+      },
+      "variants": [
+        {
+          "name": "elevated",
+          "description": "Elevated Card",
+          "selectors": [".elevated"],
+          "rules": {
+            "box-shadow": "@card.shadow"
+          }
+        }
+      ],
+      "children": [
+        {
+          "name": "card-contents",
+          "directChildren": true,
+          "selectors": [".card-header", ".card-content", ".card-footer"],
+          "description": "Card contents style",
+          "rules": {
+            "display": "flex",
+            "gap": "@grid.gap"
+          }
+        },
+        {
+          "name": "card-header",
+          "directChildren": true,
+          "selectors": [".card-header"],
+          "description": "Card header style",
+          "rules": {
+            "padding": "@card.outer-gap",
+            "flex-direction": "row"
+          }
+        },
+        {
+          "name": "card-content",
+          "directChildren": true,
+          "selectors": [".card-content"],
+          "description": "Card content style",
+          "rules": {
+            "padding": "0 @card.outer-gap",
+            "flex-direction": "column",
+            "gap": "@card.inner-gap"
+          }
+        },
+        {
+          "name": "card-footer",
+          "directChildren": true,
+          "selectors": [".card-footer"],
+          "description": "Card footer style",
+          "rules": {
+            "padding": "@card.outer-gap",
+            "flex-direction": "row"
+          }
+        }
+      ]
+    }
+  ]
+}

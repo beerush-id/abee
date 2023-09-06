@@ -1,0 +1,293 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "space",
+  "displayName": "Spaces",
+  "description": "Beerush Spacing",
+  "tokens": [
+    {
+      "name": "space",
+      "type": "unit",
+      "tags": ["space", "spacing"],
+      "description": "Spacing",
+      "tokens": [
+        {
+          "name": "0",
+          "value": "0px"
+        },
+        {
+          "name": "xxs",
+          "value": "2px"
+        },
+        {
+          "name": "xs",
+          "value": "4px"
+        },
+        {
+          "name": "sm",
+          "value": "8px"
+        },
+        {
+          "name": "md",
+          "value": "10px"
+        },
+        {
+          "name": "lg",
+          "value": "12px"
+        },
+        {
+          "name": "xl",
+          "value": "16px"
+        },
+        {
+          "name": "xxl",
+          "value": "24px"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "tags": ["separator"],
+      "description": "Separator colors",
+      "tokens": [
+        {
+          "name": "color",
+          "value": {
+            "@": "$color.foreground=50",
+            "@dark": "$color.background=50"
+          }
+        },
+        {
+          "name": "gap",
+          "value": "@space.xl"
+        },
+        {
+          "name": "size",
+          "value": "12px"
+        }
+      ]
+    }
+  ],
+  "mixins": [
+    {
+      "group": "space",
+      "select": ["0", "xxs", "xs", "sm", "md", "lg", "xl", "xxl"],
+      "layer": "space",
+      "ruleSets": [
+        {
+          "selector": "md-@this",
+          "rules": {
+            "margin": "@this"
+          }
+        },
+        {
+          "selector": "pd-@this",
+          "rules": {
+            "padding": "@this"
+          }
+        },
+        {
+          "selector": "mdx-@this",
+          "rules": {
+            "margin-left": "@this",
+            "margin-right": "@this"
+          }
+        },
+        {
+          "selector": "mdy-@this",
+          "rules": {
+            "margin-top": "@this",
+            "margin-bottom": "@this"
+          }
+        },
+        {
+          "selector": "pdx-@this",
+          "rules": {
+            "padding-left": "@this",
+            "padding-right": "@this"
+          }
+        },
+        {
+          "selector": "pdy-@this",
+          "rules": {
+            "padding-top": "@this",
+            "padding-bottom": "@this"
+          }
+        },
+        {
+          "selector": "mdl-@this",
+          "rules": {
+            "margin-left": "@this"
+          }
+        },
+        {
+          "selector": "mdr-@this",
+          "rules": {
+            "margin-right": "@this"
+          }
+        },
+        {
+          "selector": "mdt-@this",
+          "rules": {
+            "margin-top": "@this"
+          }
+        },
+        {
+          "selector": "mdb-@this",
+          "rules": {
+            "margin-bottom": "@this"
+          }
+        },
+        {
+          "selector": "pdl-@this",
+          "rules": {
+            "padding-left": "@this"
+          }
+        },
+        {
+          "selector": "pdr-@this",
+          "rules": {
+            "padding-right": "@this"
+          }
+        },
+        {
+          "selector": "pdt-@this",
+          "rules": {
+            "padding-top": "@this"
+          }
+        },
+        {
+          "selector": "pdb-@this",
+          "rules": {
+            "padding-bottom": "@this"
+          }
+        },
+        {
+          "selector": "gap-@this",
+          "rules": {
+            "gap": "@this"
+          }
+        },
+        {
+          "selector": "gapx-@this",
+          "rules": {
+            "column-gap": "@this"
+          }
+        },
+        {
+          "selector": "gapy-@this",
+          "rules": {
+            "row-gap": "@this"
+          }
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "separator-y",
+      "description": "Vertical Separator",
+      "layer": "space",
+      "selectors": [".separator-y", ".sp-y"],
+      "rules": {
+        "display": "inline-flex",
+        "width": "@separator.size",
+        "height": "1px",
+        "margin": "@separator.gap 0",
+        "background-color": "@separator.color"
+      }
+    },
+    {
+      "name": "separator-x",
+      "description": "Horizontal Separator",
+      "layer": "space",
+      "selectors": [".separator-x", ".sp-x"],
+      "rules": {
+        "display": "inline-flex",
+        "width": "1px",
+        "height": "@separator.size",
+        "margin": "0 @separator.gap",
+        "background-color": "@separator.color"
+      }
+    },
+    {
+      "name": "divider",
+      "description": "Divider",
+      "layer": "space",
+      "selectors": [".divider", "hr", ".hr"],
+      "rules": {
+        "display": "block",
+        "width": "100%",
+        "height": "0"
+      },
+      "variants": [
+        {
+          "name": "xxs",
+          "selectors": [".xxs"],
+          "rules": {
+            "margin": "@space.xxs auto"
+          }
+        },
+        {
+          "name": "xs",
+          "selectors": [".xs"],
+          "rules": {
+            "margin": "@space.xs auto"
+          }
+        },
+        {
+          "name": "sm",
+          "selectors": [".sm"],
+          "rules": {
+            "margin": "@space.sm auto"
+          }
+        },
+        {
+          "name": "md",
+          "selectors": [".md"],
+          "rules": {
+            "margin": "@space.md auto"
+          }
+        },
+        {
+          "name": "lg",
+          "selectors": [".lg"],
+          "rules": {
+            "margin": "@space.lg auto"
+          }
+        },
+        {
+          "name": "xl",
+          "selectors": [".xl"],
+          "rules": {
+            "margin": "@space.xl auto"
+          }
+        },
+        {
+          "name": "xxl",
+          "selectors": [".xxl"],
+          "rules": {
+            "margin": "@space.xxl auto"
+          }
+        },
+        {
+          "name": "transparent",
+          "selectors": [".transparent"],
+          "rules": {
+            "background-color": "transparent"
+          }
+        }
+      ]
+    },
+    {
+      "name": "hr",
+      "description": "Horizontal Rule",
+      "layer": "space",
+      "selectors": ["hr", ".hr"],
+      "rules": {
+        "height": "1px",
+        "background-color": "@separator.color",
+        "border": "none"
+      }
+    }
+  ]
+}

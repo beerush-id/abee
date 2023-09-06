@@ -1,0 +1,194 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "popup",
+  "displayName": "Popups",
+  "description": "Beerush PopUp System",
+  "tokens": [
+    {
+      "name": "tooltip",
+      "description": "Beerush Tooltip Tokens",
+      "tokens": [
+        {
+          "name": "color",
+          "type": "color",
+          "value": "@color.background"
+        },
+        {
+          "name": "background",
+          "type": "color",
+          "value": {
+            "@": "$color.foreground=80",
+            "@dark": "$color.background=80"
+          }
+        },
+        {
+          "name": "radius",
+          "type": "unit",
+          "value": "@radius.sm.odd"
+        },
+        {
+          "name": "blur",
+          "type": "unit",
+          "value": "10px"
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "popup-container",
+      "selectors": [ ".popup-container" ],
+      "layer": "popup",
+      "description": "Popup container style",
+      "rules": {
+        "display": "contents"
+      },
+      "children": [
+        {
+          "name": "popup",
+          "selectors": [ ".popup", ".tooltip", "[tooltip]", ".dialog" ],
+          "directChildren": true,
+          "description": "Popup active style",
+          "rules": {
+            "display": "inline-flex"
+          }
+        },
+        {
+          "name": "overlay",
+          "selectors": [ ".popup-overlay", ".dialog-overlay" ],
+          "description": "Popup active overlay style",
+          "rules": {
+            "display": "block"
+          }
+        }
+      ]
+    },
+    {
+      "name": "popups",
+      "selectors": [ ".popup", "dialog", ".dialog" ],
+      "layer": "popup",
+      "description": "Popup style",
+      "rules": {
+        "display": "none",
+        "position": "fixed",
+        "z-index": "99998"
+      }
+    },
+    {
+      "name": "dialog",
+      "layer": "popup",
+      "selectors": [ "dialog", ".dialog" ],
+      "description": "Dialog style",
+      "rules": {
+        "max-width": "calc(100% - @space.xxl)",
+        "max-height": "calc(100% - @space.xxl)",
+        "min-width": "240px",
+        "padding": "0",
+        "margin": "0",
+        "top": "50%",
+        "left": "50%",
+        "transform": "translate3d(-50%, -50%, 0)",
+        "z-index": "99996",
+        "background-color": {
+          "::backdrop": "$color.backdrop"
+        },
+        "animation": {
+          "::backdrop": "$animation.fade-in"
+        }
+      },
+      "variants": [
+        {
+          "name": "open",
+          "selectors": [ "[open]" ],
+          "description": "Dialog open style",
+          "rules": {
+            "display": "inline-flex"
+          }
+        },
+        {
+          "name": "small",
+          "selectors": [ ".dialog-sm" ],
+          "description": "Small dialog style",
+          "rules": {
+            "max-width": "320px"
+          }
+        },
+        {
+          "name": "medium",
+          "selectors": [ ".dialog-md" ],
+          "description": "Medium dialog style",
+          "rules": {
+            "max-width": "480px"
+          }
+        },
+        {
+          "name": "large",
+          "selectors": [ ".dialog-lg" ],
+          "description": "Large dialog style",
+          "rules": {
+            "max-width": "640px"
+          }
+        }
+      ]
+    },
+    {
+      "name": "overlays",
+      "layer": "popup",
+      "selectors": [ ".popup-overlay", ".dialog-overlay" ],
+      "description": "Popup overlay style",
+      "rules": {
+        "display": "none",
+        "position": "fixed",
+        "z-index": "99997",
+        "top": "0",
+        "left": "0",
+        "width": "100%",
+        "height": "100%",
+        "cursor": "default"
+      }
+    },
+    {
+      "name": "popup-overlay",
+      "layer": "popup",
+      "selectors": [ ".popup-overlay" ],
+      "description": "Popup overlay style",
+      "rules": {
+        "z-index": "99997"
+      }
+    },
+    {
+      "name": "dialog-overlay",
+      "layer": "popup",
+      "selectors": [ ".dialog-overlay" ],
+      "description": "Dialog overlay style",
+      "rules": {
+        "background-color": {
+          "@": "$color.foreground=25",
+          "@dark": "$color.foreground=75"
+        },
+        "z-index": "99995"
+      }
+    },
+    {
+      "name": "tooltip",
+      "layer": "popup",
+      "selectors": [ ".tooltip", "[tooltip]" ],
+      "description": "Tooltip style",
+      "rules": {
+        "display": "none",
+        "position": "fixed",
+        "z-index": "99999",
+        "white-space": "nowrap",
+        "padding": "@space.xs @space.md",
+        "border-radius": "@tooltip.radius",
+        "background-color": "@tooltip.background",
+        "backdrop-filter": "blur(@tooltip.blur)",
+        "color": "@tooltip.color",
+        "font-size": "0.9em",
+        "font-weight": "@font.weight.medium",
+        "box-shadow": "@shadow.md",
+        "pointer-events": "none"
+      }
+    }
+  ]
+}

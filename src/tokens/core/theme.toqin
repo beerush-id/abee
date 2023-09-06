@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "theme",
+  "displayName": "Theming",
+  "description": "Beerush Theme",
+  "mediaQueries": {
+    "@light": "[prefer-light]",
+    "@dark": "[prefer-dark]",
+    "@sm": "(min-width: 640px)",
+    "@md": "(min-width: 768px)",
+    "@lg": "(min-width: 1024px)",
+    "@xl": "(min-width: 1440px)",
+    "@portrait": "(orientation: portrait)",
+    "@landscape": "(orientation: landscape)",
+    "@print": "print"
+  },
+  "tokens": [ ],
+  "designs": [
+    {
+      "name": "main-theme-toggle",
+      "selectors": [ ".main-theme-toggle" ],
+      "rules": {
+        "position": "fixed",
+        "bottom": "@grid.gap",
+        "left": "@grid.gap",
+        "z-index": "999999"
+      }
+    }
+  ]
+}

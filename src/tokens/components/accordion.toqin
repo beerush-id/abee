@@ -1,0 +1,38 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "accordion",
+  "displayName": "Accordion Designs",
+  "description": "Styling for <details> and .accordion",
+  "tokens": [ ],
+  "designs": [
+    {
+      "name": "accordion",
+      "selectors": [ "details", ".accordion" ],
+      "rules": {
+        "border": "1px solid #ccc",
+        "border-radius": "4px",
+        "margin-bottom": "1em",
+        "padding": "1em",
+        "background-color": "#f5f5f5"
+      },
+      "children": [
+        {
+          "name": "summary",
+          "selectors": [ "summary", ".header" ],
+          "directChildren": true,
+          "rules": {
+            "font-weight": "bold",
+            "cursor": "pointer"
+          }
+        },
+        {
+          "name": "open",
+          "selectors": [ "details[open]", ".accordion.open" ],
+          "rules": {
+            "border-color": "#999"
+          }
+        }
+      ]
+    }
+  ]
+}

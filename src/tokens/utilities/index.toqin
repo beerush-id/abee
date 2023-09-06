@@ -1,0 +1,8 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "index",
+  "displayName": "Utility Tokens",
+  "description": "Utility Tokens",
+  "tokens": [ ],
+  "designs": [ ]
+}

@@ -1,0 +1,218 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "input",
+  "displayName": "Inputs",
+  "description": "Input Designs",
+  "tokens": [
+    {
+      "name": "input",
+      "description": "Input Tokens",
+      "tokens": [
+        {
+          "name": "color",
+          "value": "@color.foreground",
+          "tokens": [
+            {
+              "name": "placeholder",
+              "value": {
+                "@": "@palette.neutral.600",
+                "@dark": "@palette.neutral.400"
+              }
+            }
+          ]
+        },
+        {
+          "name": "background",
+          "value": {
+            "@": "@palette.neutral.100",
+            "@dark": "@palette.neutral.950"
+          }
+        },
+        {
+          "name": "radius",
+          "value": "@radius.md"
+        },
+        {
+          "name": "gap-y",
+          "value": "@space.md"
+        },
+        {
+          "name": "gap-x",
+          "value": "@space.xl"
+        },
+        {
+          "name": "gap",
+          "value": "@space.md @space.xl"
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "form-field",
+      "layer": "input",
+      "description": "Text Field Design",
+      "selectors": [ ".form-field" ],
+      "rules": {
+        "--color": "@input.color",
+        "--color-accent": "@color.primary",
+        "--color-hover": "@color.primary.hover",
+        "--color-placeholder": "@color.placeholder",
+        "--color-ring": "@color.primary.ring",
+        "--color-warn-line": "transparent",
+        "--color-outline": "@color.primary.active",
+        "display": "flex",
+        "flex-direction": "row",
+        "align-items": "center",
+        "position": "relative",
+        "padding-top": "@input.gap-x"
+      },
+      "variants": [
+        {
+          "name": "destructive",
+          "description": "Primary Text Field",
+          "selectors": [ ".destructive", ".invalid" ],
+          "rules": {
+            "--color-accent": "@color.destructive",
+            "--color-hover": "@color.destructive.hover",
+            "--color-placeholder": "@color.destructive",
+            "--color-ring": "@color.destructive.ring",
+            "--color-warn": "@color.destructive",
+            "--color-warn-line": "@color.destructive.ring",
+            "--color-outline": "@color.destructive.active"
+          }
+        },
+        {
+          "name": "select-arrow",
+          "description": "Select Arrow",
+          "selectors": [ ":has(select):after" ],
+          "rules": {
+            "content": "'»'",
+            "position": "absolute",
+            "right": "@input.gap-x",
+            "top": "50%",
+            "transform": "translateY(calc(-50% + (@input.gap-x / 2))) rotate(90deg)",
+            "font-size": "@font.size.lg",
+            "pointer-events": "none",
+            "color": "@input.color"
+          }
+        },
+        {
+          "name": "require-mark",
+          "description": "Require Mark",
+          "selectors": [ ":has([required]) :is(label, .placeholder):after" ],
+          "rules": {
+            "content": "'*'",
+            "color": "@color.destructive",
+            "font-size": "@font.size.xs",
+            "font-weight": "@font.weight.bold",
+            "margin-left": "@space.xs"
+          }
+        },
+        {
+          "name": "active-placeholder",
+          "description": "Input Focus Placeholder",
+          "selectors": [ ":has(:focus, .focus, .has-value)", ".has-value" ],
+          "children": [
+            {
+              "name": "placeholder",
+              "selectors": [ "label", ".placeholder" ],
+              "directChildren": true,
+              "rules": {
+                "transform": "translate3d(calc(-1 * @input.gap-x), calc(-1 * (@input.gap-x * 3)), 0)",
+                "font-weight": "@font.weight.bold",
+                "font-size": "@font.size.xs"
+              }
+            }
+          ],
+          "rules": { }
+        }
+      ],
+      "children": [
+        {
+          "name": "input",
+          "description": "Input Element",
+          "selectors": [ "input", "textarea", "select" ],
+          "directChildren": true,
+          "rules": {
+            "border-color": {
+              ":focus": "~color-outline",
+              ":hover": "~color-hover"
+            },
+            "box-shadow": {
+              "@": "none",
+              "::focus": "0 0 0 @button.ring.size ~color-ring"
+            }
+          }
+        },
+        {
+          "name": "placeholder",
+          "description": "Input Placeholder",
+          "selectors": [ "label", ".placeholder" ],
+          "directChildren": true,
+          "rules": {
+            "color": "~color-warn|@input.color.placeholder",
+            "position": "absolute",
+            "top": "calc(50% + @input.gap-x)",
+            "left": "@input.gap-x",
+            "transform": "translateY(calc(-50% - (@input.gap-x / 2)))",
+            "font-size": "@font.size.sm",
+            "font-weight": "@font.weight.medium",
+            "transition": "@transition.fast",
+            "pointer-events": "none",
+            "z-index": "1"
+          }
+        },
+        {
+          "name": "focus-placeholder",
+          "description": "Input Focus Placeholder",
+          "selectors": [
+            ":is(input, textarea, select):where(:focus, :hover) + label",
+            ":is(input, textarea, select):where(:focus, :hover) + .placeholder"
+          ],
+          "rules": {
+            "color": "~color-accent"
+          }
+        },
+        {
+          "name": "select",
+          "description": "Select Element",
+          "selectors": [ "select" ],
+          "rules": {
+            "padding-right": "calc(@input.gap-x * 2)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "layer": "input",
+      "description": "Input Design",
+      "selectors": [ "input", "textarea", "select" ],
+      "rules": {
+        "appearance": "none",
+        "position": "relative",
+        "color": {
+          "@": "~color-warn|@input.color",
+          "::placeholder": "~color-warn|@input.color.placeholder"
+        },
+        "background-color": "@input.background",
+        "padding": "@input.gap",
+        "outline": "none",
+        "border-radius": "@input.radius",
+        "border-width": "1px",
+        "border-style": "solid",
+        "border-color": {
+          "@": "~color-warn-line|transparent",
+          "::focus": "@color.primary.active",
+          "::hover": "@color.primary.hover"
+        },
+        "box-shadow": {
+          "@": "none",
+          "::focus": "0 0 0 @button.ring.size @color.primary.ring"
+        },
+        "transition": "@transition.fast"
+      }
+    }
+  ]
+}

@@ -1,0 +1,233 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "typography",
+  "displayName": "Typography",
+  "description": "Typography",
+  "imports": [
+    "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
+    "https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500;700&display=swap"
+  ],
+  "tokens": [
+    {
+      "name": "font",
+      "description": "Font variables",
+      "tokens": [
+        {
+          "name": "family",
+          "tags": [ "font-family" ],
+          "description": "Font family",
+          "tokens": [
+            {
+              "name": "base",
+              "value": "Poppins, sans-serif"
+            },
+            {
+              "name": "mono",
+              "value": "'Fira Code', monospace"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Font size",
+          "tokens": [
+            {
+              "name": "xxs",
+              "value": "10px"
+            },
+            {
+              "name": "xs",
+              "value": "12px"
+            },
+            {
+              "name": "sm",
+              "value": "14px"
+            },
+            {
+              "name": "md",
+              "value": "15px"
+            },
+            {
+              "name": "lg",
+              "value": "18px"
+            },
+            {
+              "name": "xl",
+              "value": "24px"
+            },
+            {
+              "name": "xxl",
+              "value": "32px"
+            }
+          ]
+        },
+        {
+          "name": "height",
+          "description": "Font line height",
+          "value": "1.5",
+          "tokens": [
+            {
+              "name": "tight",
+              "value": "1"
+            },
+            {
+              "name": "loose",
+              "value": "2"
+            }
+          ]
+        },
+        {
+          "name": "weight",
+          "description": "Font weight",
+          "tokens": [
+            {
+              "name": "light",
+              "value": "300"
+            },
+            {
+              "name": "regular",
+              "value": "400"
+            },
+            {
+              "name": "medium",
+              "value": "500"
+            },
+            {
+              "name": "bold",
+              "value": "600"
+            }
+          ]
+        },
+        {
+          "name": "heading",
+          "description": "Heading font size",
+          "tokens": [
+            {
+              "name": "h1",
+              "value": "@font.size.xl"
+            },
+            {
+              "name": "h2",
+              "value": "@font.size.lg"
+            },
+            {
+              "name": "h3",
+              "value": "@font.size.md"
+            },
+            {
+              "name": "h4",
+              "value": "@font.size.sm"
+            },
+            {
+              "name": "h5",
+              "value": "@font.size.xs"
+            },
+            {
+              "name": "h6",
+              "value": "@font.size.xxs"
+            }
+          ]
+        },
+        {
+          "name": "body",
+          "description": "Body font size",
+          "value": "@font.size.sm",
+          "tokens": [
+            {
+              "name": "small",
+              "value": "@font.size.xxs"
+            },
+            {
+              "name": "large",
+              "value": "@font.size.md"
+            }
+          ]
+        },
+        {
+          "name": "button",
+          "description": "Button font size",
+          "value": "@font.size.md",
+          "tokens": [
+            {
+              "name": "small",
+              "value": "@font.size.sm"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "headings",
+      "description": "Beerush Headings",
+      "layer": "typography",
+      "selectors": [ "h1", "h2", "h3", "h4", "h5", "h6" ],
+      "rules": {
+        "font-weight": "@font.weight.bold",
+        "line-height": "@font.height"
+      }
+    },
+    {
+      "name": "h1",
+      "description": "Beerush H1",
+      "selectors": [ "h1", ".h1" ],
+      "layer": "typography",
+      "rules": {
+        "font-size": "@font.heading.h1"
+      }
+    },
+    {
+      "name": "h2",
+      "description": "Beerush H2",
+      "selectors": [ "h2", ".h2" ],
+      "layer": "typography",
+      "rules": {
+        "font-size": "@font.heading.h2"
+      }
+    },
+    {
+      "name": "h3",
+      "description": "Beerush H3",
+      "selectors": [ "h3", ".h3" ],
+      "layer": "typography",
+      "rules": {
+        "font-size": "@font.heading.h3"
+      }
+    },
+    {
+      "name": "h4",
+      "description": "Beerush H4",
+      "selectors": [ "h4", ".h4" ],
+      "layer": "typography",
+      "rules": {
+        "font-size": "@font.heading.h4"
+      }
+    },
+    {
+      "name": "h5",
+      "description": "Beerush H5",
+      "selectors": [ "h5", ".h5" ],
+      "layer": "typography",
+      "rules": {
+        "font-size": "@font.heading.h5"
+      }
+    },
+    {
+      "name": "h6",
+      "description": "Beerush H6",
+      "selectors": [ "h6", ".h6" ],
+      "layer": "typography",
+      "rules": {
+        "font-size": "@font.heading.h6"
+      }
+    },
+    {
+      "name": "text-center",
+      "description": "Center text",
+      "rules": {
+        "text-align": "center"
+      }
+    }
+  ]
+}

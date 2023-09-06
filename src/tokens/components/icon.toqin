@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "icon",
+  "displayName": "Icon Tokens",
+  "description": "Icon Tokens",
+  "imports": [
+    "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+  ],
+  "tokens": [ ],
+  "designs": [
+    {
+      "name": "icon",
+      "selectors": [ "i.material-symbols-outlined" ],
+      "rules": {
+        "font-variation-settings": "'FILL' 0, 'wght' 200, 'GRAD' 200, 'opsz' 40",
+        "font-size": "~icon-size|24px"
+      }
+    }
+  ]
+}

@@ -1,0 +1,394 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "palette",
+  "displayName": "Color Palettes",
+  "description": "Beerush Color Palettes",
+  "tokens": [
+    {
+      "name": "palette",
+      "type": "color",
+      "tags": ["color", "palette", "theme"],
+      "description": "Base Color Palettes",
+      "tokens": [
+        {
+          "name": "white",
+          "description": "White",
+          "type": "color",
+          "value": "#ffffff"
+        },
+        {
+          "name": "black",
+          "description": "Black",
+          "value": "#000000"
+        },
+        {
+          "name": "neutral",
+          "description": "Neutral color palette",
+          "value": "#63718d",
+          "tokens": [
+            {
+              "name": "10",
+              "value": "#fcfcfd"
+            },
+            {
+              "name": "50",
+              "value": "#f6f7f9"
+            },
+            {
+              "name": "100",
+              "value": "#e7e9ee"
+            },
+            {
+              "name": "150",
+              "value": "#d5d9e1"
+            },
+            {
+              "name": "200",
+              "value": "#c3c9d5"
+            },
+            {
+              "name": "300",
+              "value": "#96a1b5"
+            },
+            {
+              "name": "400",
+              "value": "#7885a0"
+            },
+            {
+              "name": "500",
+              "value": "#63718d"
+            },
+            {
+              "name": "600",
+              "value": "#546078"
+            },
+            {
+              "name": "700",
+              "value": "#3f485a"
+            },
+            {
+              "name": "750",
+              "value": "#394151"
+            },
+            {
+              "name": "800",
+              "value": "#353c4b"
+            },
+            {
+              "name": "850",
+              "value": "#2a303c"
+            },
+            {
+              "name": "900",
+              "value": "#262b36"
+            },
+            {
+              "name": "950",
+              "value": "#1d222a"
+            }
+          ]
+        },
+        {
+          "name": "blue",
+          "description": "Blue color palette",
+          "value": {
+            "@": "#086ce8",
+            "@dark": "#6cacf9"
+          },
+          "tokens": [
+            {
+              "name": "50",
+              "value": "#f0f7fe"
+            },
+            {
+              "name": "100",
+              "value": "#cfe6fc"
+            },
+            {
+              "name": "200",
+              "value": "#b5d5fc"
+            },
+            {
+              "name": "300",
+              "value": "#6cacf9"
+            },
+            {
+              "name": "400",
+              "value": "#2b87f8"
+            },
+            {
+              "name": "500",
+              "value": "#086ce8"
+            },
+            {
+              "name": "600",
+              "value": "#0653b2"
+            },
+            {
+              "name": "700",
+              "value": "#043776"
+            },
+            {
+              "name": "800",
+              "value": "#032754"
+            },
+            {
+              "name": "900",
+              "value": "#021c3b"
+            }
+          ]
+        },
+        {
+          "name": "green",
+          "description": "Green color palette",
+          "value": {
+            "@": "#00854b",
+            "@dark": "#0bda80"
+          },
+          "tokens": [
+            {
+              "name": "50",
+              "value": "#f2fdf8"
+            },
+            {
+              "name": "100",
+              "value": "#baf7dd"
+            },
+            {
+              "name": "200",
+              "value": "#71f4bb"
+            },
+            {
+              "name": "300",
+              "value": "#0bda80"
+            },
+            {
+              "name": "400",
+              "value": "#00a85f"
+            },
+            {
+              "name": "500",
+              "value": "#00854b"
+            },
+            {
+              "name": "600",
+              "value": "#00663a"
+            },
+            {
+              "name": "700",
+              "value": "#004c2b"
+            },
+            {
+              "name": "800",
+              "value": "#003820"
+            },
+            {
+              "name": "900",
+              "value": "#002916"
+            }
+          ]
+        },
+        {
+          "name": "red",
+          "description": "Red color palette",
+          "value": {
+            "@": "#d53811",
+            "@dark": "#f48b71"
+          },
+          "tokens": [
+            {
+              "name": "50",
+              "value": "#fef3f1"
+            },
+            {
+              "name": "100",
+              "value": "#fcded9"
+            },
+            {
+              "name": "200",
+              "value": "#f9c5b8"
+            },
+            {
+              "name": "300",
+              "value": "#f48b71"
+            },
+            {
+              "name": "400",
+              "value": "#f06542"
+            },
+            {
+              "name": "500",
+              "value": "#d53811"
+            },
+            {
+              "name": "600",
+              "value": "#a52c0d"
+            },
+            {
+              "name": "700",
+              "value": "#7b200a"
+            },
+            {
+              "name": "800",
+              "value": "#561706"
+            },
+            {
+              "name": "900",
+              "value": "#390f04"
+            }
+          ]
+        },
+        {
+          "name": "orange",
+          "description": "Orange color palette",
+          "value": {
+            "@": "#b56007",
+            "@dark": "#f68c1f"
+          },
+          "tokens": [
+            {
+              "name": "50",
+              "value": "#fef7f0"
+            },
+            {
+              "name": "100",
+              "value": "#fddebf"
+            },
+            {
+              "name": "200",
+              "value": "#fabe7f"
+            },
+            {
+              "name": "300",
+              "value": "#f68c1f"
+            },
+            {
+              "name": "400",
+              "value": "#dd7409"
+            },
+            {
+              "name": "500",
+              "value": "#b56007"
+            },
+            {
+              "name": "600",
+              "value": "#844605"
+            },
+            {
+              "name": "700",
+              "value": "#623404"
+            },
+            {
+              "name": "800",
+              "value": "#4a2703"
+            },
+            {
+              "name": "900",
+              "value": "#311a02"
+            }
+          ]
+        },
+        {
+          "name": "purple",
+          "description": "Purple color palette",
+          "value": {
+            "@": "#6f2dbd",
+            "@dark": "#b99cfb"
+          },
+          "tokens": [
+            {
+              "name": "50",
+              "value": "#f8f3fe"
+            },
+            {
+              "name": "100",
+              "value": "#e8d7fc"
+            },
+            {
+              "name": "200",
+              "value": "#d0b1f9"
+            },
+            {
+              "name": "300",
+              "value": "#b99cfb"
+            },
+            {
+              "name": "400",
+              "value": "#9c6ef8"
+            },
+            {
+              "name": "500",
+              "value": "#6f2dbd"
+            },
+            {
+              "name": "600",
+              "value": "#5a1f8f"
+            },
+            {
+              "name": "700",
+              "value": "#42165f"
+            },
+            {
+              "name": "800",
+              "value": "#2e1040"
+            },
+            {
+              "name": "900",
+              "value": "#1f0a28"
+            }
+          ]
+        },
+        {
+          "name": "pink",
+          "description": "Pink color palette",
+          "value": {
+            "@": "#d53884",
+            "@dark": "#f48bae"
+          },
+          "tokens": [
+            {
+              "name": "50",
+              "value": "#fef3f7"
+            },
+            {
+              "name": "100",
+              "value": "#fcdde9"
+            },
+            {
+              "name": "200",
+              "value": "#f9c5d7"
+            },
+            {
+              "name": "300",
+              "value": "#f48bae"
+            },
+            {
+              "name": "400",
+              "value": "#f0658a"
+            },
+            {
+              "name": "500",
+              "value": "#d53884"
+            },
+            {
+              "name": "600",
+              "value": "#a52c6a"
+            },
+            {
+              "name": "700",
+              "value": "#7b2050"
+            },
+            {
+              "name": "800",
+              "value": "#561638"
+            },
+            {
+              "name": "900",
+              "value": "#390f24"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

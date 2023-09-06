@@ -1,0 +1,362 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "button",
+  "displayName": "Buttons",
+  "description": "Button Design System",
+  "tokens": [
+    {
+      "name": "button",
+      "tokens": [
+        {
+          "name": "color",
+          "value": {
+            "@": "@palette.neutral.850",
+            "@dark": "@palette.neutral.200"
+          }
+        },
+        {
+          "name": "background",
+          "value": "transparent"
+        },
+        {
+          "name": "ring",
+          "tokens": [
+            {
+              "name": "size",
+              "value": "@outline.md",
+              "tokens": [
+                {
+                  "name": "sm",
+                  "value": "@outline.sm"
+                },
+                {
+                  "name": "lg",
+                  "value": "@outline.lg"
+                }
+              ]
+            },
+            {
+              "name": "radius",
+              "value": "@radius.md"
+            }
+          ]
+        },
+        {
+          "name": "outline",
+          "tokens": [
+            {
+              "name": "size",
+              "value": "1px"
+            }
+          ]
+        },
+        {
+          "name": "font",
+          "tokens": [
+            {
+              "name": "family",
+              "value": "@font.family.base"
+            },
+            {
+              "name": "size",
+              "value": "@font.size.md",
+              "tokens": [
+                {
+                  "name": "sm",
+                  "value": "@font.size.sm"
+                },
+                {
+                  "name": "lg",
+                  "value": "@font.size.lg"
+                }
+              ]
+            },
+            {
+              "name": "height",
+              "value": "1"
+            },
+            {
+              "name": "weight",
+              "value": "@font.weight.bold"
+            },
+            {
+              "name": "align",
+              "value": "center"
+            },
+            {
+              "name": "transform",
+              "value": "capitalize"
+            }
+          ]
+        },
+        {
+          "name": "space",
+          "tokens": [
+            {
+              "name": "x",
+              "value": "@space.xl",
+              "tokens": [
+                {
+                  "name": "sm",
+                  "value": "@space.md"
+                },
+                {
+                  "name": "lg",
+                  "value": "@space.xxl"
+                }
+              ]
+            },
+            {
+              "name": "y",
+              "value": "@space.lg",
+              "tokens": [
+                {
+                  "name": "sm",
+                  "value": "@space.sm"
+                },
+                {
+                  "name": "lg",
+                  "value": "@space.xl"
+                }
+              ]
+            },
+            {
+              "name": "gap",
+              "value": "@space.md"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "value": "42px",
+          "tokens": [
+            {
+              "name": "sm",
+              "value": "32px"
+            },
+            {
+              "name": "lg",
+              "value": "52px"
+            }
+          ]
+        },
+        {
+          "name": "icon",
+          "tokens": [
+            {
+              "name": "size",
+              "value": "22px",
+              "tokens": [
+                {
+                  "name": "sm",
+                  "value": "18px"
+                },
+                {
+                  "name": "lg",
+                  "value": "26px"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "button",
+      "selectors": ["button:not(.reset)", ".button"],
+      "description": "Button design",
+      "layer": "button",
+      "rules": {
+        "--color": "@color.primary",
+        "--color-ring": "@color.primary.ring",
+        "--color-tint": "@color.primary.tint",
+        "--color-shade": "@color.primary.shade",
+        "--color-hover": "@color.primary.hover",
+        "--color-active": "@color.primary.active",
+        "--color-text": "@button.color",
+        "--foreground": {
+          "@": "~color-text",
+          "::hover": "~color-hover",
+          "::active": "~color-active",
+          "::disabled": "@color.disabled"
+        },
+        "--background": {
+          "@": "transparent",
+          "::hover": "~color-tint",
+          "::active": "~color-shade"
+        },
+        "--ring-size": "@button.ring.size",
+        "height": "@button.size",
+        "font-family": "@button.font.family",
+        "font-size": "@button.font.size",
+        "line-height": "@button.font.height",
+        "font-weight": "@button.font.weight",
+        "text-align": "@button.font.align",
+        "appearance": "none",
+        "cursor": "pointer",
+        "display": "inline-flex",
+        "align-items": "center",
+        "justify-content": "center",
+        "padding": "@button.space.y @button.space.x",
+        "border": "@button.outline.size solid ~outline-color",
+        "border-radius": "@button.ring.radius",
+        "box-shadow": {
+          "@": "0 0 0 0 transparent",
+          "::focus": "0 0 0 ~ring-size ~color-ring",
+          "::active": "0 0 0 0 transparent"
+        },
+        "transition": "all 0.2s ease-in-out",
+        "outline-style": "none !important",
+        "position": "relative",
+        "gap": "@button.space.gap",
+        "pointer-events": {
+          "::disabled": "none"
+        },
+        "color": "~foreground",
+        "background-color": "~background",
+        "user-select": "none"
+      },
+      "variants": [
+        {
+          "name": "primary",
+          "description": "Success button",
+          "selectors": [".primary", ".info"],
+          "rules": {
+            "--color-text": "@color.primary"
+          }
+        },
+        {
+          "name": "success",
+          "description": "Success button",
+          "selectors": [".success", ".info"],
+          "rules": {
+            "--color": "@color.success",
+            "--color-text": "@color.success",
+            "--color-ring": "@color.success.ring",
+            "--color-tint": "@color.success.tint",
+            "--color-shade": "@color.success.shade",
+            "--color-hover": "@color.success.hover",
+            "--color-active": "@color.success.active"
+          }
+        },
+        {
+          "name": "warning",
+          "description": "Warning button",
+          "selectors": [".warning", ".info"],
+          "rules": {
+            "--color": "@color.warning",
+            "--color-text": "@color.warning",
+            "--color-ring": "@color.warning.ring",
+            "--color-tint": "@color.warning.tint",
+            "--color-shade": "@color.warning.shade",
+            "--color-hover": "@color.warning.hover",
+            "--color-active": "@color.warning.active"
+          }
+        },
+        {
+          "name": "destructive",
+          "description": "Destructive button",
+          "selectors": [".destructive", ".info"],
+          "rules": {
+            "--color": "@color.destructive",
+            "--color-text": "@color.destructive",
+            "--color-ring": "@color.destructive.ring",
+            "--color-tint": "@color.destructive.tint",
+            "--color-shade": "@color.destructive.shade",
+            "--color-hover": "@color.destructive.hover",
+            "--color-active": "@color.destructive.active"
+          }
+        },
+        {
+          "name": "outline",
+          "description": "Outline button",
+          "rules": {
+            "--outline-color": {
+              "@": "@button.color",
+              "::hover": "~color-hover",
+              "::active": "~color-active",
+              "::disabled": "@color.disabled"
+            },
+            "--background": {
+              "@": "transparent",
+              "@dark": "transparent"
+            }
+          }
+        },
+        {
+          "name": "solid",
+          "description": "Solid button",
+          "rules": {
+            "--background": {
+              "@": "~color",
+              "::focus": "~color",
+              "::hover": "~color-hover",
+              "::active": "~color-active",
+              "::disabled": "@color.disabled"
+            },
+            "--foreground": "@color.foreground.reversed"
+          }
+        },
+        {
+          "name": "small",
+          "description": "Small button",
+          "rules": {
+            "--ring-size": "@button.ring.size.sm",
+            "height": "@button.size.sm",
+            "padding": "@button.space.y.sm @button.space.x.sm",
+            "font-size": "@button.font.size.sm"
+          }
+        },
+        {
+          "name": "large",
+          "description": "Large button",
+          "rules": {
+            "--ring-size": "@button.ring.size.lg",
+            "height": "@button.size.lg",
+            "padding": "@button.space.y.lg @button.space.x.lg",
+            "font-size": "@button.font.size.lg"
+          }
+        },
+        {
+          "name": "menu-button",
+          "description": "Menu button",
+          "rules": {
+            "text-align": "left",
+            "justify-content": "flex-start"
+          }
+        },
+        {
+          "name": "icon-button",
+          "description": "Icon button",
+          "rules": {
+            "--icon-size": "@button.icon.size",
+            "width": "@button.size",
+            "padding": "0",
+            "font-size": "@button.font.size.lg"
+          },
+          "variants": [
+            {
+              "name": "small",
+              "description": "Small icon button",
+              "rules": {
+                "--icon-size": "@button.icon.size.sm",
+                "width": "@button.size.sm"
+              }
+            },
+            {
+              "name": "large",
+              "description": "Large icon button",
+              "rules": {
+                "--icon-size": "@button.icon.size.lg",
+                "width": "@button.size.lg",
+                "font-size": "@font.size.xl"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

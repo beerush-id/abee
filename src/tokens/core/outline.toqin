@@ -1,0 +1,40 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "outline",
+  "displayName": "Outlines",
+  "description": "Beerush Outlines",
+  "tokens": [
+    {
+      "name": "outline",
+      "type": "unit",
+      "description": "Outline variables",
+      "tokens": [
+        {
+          "name": "xxs",
+          "value": "1px"
+        },
+        {
+          "name": "xs",
+          "value": "2px"
+        },
+        {
+          "name": "sm",
+          "value": "3px"
+        },
+        {
+          "name": "md",
+          "value": "4px"
+        },
+        {
+          "name": "lg",
+          "value": "5px"
+        },
+        {
+          "name": "xl",
+          "value": "6px"
+        }
+      ]
+    }
+  ],
+  "designs": [ ]
+}

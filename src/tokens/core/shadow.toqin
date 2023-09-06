@@ -1,0 +1,154 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "shadow",
+  "displayName": "Shadows",
+  "description": "Beerush Shadow",
+  "tokens": [
+    {
+      "name": "shadow",
+      "description": "Beerush Shadow tokens",
+      "tokens": [
+        {
+          "name": "color",
+          "description": "Shadow colors",
+          "tokens": [
+            {
+              "name": "light",
+              "type": "color",
+              "description": "Light shadow",
+              "value": {
+                "@": "rgba(0, 0, 0, 0.15)",
+                "@dark": "rgba(0, 0, 0, 0.3)"
+              }
+            },
+            {
+              "name": "dark",
+              "type": "color",
+              "description": "Dark shadow",
+              "value": {
+                "@": "rgba(0, 0, 0, 0.3)",
+                "@dark": "rgba(0, 0, 0, 0.5)"
+              }
+            },
+            {
+              "name": "darker",
+              "type": "color",
+              "description": "Darker shadow",
+              "value": {
+                "@": "rgba(0, 0, 0, 0.5)",
+                "@dark": "rgba(0, 0, 0, 0.7)"
+              }
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Shadow sizes",
+          "tokens": [
+            {
+              "name": "xs",
+              "description": "Extra small shadow",
+              "value": "2px"
+            },
+            {
+              "name": "sm",
+              "description": "Small shadow",
+              "value": "3px"
+            },
+            {
+              "name": "md",
+              "description": "Medium shadow",
+              "value": "5px"
+            },
+            {
+              "name": "lg",
+              "description": "Large shadow",
+              "value": "10px"
+            },
+            {
+              "name": "xl",
+              "description": "Extra large shadow",
+              "value": "20px"
+            }
+          ]
+        },
+        {
+          "name": "xs",
+          "description": "Extra small shadow",
+          "value": "0 0 @shadow.size.xs @shadow.color.light",
+          "tokens": [
+            {
+              "name": "dark",
+              "value": "0 0 @shadow.size.xs @shadow.color.dark"
+            },
+            {
+              "name": "darker",
+              "value": "0 0 @shadow.size.xs @shadow.color.darker"
+            }
+          ]
+        },
+        {
+          "name": "sm",
+          "description": "Small shadow",
+          "value": "0 0 @shadow.size.sm @shadow.color.light",
+          "tokens": [
+            {
+              "name": "dark",
+              "value": "0 0 @shadow.size.sm @shadow.color.dark"
+            },
+            {
+              "name": "darker",
+              "value": "0 0 @shadow.size.sm @shadow.color.darker"
+            }
+          ]
+        },
+        {
+          "name": "md",
+          "description": "Medium shadow",
+          "value": "0 0 @shadow.size.md @shadow.color.light",
+          "tokens": [
+            {
+              "name": "dark",
+              "value": "0 0 @shadow.size.md @shadow.color.dark"
+            },
+            {
+              "name": "darker",
+              "value": "0 0 @shadow.size.md @shadow.color.darker"
+            }
+          ]
+        },
+        {
+          "name": "lg",
+          "description": "Large shadow",
+          "value": "0 0 @shadow.size.lg @shadow.color.light",
+          "tokens": [
+            {
+              "name": "dark",
+              "value": "0 0 @shadow.size.lg @shadow.color.dark"
+            },
+            {
+              "name": "darker",
+              "value": "0 0 @shadow.size.lg @shadow.color.darker"
+            }
+          ]
+        },
+        {
+          "name": "xl",
+          "description": "Extra large shadow",
+          "value": "0 0 @shadow.size.xl @shadow.color.light",
+          "tokens": [
+            {
+              "name": "dark",
+              "value": "0 0 @shadow.size.xl @shadow.color.dark"
+            },
+            {
+              "name": "darker",
+              "value": "0 0 @shadow.size.xl @shadow.color.darker"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "designs": []
+}

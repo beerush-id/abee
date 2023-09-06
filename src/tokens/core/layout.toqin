@@ -1,0 +1,176 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "layout",
+  "displayName": "Layouts",
+  "description": "Beerush Layouts",
+  "tokens": [
+    {
+      "name": "grid",
+      "type": "unit",
+      "description": "Grid variables",
+      "tokens": [
+        {
+          "name": "gap",
+          "description": "Grid gap",
+          "value": "@space.md",
+          "tokens": [
+            {
+              "name": "small",
+              "value": "@space.sm"
+            },
+            {
+              "name": "large",
+              "value": "@space.lg"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "full-width",
+      "layer": "layout",
+      "selectors": [ ".wd-full" ],
+      "description": "Full width design",
+      "rules": {
+        "width": "100%"
+      }
+    },
+    {
+      "name": "full-height",
+      "layer": "layout",
+      "selectors": [ ".hg-full" ],
+      "description": "Full height design",
+      "rules": {
+        "height": "100%"
+      }
+    },
+    {
+      "name": "stretch",
+      "layer": "layout",
+      "selectors": [ ".stretch" ],
+      "description": "Stretch design",
+      "rules": {
+        "width": "100%",
+        "height": "100%"
+      }
+    },
+    {
+      "name": "flex-gap",
+      "layer": "layout",
+      "selectors": [ ".flex-gap" ],
+      "description": "Flex layout gaps",
+      "rules": {
+        "gap": "@grid.gap"
+      }
+    },
+    {
+      "name": "flex-row",
+      "layer": "layout",
+      "selectors": [ ".flex-row" ],
+      "description": "Flex row layout",
+      "rules": {
+        "display": "flex",
+        "flex-direction": "row"
+      }
+    },
+    {
+      "name": "flex-column",
+      "layer": "layout",
+      "selectors": [ ".flex-col" ],
+      "description": "Flex column layout",
+      "rules": {
+        "display": "flex",
+        "flex-direction": "column"
+      }
+    },
+    {
+      "name": "flex-item-center",
+      "layer": "layout",
+      "selectors": [ ".items-center" ],
+      "description": "Flex item center layout",
+      "rules": {
+        "align-items": "center"
+      }
+    },
+    {
+      "name": "justify-center",
+      "layer": "layout",
+      "selectors": [ ".justify-center" ],
+      "description": "Flex justify center layout",
+      "rules": {
+        "justify-content": "center"
+      }
+    },
+    {
+      "name": "flex-row-center",
+      "layer": "layout",
+      "selectors": [ ".flex-row-center" ],
+      "description": "Flex row center layout",
+      "rules": {
+        "display": "flex",
+        "flex-direction": "row",
+        "align-items": "center",
+        "justify-content": "center"
+      }
+    },
+    {
+      "name": "flex-column-center",
+      "layer": "layout",
+      "selectors": [ ".flex-col-center" ],
+      "description": "Flex column center layout",
+      "rules": {
+        "display": "flex",
+        "flex-direction": "column",
+        "align-items": "center",
+        "justify-content": "center"
+      }
+    },
+    {
+      "name": "flex-1",
+      "layer": "layout",
+      "selectors": [ ".flex" ],
+      "description": "Flex sizing",
+      "rules": {
+        "flex": "1 1 auto"
+      }
+    },
+    {
+      "name": "masked",
+      "layer": "layout",
+      "selectors": [ ".masked" ],
+      "description": "Masked layout, makes the element overflow hidden.",
+      "rules": {
+        "overflow": "hidden"
+      }
+    },
+    {
+      "name": "scrollable",
+      "layer": "layout",
+      "selectors": [ ".scrollable" ],
+      "description": "Scrollable layout",
+      "rules": {
+        "overflow": "auto"
+      }
+    },
+    {
+      "name": "scroll-x",
+      "layer": "layout",
+      "selectors": [ ".scroll-x" ],
+      "description": "Scrollable horizontal layout",
+      "rules": {
+        "overflow-x": "auto"
+      }
+    },
+    {
+      "name": "scroll-y",
+      "layer": "layout",
+      "selectors": [ ".scroll-y" ],
+      "description": "Scrollable vertical layout",
+      "rules": {
+        "overflow-y": "auto"
+      }
+    }
+  ]
+}

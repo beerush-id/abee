@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "common",
+  "displayName": "Cores",
+  "description": "Beerush Core Design Tokens",
+  "includes": [
+    "./typography.toqin",
+    "./palette.toqin",
+    "./color.toqin",
+    "./animation.toqin",
+    "./space.toqin",
+    "./layout.toqin",
+    "./outline.toqin",
+    "./radius.toqin",
+    "./shadow.toqin",
+    "./theme.toqin"
+  ],
+  "layers": [
+    "palette",
+    "color",
+    "typography",
+    "space",
+    "layout",
+    "outline",
+    "radius",
+    "shadow",
+    "animation",
+    "theme"
+  ]
+}

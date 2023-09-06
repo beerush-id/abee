@@ -19,11 +19,13 @@
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js"
     },
+    "./tokens/*": "./src/tokens/*",
     "./styles/*": "./styles/*"
   },
   "files": [
     "dist",
     "styles",
+    "src/tokens",
     "!dist/**/*.test.*",
     "!dist/**/*.spec.*"
   ],

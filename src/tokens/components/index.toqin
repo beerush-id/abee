@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "components",
+  "displayName": "Components",
+  "description": "Beerush Components",
+  "includes": [
+    "./icon.toqin",
+    "./input.toqin",
+    "./button.toqin",
+    "./card.toqin",
+    "./popup.toqin"
+  ],
+  "layers": [ "input", "button", "card", "popup" ]
+}

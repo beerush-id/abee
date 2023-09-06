@@ -1,0 +1,329 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "animation",
+  "displayName": "Animations",
+  "version": "",
+  "description": "Beerush Animations",
+  "tokens": [
+    {
+      "name": "duration",
+      "description": "Beerush Durations",
+      "tokens": [
+        {
+          "name": "fast",
+          "description": "Fast duration",
+          "value": "0.2s"
+        },
+        {
+          "name": "medium",
+          "description": "Medium duration",
+          "value": "0.6s"
+        },
+        {
+          "name": "slow",
+          "description": "Slow duration",
+          "value": "1.8s"
+        }
+      ]
+    },
+    {
+      "name": "transition",
+      "description": "Beerush Transitions",
+      "tokens": [
+        {
+          "name": "ultra-fast",
+          "description": "Ultra fast transition",
+          "value": "all 0.1s ease-in-out"
+        },
+        {
+          "name": "fast",
+          "description": "Fast transition",
+          "value": "all 0.2s ease-in-out"
+        },
+        {
+          "name": "medium",
+          "description": "Medium transition",
+          "value": "all 0.4s ease-in-out"
+        },
+        {
+          "name": "slow",
+          "description": "Slow transition",
+          "value": "all 0.6s ease-in-out"
+        }
+      ]
+    },
+    {
+      "name": "animation",
+      "description": "Beerush Animations",
+      "tokens": [
+        {
+          "name": "fade-in",
+          "description": "Fade in animation",
+          "value": "{fade-in} @duration.fast ease-in-out"
+        },
+        {
+          "name": "fade-out",
+          "description": "Fade out animation",
+          "value": "{fade-out} @duration.fast ease-in-out"
+        },
+        {
+          "name": "zoom-in",
+          "description": "Zoom in animation",
+          "value": "{zoom-in} @duration.fast ease-in-out"
+        },
+        {
+          "name": "zoom-out",
+          "description": "Zoom out animation",
+          "value": "{zoom-out} @duration.fast ease-in-out"
+        },
+        {
+          "name": "slide-up",
+          "description": "Slide up animation",
+          "value": "{slide-up} @duration.fast ease-in-out"
+        },
+        {
+          "name": "slide-down",
+          "description": "Slide down animation",
+          "value": "{slide-down} @duration.fast ease-in-out"
+        },
+        {
+          "name": "slide-left",
+          "description": "Slide left animation",
+          "value": "{slide-left} @duration.fast ease-in-out"
+        },
+        {
+          "name": "slide-right",
+          "description": "Slide right animation",
+          "value": "{slide-right} @duration.fast ease-in-out"
+        },
+        {
+          "name": "spin-cw",
+          "description": "Spin clockwise animation",
+          "value": "{spin-cw} @duration.medium linear infinite"
+        },
+        {
+          "name": "spin-ccw",
+          "description": "Spin counter clockwise animation",
+          "value": "{spin-ccw} @duration.medium linear infinite"
+        }
+      ]
+    },
+    {
+      "name": "slide",
+      "tokens": [
+        {
+          "name": "offset",
+          "value": "8px"
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "fade-in",
+      "layer": "animation",
+      "description": "Fade in animation class",
+      "rules": {
+        "animation": "@animation.fade-in"
+      }
+    },
+    {
+      "name": "fade-out",
+      "layer": "animation",
+      "description": "Fade out animation class",
+      "rules": {
+        "animation": "@animation.fade-out",
+        "color": {
+          "@": "red",
+          "@dark": "blue"
+        }
+      }
+    },
+    {
+      "name": "zoom-in",
+      "layer": "animation",
+      "description": "Zoom in animation class",
+      "rules": {
+        "animation": "@animation.zoom-in"
+      }
+    },
+    {
+      "name": "zoom-out",
+      "layer": "animation",
+      "description": "Zoom out animation class",
+      "rules": {
+        "animation": "@animation.zoom-out"
+      }
+    },
+    {
+      "name": "slide-up",
+      "layer": "animation",
+      "description": "Slide up animation class",
+      "rules": {
+        "animation": "@animation.slide-up"
+      }
+    },
+    {
+      "name": "slide-down",
+      "layer": "animation",
+      "description": "Slide down animation class",
+      "rules": {
+        "animation": "@animation.slide-down"
+      }
+    },
+    {
+      "name": "slide-left",
+      "layer": "animation",
+      "description": "Slide left animation class",
+      "rules": {
+        "animation": "@animation.slide-left"
+      }
+    },
+    {
+      "name": "slide-right",
+      "layer": "animation",
+      "description": "Slide right animation class",
+      "rules": {
+        "animation": "@animation.slide-right"
+      }
+    },
+    {
+      "name": "spin-cw",
+      "layer": "animation",
+      "description": "Spin clockwise animation class",
+      "rules": {
+        "animation": "@animation.spin-cw"
+      }
+    },
+    {
+      "name": "spin-ccw",
+      "layer": "animation",
+      "description": "Spin counter clockwise animation class",
+      "rules": {
+        "animation": "@animation.spin-ccw"
+      }
+    }
+  ],
+  "animations": [
+    {
+      "name": "fade-in",
+      "description": "Fade in animation",
+      "frames": {
+        "0%": {
+          "opacity": "0"
+        },
+        "100%": {
+          "opacity": "1"
+        }
+      }
+    },
+    {
+      "name": "fade-out",
+      "description": "Fade out animation",
+      "frames": {
+        "0%": {
+          "opacity": "1"
+        },
+        "100%": {
+          "opacity": "0"
+        }
+      }
+    },
+    {
+      "name": "zoom-in",
+      "description": "Zoom in animation",
+      "frames": {
+        "0%": {
+          "transform": "scale(0)"
+        },
+        "100%": {
+          "transform": "scale(1)"
+        }
+      }
+    },
+    {
+      "name": "zoom-out",
+      "description": "Zoom out animation",
+      "frames": {
+        "0%": {
+          "transform": "scale(1)"
+        },
+        "100%": {
+          "transform": "scale(0)"
+        }
+      }
+    },
+    {
+      "name": "slide-up",
+      "description": "Slide up animation",
+      "frames": {
+        "0%": {
+          "transform": "translateY($slide.offset)"
+        },
+        "100%": {
+          "transform": "translateY(0)"
+        }
+      }
+    },
+    {
+      "name": "slide-down",
+      "description": "Slide down animation",
+      "frames": {
+        "0%": {
+          "transform": "translateY(-$slide.offset)"
+        },
+        "100%": {
+          "transform": "translateY(0)"
+        }
+      }
+    },
+    {
+      "name": "slide-left",
+      "description": "Slide left animation",
+      "frames": {
+        "0%": {
+          "transform": "translateX($slide.offset)"
+        },
+        "100%": {
+          "transform": "translateX(0)"
+        }
+      }
+    },
+    {
+      "name": "slide-right",
+      "description": "Slide right animation",
+      "frames": {
+        "0%": {
+          "transform": "translateX(-$slide.offset)"
+        },
+        "100%": {
+          "transform": "translateX(0)"
+        }
+      }
+    },
+    {
+      "name": "spin-cw",
+      "description": "Spin clockwise animation",
+      "frames": {
+        "0%": {
+          "transform": "rotate(0)"
+        },
+        "100%": {
+          "transform": "rotate(360deg)"
+        }
+      }
+    },
+    {
+      "name": "spin-ccw",
+      "description": "Spin counter clockwise animation",
+      "frames": {
+        "0%": {
+          "transform": "rotate(360deg)"
+        },
+        "100%": {
+          "transform": "rotate(0)"
+        }
+      }
+    }
+  ]
+}

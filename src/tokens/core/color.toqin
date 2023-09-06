@@ -1,0 +1,320 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "color",
+  "displayName": "Colors",
+  "description": "Beerush Colors",
+  "tokens": [
+    {
+      "name": "color",
+      "type": "color",
+      "tags": [ "color", "theme" ],
+      "description": "Color palette",
+      "tokens": [
+        {
+          "name": "foreground",
+          "description": "Text color",
+          "value": {
+            "@": "@palette.neutral.850",
+            "@dark": "@palette.white"
+          },
+          "tokens": [
+            {
+              "name": "reversed",
+              "description": "Reversed text color",
+              "value": {
+                "@": "@palette.white",
+                "@dark": "@palette.neutral.850"
+              }
+            }
+          ]
+        },
+        {
+          "name": "background",
+          "description": "Background color",
+          "value": {
+            "@": "@palette.neutral.100",
+            "@dark": "@palette.neutral.950"
+          },
+          "tokens": [
+            {
+              "name": "tint",
+              "description": "Background tint color",
+              "value": {
+                "@": "@palette.neutral.50",
+                "@dark": "@palette.neutral.900"
+              }
+            },
+            {
+              "name": "shade",
+              "description": "Background shade color",
+              "value": {
+                "@": "@palette.neutral.100",
+                "@dark": "@palette.neutral.850"
+              }
+            }
+          ]
+        },
+        {
+          "name": "backdrop",
+          "description": "Backdrop color",
+          "value": {
+            "@": "$color.foreground=25",
+            "@dark": "$palette.neutral.950=75"
+          }
+        },
+        {
+          "name": "acrylic",
+          "description": "Acrylic background color",
+          "value": {
+            "@": "$palette.white=80",
+            "@dark": "$palette.neutral.900=80"
+          }
+        },
+        {
+          "name": "border",
+          "description": "Border color",
+          "value": {
+            "@": "@palette.neutral.150",
+            "@dark": "@palette.neutral.700"
+          },
+          "tokens": [
+            {
+              "name": "darker",
+              "value": {
+                "@": "@palette.neutral.400",
+                "@dark": "@palette.neutral.950"
+              }
+            }
+          ]
+        },
+        {
+          "name": "disabled",
+          "description": "Disabled color",
+          "value": {
+            "@": "@palette.neutral.300",
+            "@dark": "@palette.neutral.600"
+          },
+          "tokens": [
+            {
+              "name": "foreground",
+              "value": {
+                "@": "@palette.neutral.300",
+                "@dark": "@palette.neutral.300"
+              }
+            },
+            {
+              "name": "background",
+              "value": {
+                "@": "@palette.neutral.400",
+                "@dark": "@palette.neutral.850"
+              }
+            }
+          ]
+        },
+        {
+          "name": "primary",
+          "tags": [ "color", "theme", "primary", "info" ],
+          "description": "Primary color state",
+          "value": {
+            "@": "@palette.blue",
+            "@dark": "@palette.blue.300"
+          },
+          "tokens": [
+            {
+              "name": "hover",
+              "description": "Hover state color",
+              "value": {
+                "@": "&this.400",
+                "@dark": "&this.200"
+              }
+            },
+            {
+              "name": "active",
+              "description": "Active state color",
+              "value": {
+                "@": "&this.600",
+                "@dark": "&this.300"
+              }
+            },
+            {
+              "name": "tint",
+              "description": "Tint color",
+              "value": {
+                "@": "&this.50",
+                "@dark": "&this.200<75"
+              }
+            },
+            {
+              "name": "shade",
+              "description": "Shade color",
+              "value": {
+                "@": "&this.100",
+                "@dark": "&this.300<75"
+              }
+            },
+            {
+              "name": "ring",
+              "description": "Ring color",
+              "value": {
+                "@": "&this=30",
+                "@dark": "&this.400=30"
+              }
+            }
+          ]
+        },
+        {
+          "name": "success",
+          "tags": [ "color", "theme", "success" ],
+          "description": "Success color state",
+          "value": "@palette.green",
+          "tokens": [
+            {
+              "name": "hover",
+              "description": "Hover state color",
+              "value": {
+                "@": "&this.400",
+                "@dark": "&this.200"
+              }
+            },
+            {
+              "name": "active",
+              "description": "Active state color",
+              "value": {
+                "@": "&this.600",
+                "@dark": "&this.400"
+              }
+            },
+            {
+              "name": "tint",
+              "description": "Tint color",
+              "value": {
+                "@": "&this.50",
+                "@dark": "&this.200<75"
+              }
+            },
+            {
+              "name": "shade",
+              "description": "Shade color",
+              "value": {
+                "@": "&this.100",
+                "@dark": "&this.300<75"
+              }
+            },
+            {
+              "name": "ring",
+              "description": "Ring color",
+              "value": {
+                "@": "&this=30",
+                "@dark": "&this.400=30"
+              }
+            }
+          ]
+        },
+        {
+          "name": "warning",
+          "tags": [ "color", "theme", "warning" ],
+          "description": "Warning color state",
+          "value": "@palette.orange",
+          "tokens": [
+            {
+              "name": "hover",
+              "description": "Hover state color",
+              "value": {
+                "@": "&this.400",
+                "@dark": "&this.200"
+              }
+            },
+            {
+              "name": "active",
+              "description": "Active state color",
+              "value": {
+                "@": "&this.600",
+                "@dark": "&this.400"
+              }
+            },
+            {
+              "name": "tint",
+              "description": "Tint color",
+              "value": {
+                "@": "&this.50",
+                "@dark": "&this.200<75"
+              }
+            },
+            {
+              "name": "shade",
+              "description": "Shade color",
+              "value": {
+                "@": "&this.100",
+                "@dark": "&this.300<75"
+              }
+            },
+            {
+              "name": "ring",
+              "description": "Ring color",
+              "value": {
+                "@": "&this=30",
+                "@dark": "&this.400=30"
+              }
+            }
+          ]
+        },
+        {
+          "name": "destructive",
+          "tags": [ "color", "theme", "destructive", "alert" ],
+          "description": "Destructive color state",
+          "value": "@palette.red",
+          "tokens": [
+            {
+              "name": "hover",
+              "description": "Hover state color",
+              "value": {
+                "@": "&this.400",
+                "@dark": "&this.200"
+              }
+            },
+            {
+              "name": "active",
+              "description": "Active state color",
+              "value": {
+                "@": "&this.600",
+                "@dark": "&this.400"
+              }
+            },
+            {
+              "name": "tint",
+              "description": "Tint color",
+              "value": {
+                "@": "&this.50",
+                "@dark": "&this.200<75"
+              }
+            },
+            {
+              "name": "shade",
+              "description": "Shade color",
+              "value": {
+                "@": "&this.100",
+                "@dark": "&this.300<75"
+              }
+            },
+            {
+              "name": "ring",
+              "description": "Ring color",
+              "value": {
+                "@": "&this=30",
+                "@dark": "&this.400=30"
+              }
+            }
+          ]
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder color",
+          "value": {
+            "@": "@palette.neutral.400",
+            "@dark": "@palette.neutral.600"
+          }
+        }
+      ]
+    }
+  ]
+}
