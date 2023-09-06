@@ -1,7 +1,115 @@
 {
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
   "name": "abee",
   "displayName": "Abee",
+  "version": "1.0.0",
   "description": "Beerush Design System",
-  "tokens": [],
-  "designs": []
+  "extends": [
+    "@beerush/toqin/tokens/resets/tailwind.toqin"
+  ],
+  "includes": [
+    "./core/index.toqin",
+    "./components/index.toqin",
+    "./utilities/index.toqin"
+  ],
+  "layers": [ "reset", "base" ],
+  "tokens": [
+    {
+      "name": "header",
+      "tokens": [
+        {
+          "name": "height",
+          "value": "48px"
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "root",
+      "selectors": [ "html", "body" ],
+      "layer": "base",
+      "important": true,
+      "description": "Root design",
+      "rules": {
+        "margin": "0",
+        "padding": "0",
+        "width": "100%",
+        "height": "100%"
+      }
+    },
+    {
+      "name": "body",
+      "layer": "base",
+      "selectors": [ "body" ],
+      "root": true,
+      "description": "Body design",
+      "rules": {
+        "font-family": "@font.family.base",
+        "font-size": "@font.size.sm",
+        "line-height": "@font.height",
+        "font-weight": "@font.weight.regular",
+        "color": "@color.foreground",
+        "background-color": "@color.background"
+      }
+    },
+    {
+      "name": "fragment",
+      "layer": "base",
+      "selectors": [ ".fragment" ],
+      "description": "Fragment design",
+      "rules": {
+        "display": "contents"
+      }
+    },
+    {
+      "name": "page",
+      "layer": "base",
+      "selectors": [ ".page", ".app" ],
+      "description": "Page design",
+      "rules": {
+        "display": "flex",
+        "flex-direction": "column",
+        "width": "100vw",
+        "height": "100vh",
+        "overflow": "hidden",
+        "background-color": "@color.background"
+      },
+      "children": [
+        {
+          "name": "page-header",
+          "selectors": [ ".page-header" ],
+          "directChildren": true,
+          "description": "Page header design",
+          "rules": {
+            "height": "@header.height",
+            "display": "flex",
+            "flex-direction": "row",
+            "align-items": "center",
+            "justify-content": "space-between",
+            "padding": "@space.lg",
+            "border-bottom": "1px solid @color.border"
+          }
+        },
+        {
+          "name": "page-content",
+          "selectors": [ ".page-content" ],
+          "directChildren": true,
+          "description": "Page content design",
+          "rules": {
+            "display": "flex",
+            "flex-direction": "column",
+            "width": "100%",
+            "max-width": "~page-width",
+            "height": "~page-height",
+            "gap": "~page-gap",
+            "padding": "~page-gap",
+            "margin": "0 auto",
+            "flex": "1 1 auto",
+            "overflow": "auto"
+          }
+        }
+      ]
+    }
+  ]
 }
