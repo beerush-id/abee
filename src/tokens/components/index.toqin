@@ -4,6 +4,7 @@
   "displayName": "Components",
   "description": "Beerush Components",
   "includes": [
+    "./canvas.toqin",
     "./icon.toqin",
     "./input.toqin",
     "./button.toqin",

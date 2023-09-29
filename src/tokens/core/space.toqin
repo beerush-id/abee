@@ -7,7 +7,7 @@
     {
       "name": "space",
       "type": "unit",
-      "tags": ["space", "spacing"],
+      "tags": [ "space", "spacing" ],
       "description": "Spacing",
       "tokens": [
         {
@@ -46,7 +46,7 @@
     },
     {
       "name": "separator",
-      "tags": ["separator"],
+      "tags": [ "separator" ],
       "description": "Separator colors",
       "tokens": [
         {
@@ -70,93 +70,93 @@
   "mixins": [
     {
       "group": "space",
-      "select": ["0", "xxs", "xs", "sm", "md", "lg", "xl", "xxl"],
+      "select": [ "0", "xxs", "xs", "sm", "md", "lg", "xl", "xxl" ],
       "layer": "space",
       "ruleSets": [
         {
-          "selector": "md-@this",
+          "selector": "m-@this",
           "rules": {
             "margin": "@this"
           }
         },
         {
-          "selector": "pd-@this",
+          "selector": "p-@this",
           "rules": {
             "padding": "@this"
           }
         },
         {
-          "selector": "mdx-@this",
+          "selector": "mx-@this",
           "rules": {
             "margin-left": "@this",
             "margin-right": "@this"
           }
         },
         {
-          "selector": "mdy-@this",
+          "selector": "my-@this",
           "rules": {
             "margin-top": "@this",
             "margin-bottom": "@this"
           }
         },
         {
-          "selector": "pdx-@this",
+          "selector": "px-@this",
           "rules": {
             "padding-left": "@this",
             "padding-right": "@this"
           }
         },
         {
-          "selector": "pdy-@this",
+          "selector": "py-@this",
           "rules": {
             "padding-top": "@this",
             "padding-bottom": "@this"
           }
         },
         {
-          "selector": "mdl-@this",
+          "selector": "ml-@this",
           "rules": {
             "margin-left": "@this"
           }
         },
         {
-          "selector": "mdr-@this",
+          "selector": "mr-@this",
           "rules": {
             "margin-right": "@this"
           }
         },
         {
-          "selector": "mdt-@this",
+          "selector": "mt-@this",
           "rules": {
             "margin-top": "@this"
           }
         },
         {
-          "selector": "mdb-@this",
+          "selector": "mb-@this",
           "rules": {
             "margin-bottom": "@this"
           }
         },
         {
-          "selector": "pdl-@this",
+          "selector": "pl-@this",
           "rules": {
             "padding-left": "@this"
           }
         },
         {
-          "selector": "pdr-@this",
+          "selector": "pr-@this",
           "rules": {
             "padding-right": "@this"
           }
         },
         {
-          "selector": "pdt-@this",
+          "selector": "pt-@this",
           "rules": {
             "padding-top": "@this"
           }
         },
         {
-          "selector": "pdb-@this",
+          "selector": "pb-@this",
           "rules": {
             "padding-bottom": "@this"
           }
@@ -187,7 +187,7 @@
       "name": "separator-y",
       "description": "Vertical Separator",
       "layer": "space",
-      "selectors": [".separator-y", ".sp-y"],
+      "selectors": [ ".separator-y", ".sp-y" ],
       "rules": {
         "display": "inline-flex",
         "width": "@separator.size",
@@ -200,7 +200,7 @@
       "name": "separator-x",
       "description": "Horizontal Separator",
       "layer": "space",
-      "selectors": [".separator-x", ".sp-x"],
+      "selectors": [ ".separator-x", ".sp-x" ],
       "rules": {
         "display": "inline-flex",
         "width": "1px",
@@ -213,7 +213,7 @@
       "name": "divider",
       "description": "Divider",
       "layer": "space",
-      "selectors": [".divider", "hr", ".hr"],
+      "selectors": [ ".divider", "hr", ".hr" ],
       "rules": {
         "display": "block",
         "width": "100%",
@@ -222,56 +222,56 @@
       "variants": [
         {
           "name": "xxs",
-          "selectors": [".xxs"],
+          "selectors": [ ".xxs" ],
           "rules": {
             "margin": "@space.xxs auto"
           }
         },
         {
           "name": "xs",
-          "selectors": [".xs"],
+          "selectors": [ ".xs" ],
           "rules": {
             "margin": "@space.xs auto"
           }
         },
         {
           "name": "sm",
-          "selectors": [".sm"],
+          "selectors": [ ".sm" ],
           "rules": {
             "margin": "@space.sm auto"
           }
         },
         {
           "name": "md",
-          "selectors": [".md"],
+          "selectors": [ ".md" ],
           "rules": {
             "margin": "@space.md auto"
           }
         },
         {
           "name": "lg",
-          "selectors": [".lg"],
+          "selectors": [ ".lg" ],
           "rules": {
             "margin": "@space.lg auto"
           }
         },
         {
           "name": "xl",
-          "selectors": [".xl"],
+          "selectors": [ ".xl" ],
           "rules": {
             "margin": "@space.xl auto"
           }
         },
         {
           "name": "xxl",
-          "selectors": [".xxl"],
+          "selectors": [ ".xxl" ],
           "rules": {
             "margin": "@space.xxl auto"
           }
         },
         {
           "name": "transparent",
-          "selectors": [".transparent"],
+          "selectors": [ ".transparent" ],
           "rules": {
             "background-color": "transparent"
           }
@@ -282,7 +282,7 @@
       "name": "hr",
       "description": "Horizontal Rule",
       "layer": "space",
-      "selectors": ["hr", ".hr"],
+      "selectors": [ "hr", ".hr" ],
       "rules": {
         "height": "1px",
         "background-color": "@separator.color",

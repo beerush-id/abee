@@ -10,11 +10,62 @@
   "designs": [
     {
       "name": "icon",
-      "selectors": [ "i.material-symbols-outlined" ],
+      "selectors": [ ".icon" ],
       "rules": {
         "font-variation-settings": "'FILL' 0, 'wght' 200, 'GRAD' 200, 'opsz' 40",
-        "font-size": "~icon-size|24px"
-      }
+        "font-size": "~icon-size|24px",
+        "cursor": "~icon-cursor"
+      },
+      "variants": [
+        {
+          "name": "xs",
+          "selectors": [ "icon-xs" ],
+          "rules": {
+            "font-size": "~icon-size|8px"
+          }
+        },
+        {
+          "name": "sm",
+          "selectors": [ "icon-sm" ],
+          "rules": {
+            "font-size": "~icon-size|12px"
+          }
+        },
+        {
+          "name": "md",
+          "selectors": [ "icon-md" ],
+          "rules": {
+            "font-size": "~icon-size|16px"
+          }
+        },
+        {
+          "name": "lg",
+          "selectors": [ "icon-lg" ],
+          "rules": {
+            "font-size": "~icon-size|24px"
+          }
+        },
+        {
+          "name": "xl",
+          "selectors": [ "icon-xl" ],
+          "rules": {
+            "font-size": "~icon-size|32px"
+          }
+        },
+        {
+          "name": "clickable",
+          "selectors": [ ".clickable" ],
+          "rules": {
+            "cursor": "default",
+            "transition": "@transition.fast",
+            "user-select": "none",
+            "color": {
+              ":hover": "~icon-color|@color.primary.hover",
+              ":active": "~icon-color-active|@color.primary.active"
+            }
+          }
+        }
+      ]
     }
   ]
 }

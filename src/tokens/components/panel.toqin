@@ -1,0 +1,8 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "panel",
+  "displayName": "Panel",
+  "description": "Panel Design Tokens",
+  "tokens": [ ],
+  "designs": [ ]
+}

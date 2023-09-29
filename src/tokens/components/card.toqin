@@ -42,22 +42,21 @@
     {
       "name": "card",
       "description": "Card Design",
-      "selectors": [".card"],
+      "selectors": [ ".card" ],
       "layer": "card",
       "rules": {
         "display": "flex",
         "flex-direction": "column",
         "background": "@card.background",
-        "border-radius": "@card.radius",
-        "overflow": "auto"
+        "border-radius": "@card.radius"
       },
       "variants": [
         {
-          "name": "elevated",
-          "description": "Elevated Card",
-          "selectors": [".elevated"],
+          "name": "outlined",
+          "description": "Outlined Card",
+          "selectors": [ ".outlined" ],
           "rules": {
-            "box-shadow": "@card.shadow"
+            "border": "1px solid @palette.neutral.300"
           }
         }
       ],
@@ -65,7 +64,7 @@
         {
           "name": "card-contents",
           "directChildren": true,
-          "selectors": [".card-header", ".card-content", ".card-footer"],
+          "selectors": [ ".card-header", ".card-content", ".card-footer" ],
           "description": "Card contents style",
           "rules": {
             "display": "flex",
@@ -75,7 +74,7 @@
         {
           "name": "card-header",
           "directChildren": true,
-          "selectors": [".card-header"],
+          "selectors": [ ".card-header" ],
           "description": "Card header style",
           "rules": {
             "padding": "@card.outer-gap",
@@ -85,7 +84,7 @@
         {
           "name": "card-content",
           "directChildren": true,
-          "selectors": [".card-content"],
+          "selectors": [ ".card-content" ],
           "description": "Card content style",
           "rules": {
             "padding": "0 @card.outer-gap",
@@ -96,7 +95,7 @@
         {
           "name": "card-footer",
           "directChildren": true,
-          "selectors": [".card-footer"],
+          "selectors": [ ".card-footer" ],
           "description": "Card footer style",
           "rules": {
             "padding": "@card.outer-gap",

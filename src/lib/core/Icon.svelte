@@ -1,18 +1,34 @@
 <script lang="ts">
-  import { Tooltip } from '../utilities/index.js';
+  import Tooltip from './Tooltip.svelte';
+  import type { DirectionX, DirectionY } from '@beerush/utils/client';
+  import { createEventDispatcher } from 'svelte';
 
-  export let size: number | void = null;
-  export let color: string | void = null;
-  export let tooltip: string | void = null;
+  export let name = '';
+  export let size = '';
+  export let color = '';
+  export let tooltip = '';
+  export let xDir: DirectionX = 'between';
+  export let yDir: DirectionY = 'below';
+  export let clickable = false;
 
   let className = '';
   export { className as class };
+
+  const dispatch = createEventDispatcher<{
+    click: MouseEvent;
+  }>();
 </script>
-<i class="material-symbols-outlined {className}"
-   style:--this-icon-size={size}
-   style:--this-icon-color={color}>
-  <slot></slot>
+<span role={clickable ? 'button' : ''} class="icon material-symbols-outlined {className}"
+      class:clickable
+      on:click={e => dispatch('click', e)}
+      style:--icon-size={size}
+      style:--icon-color={color}>
+  <slot>
+    {#if name}
+      {name}
+    {/if}
+  </slot>
   {#if tooltip}
-    <Tooltip text={tooltip} />
+    <Tooltip {xDir} {yDir} text={tooltip} />
   {/if}
-</i>
+</span>

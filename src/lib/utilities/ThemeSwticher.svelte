@@ -1,7 +1,11 @@
 <script lang="ts">
-  import Tooltip from './Tooltip.svelte';
-  import { Icon } from '../core/index.js';
+  import { Icon, Tooltip } from '@beerush/abee/core';
 
+  const { Toqin } = window;
+
+  export let small = false;
+  export let xDir = 'after';
+  export let yDir = 'between';
   let theme = Toqin.getTheme();
 
   const toggle = () => {
@@ -21,11 +25,12 @@
 
 <button type="button"
         class="icon-button"
+        class:small
         on:click={toggle}
         class:light={theme === 'light'}
         class:dark={theme === 'dark'}>
   <Icon>{theme === 'system' ? 'contrast' : theme + '_mode' }</Icon>
-  <Tooltip yDir="above">Toggle Theme</Tooltip>
+  <Tooltip {xDir} {yDir}>Toggle Theme</Tooltip>
 </button>
 
 <style>

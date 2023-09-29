@@ -6,10 +6,11 @@ const cssConfig = {
   postcss: minify,
   cssnano: minify,
   sourceMap: !minify ? 'inline' : false,
+  withHelper: true,
 };
 
 export default {
   token: './src/tokens/index.toqin',
   outDir: './styles',
-  plugins: [ css(cssConfig), tailwind({ useCssVariable: false }) ]
+  plugins: [ css(cssConfig), tailwind({ useCssVariable: false }) ],
 };

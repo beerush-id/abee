@@ -165,7 +165,7 @@
   "designs": [
     {
       "name": "button",
-      "selectors": ["button:not(.reset)", ".button"],
+      "selectors": [ "button:not(.reset)", ".button" ],
       "description": "Button design",
       "layer": "button",
       "rules": {
@@ -195,7 +195,7 @@
         "font-weight": "@button.font.weight",
         "text-align": "@button.font.align",
         "appearance": "none",
-        "cursor": "pointer",
+        "cursor": "~button-cursor",
         "display": "inline-flex",
         "align-items": "center",
         "justify-content": "center",
@@ -222,7 +222,7 @@
         {
           "name": "primary",
           "description": "Success button",
-          "selectors": [".primary", ".info"],
+          "selectors": [ ".primary", ".info" ],
           "rules": {
             "--color-text": "@color.primary"
           }
@@ -230,7 +230,7 @@
         {
           "name": "success",
           "description": "Success button",
-          "selectors": [".success", ".info"],
+          "selectors": [ ".success", ".info" ],
           "rules": {
             "--color": "@color.success",
             "--color-text": "@color.success",
@@ -244,7 +244,7 @@
         {
           "name": "warning",
           "description": "Warning button",
-          "selectors": [".warning", ".info"],
+          "selectors": [ ".warning", ".info" ],
           "rules": {
             "--color": "@color.warning",
             "--color-text": "@color.warning",
@@ -258,7 +258,7 @@
         {
           "name": "destructive",
           "description": "Destructive button",
-          "selectors": [".destructive", ".info"],
+          "selectors": [ ".destructive", ".info" ],
           "rules": {
             "--color": "@color.destructive",
             "--color-text": "@color.destructive",
@@ -270,8 +270,8 @@
           }
         },
         {
-          "name": "outline",
-          "description": "Outline button",
+          "name": "outlined",
+          "description": "Outlined button",
           "rules": {
             "--outline-color": {
               "@": "@button.color",

@@ -225,8 +225,164 @@
     {
       "name": "text-center",
       "description": "Center text",
+      "layer": "typography",
       "rules": {
         "text-align": "center"
+      }
+    },
+    {
+      "name": "text-xxs",
+      "description": "Extra extra small text",
+      "layer": "typography",
+      "selectors": [ ".text-xxs" ],
+      "rules": {
+        "font-size": "@font.size.xxs"
+      }
+    },
+    {
+      "name": "text-xs",
+      "description": "Extra small text",
+      "layer": "typography",
+      "selectors": [ ".text-xs" ],
+      "rules": {
+        "font-size": "@font.size.xs"
+      }
+    },
+    {
+      "name": "text-sm",
+      "description": "Small text",
+      "layer": "typography",
+      "selectors": [ ".text-sm" ],
+      "rules": {
+        "font-size": "@font.size.sm"
+      }
+    },
+    {
+      "name": "text-md",
+      "description": "Medium text",
+      "layer": "typography",
+      "selectors": [ ".text-md" ],
+      "rules": {
+        "font-size": "@font.size.md"
+      }
+    },
+    {
+      "name": "text-lg",
+      "description": "Large text",
+      "layer": "typography",
+      "selectors": [ ".text-lg" ],
+      "rules": {
+        "font-size": "@font.size.lg"
+      }
+    },
+    {
+      "name": "text-xl",
+      "description": "Extra large text",
+      "layer": "typography",
+      "selectors": [ ".text-xl" ],
+      "rules": {
+        "font-size": "@font.size.xl"
+      }
+    },
+    {
+      "name": "text-xxl",
+      "description": "Extra extra large text",
+      "layer": "typography",
+      "selectors": [ ".text-xxl" ],
+      "rules": {
+        "font-size": "@font.size.xxl"
+      }
+    },
+    {
+      "name": "text-light",
+      "description": "Light text",
+      "layer": "typography",
+      "selectors": [ ".text-light" ],
+      "rules": {
+        "font-weight": "@font.weight.light"
+      }
+    },
+    {
+      "name": "text-regular",
+      "description": "Regular text",
+      "layer": "typography",
+      "selectors": [ ".text-regular" ],
+      "rules": {
+        "font-weight": "@font.weight.regular"
+      }
+    },
+    {
+      "name": "text-medium",
+      "description": "Medium text",
+      "layer": "typography",
+      "selectors": [ ".text-medium" ],
+      "rules": {
+        "font-weight": "@font.weight.medium"
+      }
+    },
+    {
+      "name": "text-bold",
+      "description": "Bold text",
+      "layer": "typography",
+      "selectors": [ ".text-bold" ],
+      "rules": {
+        "font-weight": "@font.weight.bold"
+      }
+    },
+    {
+      "name": "text-tight",
+      "description": "Tight text",
+      "layer": "typography",
+      "selectors": [ ".text-tight" ],
+      "rules": {
+        "line-height": "@font.height.tight"
+      }
+    },
+    {
+      "name": "text-loose",
+      "description": "Loose text",
+      "layer": "typography",
+      "selectors": [ ".text-loose" ],
+      "rules": {
+        "line-height": "@font.height.loose"
+      }
+    },
+    {
+      "name": "text-uppercase",
+      "description": "Uppercase text",
+      "layer": "typography",
+      "selectors": [ ".text-uppercase" ],
+      "rules": {
+        "text-transform": "uppercase"
+      }
+    },
+    {
+      "name": "text-lowercase",
+      "description": "Lowercase text",
+      "layer": "typography",
+      "selectors": [ ".text-lowercase" ],
+      "rules": {
+        "text-transform": "lowercase"
+      }
+    },
+    {
+      "name": "text-capitalize",
+      "description": "Capitalize text",
+      "layer": "typography",
+      "selectors": [ ".text-capitalize" ],
+      "rules": {
+        "text-transform": "capitalize"
+      }
+    },
+    {
+      "name": "text-truncate",
+      "description": "Truncate text",
+      "layer": "typography",
+      "selectors": [ ".text-truncate" ],
+      "rules": {
+        "overflow": "hidden",
+        "text-overflow": "ellipsis",
+        "white-space": "nowrap"
       }
     }
   ]

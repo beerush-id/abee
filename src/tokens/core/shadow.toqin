@@ -150,5 +150,37 @@
       ]
     }
   ],
-  "designs": []
+  "designs": [
+    {
+      "name": "elevation",
+      "layer": "shadow",
+      "selectors": [ ".elevated" ],
+      "rules": {
+        "box-shadow": "@shadow.xl"
+      },
+      "variants": [
+        {
+          "name": "sm",
+          "selectors": [ ".elevated-sm" ],
+          "rules": {
+            "box-shadow": "@shadow.sm"
+          }
+        },
+        {
+          "name": "md",
+          "selectors": [ ".elevated-md" ],
+          "rules": {
+            "box-shadow": "@shadow.md"
+          }
+        },
+        {
+          "name": "lg",
+          "selectors": [ ".elevated-lg" ],
+          "rules": {
+            "box-shadow": "@shadow.lg"
+          }
+        }
+      ]
+    }
+  ]
 }

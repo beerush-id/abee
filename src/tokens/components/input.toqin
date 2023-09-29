@@ -24,9 +24,34 @@
         {
           "name": "background",
           "value": {
-            "@": "@palette.neutral.100",
+            "@": "@palette.neutral.50",
             "@dark": "@palette.neutral.950"
-          }
+          },
+          "tokens": [
+            {
+              "name": "disabled",
+              "value": {
+                "@": "@palette.neutral.100",
+                "@dark": "@palette.neutral.800"
+              }
+            }
+          ]
+        },
+        {
+          "name": "outline",
+          "tokens": [
+            {
+              "name": "color",
+              "value": {
+                "@": "@palette.neutral.300",
+                "@dark": "@palette.neutral.700"
+              }
+            },
+            {
+              "name": "size",
+              "value": "1px"
+            }
+          ]
         },
         {
           "name": "radius",
@@ -34,15 +59,55 @@
         },
         {
           "name": "gap-y",
-          "value": "@space.md"
+          "value": "@space.md",
+          "tokens": [
+            {
+              "name": "sm",
+              "value": "@space.xs"
+            },
+            {
+              "name": "lg",
+              "value": "@space.md"
+            }
+          ]
         },
         {
           "name": "gap-x",
-          "value": "@space.xl"
+          "value": "@space.xl",
+          "tokens": [
+            {
+              "name": "sm",
+              "value": "@space.sm"
+            },
+            {
+              "name": "lg",
+              "value": "@space.lg"
+            }
+          ]
         },
         {
           "name": "gap",
-          "value": "@space.md @space.xl"
+          "value": "@space.md @space.xl",
+          "tokens": [
+            {
+              "name": "sm",
+              "value": "@space.xs @space.sm"
+            },
+            {
+              "name": "lg",
+              "value": "@space.md @space.lg"
+            }
+          ]
+        },
+        {
+          "name": "unit",
+          "value": "48px",
+          "tokens": [
+            {
+              "name": "sm",
+              "value": "34px"
+            }
+          ]
         }
       ]
     }
@@ -61,13 +126,48 @@
         "--color-ring": "@color.primary.ring",
         "--color-warn-line": "transparent",
         "--color-outline": "@color.primary.active",
+        "--line-size": "1px",
+        "--line-color": "@input.outline.color",
+        "--gap": "@input.gap",
+        "--gap-x": "@input.gap-x",
+        "--gap-y": "@input.gap-y",
+        "--unit-size": "@input.unit",
+        "flex": "1 1 auto",
         "display": "flex",
         "flex-direction": "row",
         "align-items": "center",
-        "position": "relative",
-        "padding-top": "@input.gap-x"
+        "position": "relative"
       },
       "variants": [
+        {
+          "name": "small",
+          "description": "Small Text Field",
+          "selectors": [ ".small" ],
+          "rules": {
+            "--gap-x": "@input.gap-x.sm",
+            "--gap-y": "@input.gap-y.sm",
+            "--gap": "@input.gap.sm",
+            "--font-size": "@font.size.xs",
+            "--unit-size": "@input.unit.sm",
+            "--ring-size": "@button.ring.size.sm"
+          }
+        },
+        {
+          "name": "with-placeholder",
+          "description": "With Placeholder",
+          "selectors": [ ".has-label", ".has-placeholder" ],
+          "rules": {
+            "margin-top": "~gap.x"
+          }
+        },
+        {
+          "name": "with-unit",
+          "description": "With Unit",
+          "selectors": [ ".has-input-unit input" ],
+          "rules": {
+            "padding-right": "~unit-size"
+          }
+        },
         {
           "name": "destructive",
           "description": "Primary Text Field",
@@ -79,28 +179,14 @@
             "--color-ring": "@color.destructive.ring",
             "--color-warn": "@color.destructive",
             "--color-warn-line": "@color.destructive.ring",
-            "--color-outline": "@color.destructive.active"
-          }
-        },
-        {
-          "name": "select-arrow",
-          "description": "Select Arrow",
-          "selectors": [ ":has(select):after" ],
-          "rules": {
-            "content": "'»'",
-            "position": "absolute",
-            "right": "@input.gap-x",
-            "top": "50%",
-            "transform": "translateY(calc(-50% + (@input.gap-x / 2))) rotate(90deg)",
-            "font-size": "@font.size.lg",
-            "pointer-events": "none",
-            "color": "@input.color"
+            "--color-outline": "@color.destructive.active",
+            "--line-color": "@color.destructive"
           }
         },
         {
           "name": "require-mark",
           "description": "Require Mark",
-          "selectors": [ ":has([required]) :is(label, .placeholder):after" ],
+          "selectors": [ ".has-required :is(label, .placeholder):after" ],
           "rules": {
             "content": "'*'",
             "color": "@color.destructive",
@@ -112,36 +198,63 @@
         {
           "name": "active-placeholder",
           "description": "Input Focus Placeholder",
-          "selectors": [ ":has(:focus, .focus, .has-value)", ".has-value" ],
+          "selectors": [ ".has-focus", ".has-value" ],
           "children": [
             {
               "name": "placeholder",
               "selectors": [ "label", ".placeholder" ],
               "directChildren": true,
               "rules": {
-                "transform": "translate3d(calc(-1 * @input.gap-x), calc(-1 * (@input.gap-x * 3)), 0)",
+                "top": "0",
+                "left": "0",
+                "transform": "translate3d(0, calc(-50% - (~gap.x / 2)), 0) scale(0.80)",
                 "font-weight": "@font.weight.bold",
                 "font-size": "@font.size.xs"
               }
             }
           ],
           "rules": { }
+        },
+        {
+          "name": "indeterminate",
+          "description": "Indeterminate",
+          "selectors": [ ".indeterminate" ],
+          "rules": {
+            "--color": "@input.color.placeholder"
+          }
         }
       ],
       "children": [
+        {
+          "name": "icon",
+          "description": "Input Icon",
+          "selectors": [ ".input-icon", ".material-symbols-outlined" ],
+          "rules": {
+            "display": "inline-flex",
+            "flex-direction": "row",
+            "align-items": "center",
+            "justify-content": "center",
+            "color": "@input.color",
+            "font-size": "~font.size|@font.body",
+            "width": "~icon.size|@input.gap-x",
+            "height": "~icon.size|@input.gap-x"
+          }
+        },
         {
           "name": "input",
           "description": "Input Element",
           "selectors": [ "input", "textarea", "select" ],
           "directChildren": true,
           "rules": {
+            "color": "~color",
             "border-color": {
               ":focus": "~color-outline",
+              ":checked": "~color-outline",
               ":hover": "~color-hover"
             },
             "box-shadow": {
               "@": "none",
-              "::focus": "0 0 0 @button.ring.size ~color-ring"
+              "::focus": "0 0 0 ~ring.size|@button.ring.size ~color-ring"
             }
           }
         },
@@ -151,11 +264,14 @@
           "selectors": [ "label", ".placeholder" ],
           "directChildren": true,
           "rules": {
+            "display": "block",
+            "width": "100%",
             "color": "~color-warn|@input.color.placeholder",
             "position": "absolute",
-            "top": "calc(50% + @input.gap-x)",
+            "top": "50%",
             "left": "@input.gap-x",
-            "transform": "translateY(calc(-50% - (@input.gap-x / 2)))",
+            "transform": "translate3d(0, -50%, 0)",
+            "transform-origin": "top left",
             "font-size": "@font.size.sm",
             "font-weight": "@font.weight.medium",
             "transition": "@transition.fast",
@@ -167,8 +283,7 @@
           "name": "focus-placeholder",
           "description": "Input Focus Placeholder",
           "selectors": [
-            ":is(input, textarea, select):where(:focus, :hover) + label",
-            ":is(input, textarea, select):where(:focus, :hover) + .placeholder"
+            ":is(input, textarea, select):where(:focus, :hover) ~ :is(label, .placeholder, .select-arrow)"
           ],
           "rules": {
             "color": "~color-accent"
@@ -179,7 +294,33 @@
           "description": "Select Element",
           "selectors": [ "select" ],
           "rules": {
-            "padding-right": "calc(@input.gap-x * 2)"
+            "padding-right": "~unit-size"
+          }
+        },
+        {
+          "name": "unit-arrow",
+          "description": "Input Unit",
+          "selectors": [ ".input-unit", ".select-arrow" ],
+          "rules": {
+            "color": "@input.color.placeholder",
+            "font-size": "@font.size.xxs",
+            "font-weight": "@font.weight.medium",
+            "line-height": "@font.height.tight",
+            "position": "absolute",
+            "top": "50%",
+            "right": "~gap.x",
+            "transform": "translateY(-50%)",
+            "pointer-events": "none",
+            "user-select": "none",
+            "transition": "@transition.fast"
+          }
+        },
+        {
+          "name": "select-arrow",
+          "description": "Select Arrow",
+          "selectors": [ ".select-arrow" ],
+          "rules": {
+            "color": "~color.placeholder|@input.color.placeholder"
           }
         }
       ]
@@ -190,28 +331,118 @@
       "description": "Input Design",
       "selectors": [ "input", "textarea", "select" ],
       "rules": {
+        "flex": "1 1 auto",
+        "width": "~input.width|auto",
         "appearance": "none",
         "position": "relative",
+        "font-size": "~font.size|@font.body",
         "color": {
-          "@": "~color-warn|@input.color",
+          "@": "~text.color",
           "::placeholder": "~color-warn|@input.color.placeholder"
         },
-        "background-color": "@input.background",
-        "padding": "@input.gap",
+        "background-color": "~color.fill|@input.background",
+        "padding": "~gap.y|@input.gap-y ~gap.x|@input.gap-x",
         "outline": "none",
-        "border-radius": "@input.radius",
-        "border-width": "1px",
+        "border-radius": "~radius|@input.radius",
+        "border-width": "~line.size",
         "border-style": "solid",
-        "border-color": {
-          "@": "~color-warn-line|transparent",
-          "::focus": "@color.primary.active",
-          "::hover": "@color.primary.hover"
-        },
+        "border-color": "~line.color",
         "box-shadow": {
           "@": "none",
-          "::focus": "0 0 0 @button.ring.size @color.primary.ring"
+          "::focus": "0 0 0 ~ring.size|@button.ring.size ~ring.color|@color.primary.ring"
         },
-        "transition": "@transition.fast"
+        "transition": "@transition.fast",
+        "pointer-events": {
+          ":disabled": "none"
+        }
+      },
+      "variants": [
+        {
+          "name": "disabled",
+          "selectors": [
+            ":disabled",
+            ":disabled ~ :is(.input-unit, label, .placeholder, .select-arrow, .checkbox-label)"
+          ],
+          "rules": {
+            "--color-fill": "@input.background.disabled",
+            "color": "@color.disabled",
+            "box-shadow": "none",
+            "pointer-events": "none",
+            "user-select": "none"
+          }
+        },
+        {
+          "name": "checkbox",
+          "description": "Checkbox",
+          "selectors": [ "[type=checkbox]" ],
+          "rules": {
+            "--line-size": "2px",
+            "--line-color": {
+              "@": "@input.outline.color",
+              ":focus": "~color.outline|@color.primary",
+              ":hover": "~color.hover|@color.primary.hover",
+              ":checked": "~color.outline|@color.primary",
+              ":indeterminate": "~color.outline|@color.primary",
+              ":disabled": {
+                "@": "@color.border",
+                ":after": "@color.disabled"
+              }
+            },
+            "flex": "0 1 auto",
+            "width": "24px",
+            "height": "24px",
+            "padding": "0",
+            "position": "relative",
+            "border-radius": "4px"
+          },
+          "variants": [
+            {
+              "name": "decoration",
+              "selectors": [ ":checked:after", ":indeterminate:after", ".checked:after", ".indeterminate:after" ],
+              "rules": {
+                "content": "''",
+                "width": "65%",
+                "height": "8px",
+                "border-bottom": "~line-size solid ~line-color",
+                "border-left": "~line-size solid ~line-color",
+                "position": "absolute",
+                "left": "50%",
+                "top": "50%",
+                "transform": "translate(calc(-50% - 1px), calc(-50% + 3px)) rotate(-45deg)",
+                "transform-origin": "left top",
+                "animation": "@animation.fade-in"
+              }
+            },
+            {
+              "name": "indeterminate",
+              "selectors": [ ":indeterminate:after", ".indeterminate:after" ],
+              "rules": {
+                "height": "2px",
+                "border-bottom": "~line-size solid ~line-color",
+                "border-left": "none",
+                "transform": "translate(-50%, -50%)"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "layer": "input",
+      "description": "Checkbox Design",
+      "selectors": [ ".checkbox" ],
+      "rules": {
+        "display": "flex",
+        "flex-direction": "row",
+        "align-items": "center",
+        "gap": "~gap.x|@space.lg",
+        "position": "relative",
+        "font-size": "~text.size|@font.body",
+        "line-height": "1",
+        "pointer-events": {
+          ":disabled": "none"
+        }
       }
     }
   ]

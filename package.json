@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "bee-spawn toqin --watch -- svelte-package --watch",
-    "build": "vite build && npm run package && toqin --minify && node package.js && publint",
+    "dev:vite": "vite dev",
+    "build": "vite build && npm run package && toqin --minify && publint",
     "preview": "vite preview",
     "package": "svelte-kit sync && svelte-package && publint",
     "prepublishOnly": "npm run package",
@@ -17,7 +18,45 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "svelte": "./dist/index.js"
+      "svelte": "./dist/index.js",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./canvas": {
+      "types": "./dist/canvas/index.d.ts",
+      "svelte": "./dist/canvas/index.js",
+      "import": "./dist/canvas/index.js",
+      "require": "./dist/canvas/index.js"
+    },
+    "./core": {
+      "types": "./dist/core/index.d.ts",
+      "svelte": "./dist/core/index.js",
+      "import": "./dist/core/index.js",
+      "require": "./dist/core/index.js"
+    },
+    "./document": {
+      "types": "./dist/document/index.d.ts",
+      "svelte": "./dist/document/index.js",
+      "import": "./dist/document/index.js",
+      "require": "./dist/document/index.js"
+    },
+    "./panels": {
+      "types": "./dist/panels/index.d.ts",
+      "svelte": "./dist/panels/index.js",
+      "import": "./dist/panels/index.js",
+      "require": "./dist/panels/index.js"
+    },
+    "./toolbar": {
+      "types": "./dist/toolbar/index.d.ts",
+      "svelte": "./dist/toolbar/index.js",
+      "import": "./dist/toolbar/index.js",
+      "require": "./dist/toolbar/index.js"
+    },
+    "./utilities": {
+      "types": "./dist/utilities/index.d.ts",
+      "svelte": "./dist/utilities/index.js",
+      "import": "./dist/utilities/index.js",
+      "require": "./dist/utilities/index.js"
     },
     "./tokens/*": "./src/tokens/*",
     "./styles/*": "./styles/*"
@@ -33,7 +72,8 @@
     "svelte": "^4.0.0"
   },
   "devDependencies": {
-    "@beerush/browser-utils": "*",
+    "@beerush/anchor": "*",
+    "@beerush/borderless": "*",
     "@beerush/reactor": "*",
     "@beerush/spawn": "*",
     "@beerush/toqin": "*",
@@ -46,6 +86,7 @@
     "@typescript-eslint/parser": "^5.45.0",
     "eslint": "^8.28.0",
     "eslint-plugin-svelte": "^2.30.0",
+    "nanoid": "^4.0.2",
     "publint": "^0.1.9",
     "svelte": "^4.0.5",
     "svelte-check": "^3.4.3",
@@ -56,5 +97,8 @@
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@svgdotjs/svg.js": "^3.2.0"
+  }
 }

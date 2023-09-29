@@ -8,9 +8,9 @@
     "@beerush/toqin/tokens/resets/tailwind.toqin"
   ],
   "includes": [
-    "./core/index.toqin",
     "./components/index.toqin",
-    "./utilities/index.toqin"
+    "./utilities/index.toqin",
+    "./core/index.toqin"
   ],
   "layers": [ "reset", "base" ],
   "tokens": [
@@ -19,7 +19,7 @@
       "tokens": [
         {
           "name": "height",
-          "value": "48px"
+          "value": "56px"
         }
       ]
     }
@@ -65,7 +65,7 @@
     {
       "name": "page",
       "layer": "base",
-      "selectors": [ ".page", ".app" ],
+      "selectors": [ ".page" ],
       "description": "Page design",
       "rules": {
         "display": "flex",
@@ -79,22 +79,18 @@
         {
           "name": "page-header",
           "selectors": [ ".page-header" ],
-          "directChildren": true,
           "description": "Page header design",
           "rules": {
-            "height": "@header.height",
             "display": "flex",
             "flex-direction": "row",
             "align-items": "center",
             "justify-content": "space-between",
-            "padding": "@space.lg",
-            "border-bottom": "1px solid @color.border"
+            "padding": "@space.sm @space.lg"
           }
         },
         {
           "name": "page-content",
           "selectors": [ ".page-content" ],
-          "directChildren": true,
           "description": "Page content design",
           "rules": {
             "display": "flex",

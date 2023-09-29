@@ -1,0 +1,252 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "canvas",
+  "displayName": "Canvas",
+  "description": "Canvas Design Tokens",
+  "tokens": [
+    {
+      "name": "canvas",
+      "tokens": [
+        {
+          "name": "background",
+          "value": "@color.background"
+        },
+        {
+          "name": "ruler",
+          "tokens": [
+            {
+              "name": "color",
+              "value": {
+                "@": "@palette.neutral.600",
+                "@dark": "@palette.neutral.100"
+              }
+            },
+            {
+              "name": "background",
+              "value": {
+                "@": "@palette.white",
+                "@dark": "@palette.neutral.950"
+              }
+            },
+            {
+              "name": "shade",
+              "value": "$palette.green.400=50"
+            },
+            {
+              "name": "unit",
+              "value": "5px"
+            },
+            {
+              "name": "width",
+              "value": "1px"
+            },
+            {
+              "name": "height",
+              "value": "32px",
+              "tokens": [
+                {
+                  "name": "half",
+                  "value": "&this(/1.5)"
+                },
+                {
+                  "name": "quarter",
+                  "value": "&this(/2)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "canvas",
+      "layer": "canvas",
+      "selectors": [ ".canvas" ],
+      "rules": {
+        "display": "flex",
+        "flex": "1 1 0",
+        "flex-direction": "column",
+        "position": "relative",
+        "overflow": "hidden"
+      },
+      "children": [
+        {
+          "name": "ruler-background",
+          "selectors": [ ".canvas-ruler-background" ],
+          "rules": {
+            "background-image": [
+              "linear-gradient(90deg, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)"
+            ],
+            "background-size": [
+              "@canvas.ruler.unit @canvas.ruler.height.quarter"
+            ],
+            "background-repeat": [ "repeat-x" ]
+          }
+        },
+        {
+          "name": "ruler",
+          "selectors": [ ".canvas-ruler-h", ".canvas-ruler-v" ],
+          "rules": {
+            "display": "flex",
+            "position": "absolute",
+            "z-index": "1",
+            "top": "0",
+            "left": "0"
+          }
+        },
+        {
+          "name": "ruler-h",
+          "selectors": [ ".canvas-ruler-h" ],
+          "rules": {
+            "flex-direction": "row",
+            "width": "calc(100% - @canvas.ruler.height)",
+            "height": "@canvas.ruler.height",
+            "margin-left": "@canvas.ruler.height",
+            "box-shadow": "inset 1px 0 0 @canvas.ruler.color",
+            "background-image": [
+              "linear-gradient(90deg, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)",
+              "linear-gradient(90deg, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)",
+              "linear-gradient(90deg, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)"
+            ],
+            "background-size": [
+              "calc(@canvas.ruler.unit * 10) @canvas.ruler.height",
+              "calc(@canvas.ruler.unit * 5) @canvas.ruler.height.half",
+              "@canvas.ruler.unit @canvas.ruler.height.quarter"
+            ],
+            "background-repeat": [ "repeat-x", "repeat-x", "repeat-x" ]
+          }
+        },
+        {
+          "name": "ruler-v",
+          "selectors": [ ".canvas-ruler-v" ],
+          "rules": {
+            "flex-direction": "column",
+            "width": "@canvas.ruler.height",
+            "height": "calc(100% - @canvas.ruler.height)",
+            "margin-top": "@canvas.ruler.height",
+            "box-shadow": "inset 0 1px 0 @canvas.ruler.color",
+            "background-image": [
+              "linear-gradient(0, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)",
+              "linear-gradient(0, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)",
+              "linear-gradient(0, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)"
+            ],
+            "background-size": [
+              "@canvas.ruler.height calc(@canvas.ruler.unit * 10)",
+              "@canvas.ruler.height.half calc(@canvas.ruler.unit * 5)",
+              "@canvas.ruler.height.quarter @canvas.ruler.unit"
+            ],
+            "background-repeat": [ "repeat-y", "repeat-y", "repeat-y" ]
+          }
+        },
+        {
+          "name": "drawer",
+          "selectors": [ ".canvas-drawer" ],
+          "rules": {
+            "flex": "1 1 0",
+            "padding": "calc(@canvas.ruler.height * 2) @canvas.ruler.height calc(@canvas.ruler.height * 2) @canvas.ruler.height",
+            "overflow": "hidden",
+            "position": "relative",
+            "z-index": "0",
+            "display": "flex",
+            "flex-direction": "row",
+            "align-items": "center",
+            "justify-content": "center",
+            "cursor": "~canvas.cursor",
+            "user-select": "none"
+          }
+        },
+        {
+          "name": "viewport",
+          "selectors": [ ".canvas-viewport" ],
+          "rules": {
+            "display": "flex",
+            "flex-direction": "row",
+            "flex-wrap": "wrap",
+            "align-items": "flex-start",
+            "cursor": "~canvas.cursor",
+            "color": "@palette.black",
+            "background-color": "@palette.white",
+            "transform": "translate3d(~canvas.x, ~canvas.y, 0) scale(~canvas.scale)",
+            "transform-origin": "center",
+            "width": "~canvas-width",
+            "height": "~canvas-height",
+            "outline": "1px solid $palette.black=50",
+            "position": "relative",
+            "pointer-events": "none"
+          },
+          "children": [
+            {
+              "name": "canvas-guide",
+              "selectors": [ ".canvas-guide" ],
+              "rules": {
+                "--guide-color": "blue",
+                "position": "absolute",
+                "opacity": "0.5",
+                "pointer-events": "none"
+              },
+              "variants": [
+                {
+                  "name": "guide-top",
+                  "selectors": [ ".guide-top" ],
+                  "rules": {
+                    "width": "calc(100% + ~guide.left + ~guide.right)",
+                    "left": "50%",
+                    "transform": "translateX(-50%)",
+                    "top": "~guide.top",
+                    "border-top": "1px dashed ~guide.color"
+                  }
+                },
+                {
+                  "name": "guide-right",
+                  "selectors": [ ".guide-right" ],
+                  "rules": {
+                    "height": "calc(100% + ~guide.top + ~guide.bottom)",
+                    "top": "50%",
+                    "transform": "translateY(-50%)",
+                    "right": "~guide.right",
+                    "border-right": "1px dashed ~guide.color"
+                  }
+                },
+                {
+                  "name": "guide-bottom",
+                  "selectors": [ ".guide-bottom" ],
+                  "rules": {
+                    "width": "calc(100% + ~guide.left + ~guide.right)",
+                    "left": "50%",
+                    "transform": "translateX(-50%)",
+                    "bottom": "~guide.bottom",
+                    "border-bottom": "1px dashed ~guide.color"
+                  }
+                },
+                {
+                  "name": "guide-left",
+                  "selectors": [ ".guide-left" ],
+                  "rules": {
+                    "height": "calc(100% + ~guide.top + ~guide.bottom)",
+                    "top": "50%",
+                    "transform": "translateY(-50%)",
+                    "left": "~guide.left",
+                    "border-left": "1px dashed ~guide.color"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "svg-elements",
+              "selectors": [ "rect", "path", "ellipse" ],
+              "rules": {
+                "outline": {
+                  "@": "none",
+                  ":hover": "1px dashed blue"
+                },
+                "cursor": "~canvas.cursor|default"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
