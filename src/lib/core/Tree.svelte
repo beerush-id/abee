@@ -1,6 +1,7 @@
 <script lang="ts">
   import Icon from './Icon.svelte';
   import { createEventDispatcher } from 'svelte';
+  import { draggable, DragWith } from '@beerush/composer';
 
   const dispatch = createEventDispatcher<{
     click: MouseEvent;
@@ -12,7 +13,7 @@
   export let expandable: boolean | number = false;
   export let open = true;
   export let disabled = false;
-  export let selected = false;
+  export let active = false;
   export let icon = '';
 
   const click = (e: MouseEvent | KeyboardEvent) => {
@@ -33,17 +34,18 @@
     open = !open;
   };
 </script>
-<section class="tree-item flex-col gap-sm" class:open>
-  <!-- eslint-disable-next-line -->
-  <header class="tree-header flex-row items-center gap-xs" class:disabled>
-    <div class="tree-expander flex-row-center" class:placeholder={!expandable}>
-      {#if expandable}
+<section class="tree-item"
+         class:expandable
+         class:open
+         use:draggable={DragWith.Vertical}
+         on:drag-end={console.log}>
+  <header class="tree-header" class:disabled>
+    {#if expandable}
+      <div class="tree-expander" class:placeholder={!expandable}>
         <Icon clickable name={open ? 'expand_more' : 'chevron_right'} class="transform" on:click={toggleExpand} />
-      {:else}
-        <Icon name="switch_access" class="icon-placeholder" />
-      {/if}
-    </div>
-    <button class="reset tree-button flex-row items-center gap-sm" class:selected
+      </div>
+    {/if}
+    <button class="reset tree-button flex-row items-center gap-sm flex-1" class:active
             on:mouseenter={mouseenter}
             on:mouseleave={mouseleave}
             on:click={click}>
@@ -52,48 +54,11 @@
       {/if}
       <span>{label}</span>
     </button>
-    <div class="flex-1"></div>
     <slot name="header"></slot>
   </header>
   {#if expandable && open}
-    <section class="tree-children flex-col gap-sm">
+    <section class="tree-children flex-col">
       <slot></slot>
     </section>
   {/if}
 </section>
-
-<style lang="scss">
-  .tree-item {
-    --icon-size: 18px;
-    appearance: none;
-  }
-
-  .tree-header {
-    cursor: default;
-    user-select: none;
-    font-size: var(--tq-font-size-xs);
-
-    &.disabled {
-      pointer-events: none;
-      opacity: 0.5;
-    }
-  }
-
-  .tree-button {
-    transition: all .1s ease-in-out;
-    outline: none;
-    appearance: none;
-
-    &:hover, &.selected {
-      color: var(--tq-color-primary);
-    }
-  }
-
-  .tree-children {
-    padding-left: calc(var(--tq-space-xs) + var(--icon-size));
-  }
-
-  .placeholder {
-    opacity: 0.2;
-  }
-</style>

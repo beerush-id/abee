@@ -28,13 +28,14 @@ export type ColorPicker = {
   recentStrokeWidth?: number;
 }
 
-export type CursorMode = 'select' | 'text' | 'rectangle' | 'circle' | 'line';
+export type CursorMode = 'select' | 'text' | 'rectangle' | 'circle' | 'line' | 'frame';
 export const CURSOR_MAP: { [K in CursorMode]: string } = {
   select: 'default',
   text: 'text',
   rectangle: 'crosshair',
   circle: 'crosshair',
   line: 'crosshair',
+  frame: 'crosshair',
 };
 
 export const Registry = session(StorageKeys.STATES, {

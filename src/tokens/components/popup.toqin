@@ -37,7 +37,7 @@
   "designs": [
     {
       "name": "popup-container",
-      "selectors": [ ".popup-container" ],
+      "selectors": [ ".popup-container", ".menu-portal" ],
       "layer": "popup",
       "description": "Popup container style",
       "rules": {
@@ -46,7 +46,7 @@
       "children": [
         {
           "name": "popup",
-          "selectors": [ ".popup", ".tooltip", "[tooltip]", ".dialog" ],
+          "selectors": [ ".popup", ".tooltip", "[tooltip]", ".dialog", ".menu" ],
           "directChildren": true,
           "description": "Popup active style",
           "rules": {
@@ -56,10 +56,18 @@
         },
         {
           "name": "overlay",
-          "selectors": [ ".popup-overlay", ".dialog-overlay" ],
+          "selectors": [ ".popup-overlay", ".dialog-overlay", ".menu-backdrop" ],
           "description": "Popup active overlay style",
           "rules": {
             "display": "block"
+          }
+        },
+        {
+          "name": "menu",
+          "selectors": [ ".menu" ],
+          "description": "Menu active style",
+          "rules": {
+            "z-index": "99999"
           }
         }
       ]
@@ -132,9 +140,71 @@
       ]
     },
     {
+      "name": "menu",
+      "layer": "popup",
+      "selectors": [ ".menu" ],
+      "description": "Menu style",
+      "rules": {
+        "display": "none",
+        "flex-direction": "column",
+        "position": "fixed",
+        "background": "@color.acrylic",
+        "backdrop-filter": "blur(10px)",
+        "outline": "none",
+        "border-radius": "@radius.md",
+        "box-shadow": "@shadow.md",
+        "padding": "@space.sm",
+        "gap": "@space.xs"
+      },
+      "children": [
+        {
+          "name": "item",
+          "selectors": [ ".menu-item" ],
+          "rules": {
+            "display": "flex",
+            "align-items": "center",
+            "gap": "@space.md",
+            "padding": "@space.xs @space.sm",
+            "border-radius": "@radius.md",
+            "user-select": "none",
+            "appearance": "none",
+            "transition": "@transition.ultra-fast",
+            "outline": "none",
+            "background": {
+              ":focus": "@color.primary.ring",
+              ":hover": "@color.primary.ring"
+            },
+            "opacity": {
+              ":disabled": "0.5"
+            },
+            "pointer-events": {
+              ":disabled": "none"
+            }
+          }
+        },
+        {
+          "name": "separator",
+          "selectors": [ ".menu-separator" ],
+          "rules": {
+            "height": "1px",
+            "background": "$color.border=25"
+          }
+        },
+        {
+          "name": "keys",
+          "selectors": [ ".menu-item-keys" ],
+          "rules": {
+            "font-size": "@font.size.xs",
+            "opacity": "0.5",
+            "margin-left": "@space.sm"
+          }
+        }
+      ]
+    },
+    {
       "name": "overlays",
       "layer": "popup",
-      "selectors": [ ".popup-overlay", ".dialog-overlay" ],
+      "selectors": [ ".popup-overlay", ".dialog-overlay", ".menu-backdrop" ],
       "description": "Popup overlay style",
       "rules": {
         "display": "none",
@@ -145,6 +215,16 @@
         "width": "100%",
         "height": "100%",
         "cursor": "default"
+      }
+    },
+    {
+      "name": "menu-backdrop",
+      "layer": "popup",
+      "selectors": [ ".menu-backdrop" ],
+      "description": "Menu overlay style",
+      "rules": {
+        "display": "none",
+        "z-index": "99998"
       }
     },
     {

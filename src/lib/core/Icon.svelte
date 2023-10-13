@@ -7,9 +7,10 @@
   export let size = '';
   export let color = '';
   export let tooltip = '';
+  export let clickable = false;
+  export let disabled = false;
   export let xDir: DirectionX = 'between';
   export let yDir: DirectionY = 'below';
-  export let clickable = false;
 
   let className = '';
   export { className as class };
@@ -20,6 +21,7 @@
 </script>
 <span role={clickable ? 'button' : ''} class="icon material-symbols-outlined {className}"
       class:clickable
+      class:disabled
       on:click={e => dispatch('click', e)}
       style:--icon-size={size}
       style:--icon-color={color}>

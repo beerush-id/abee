@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Icon } from '../core/index.js';
   import type { CanvasPointer, CanvasSettings, CanvasViewport, Document } from '../document/index.js';
-  import { StorageKeys } from '../document/index.js';
+  import { nodes, StorageKeys } from '../document/index.js';
   import type { Ruler } from '@beerush/utils';
   import { persistent, session } from '@beerush/anchor';
 
@@ -11,6 +11,8 @@
   const viewport = session<CanvasViewport>(StorageKeys.VIEWPORT, {} as never);
   const pointer = session<CanvasPointer>(StorageKeys.POINTER, {} as never);
   const settings = persistent<CanvasSettings>(StorageKeys.SETTINGS, {} as never);
+
+  const { rects } = nodes;
 
   const { mm, px } = ruler;
 </script>
@@ -32,6 +34,10 @@
   <div class="flex-row items-center gap-xs">
     <Icon name="pageview" class="icon-md" />
     <span>{Math.round($viewport.scale * 100)}%</span>
+  </div>
+  <div class="flex-row items-center gap-xs">
+    <Icon name="layers" class="icon-md" />
+    <span>{$rects.size} Layers</span>
   </div>
   {#if $settings.showPointerPosition}
     <div class="flex-row items-center gap-xs">

@@ -2,10 +2,12 @@ import type { ColorPicker } from './Registry.js';
 import { StorageKeys } from './Registry.js';
 import type { State } from '@beerush/anchor';
 import { anchor, session } from '@beerush/anchor';
-import type { CanvasPointer, MoveBound, MoveEvent } from './Pointer.js';
+import type { CanvasPointer, MoveBound } from './Pointer.js';
 import { nanoid } from 'nanoid';
 import type { CSSStyles } from '@beerush/utils/client';
-import { capitalize, logger } from '@beerush/utils';
+import { capitalize, DEFAULT_DPI, logger, pxDrop, ruler } from '@beerush/utils';
+import type { MenuItemData } from '../core/Menu.js';
+import type { DraggableEvent } from '@beerush/composer';
 
 export type NodeRectangle = {
   top: number;
@@ -17,25 +19,28 @@ export type NodeRectangle = {
 
   isDragging?: boolean;
 };
-export type NodeType = 'text' | 'rectangle' | 'circle' | 'line' | 'image' | 'svg' | 'group';
+export type NodeType = 'text' | 'rectangle' | 'circle' | 'line' | 'image' | 'svg' | 'group' | 'frame';
 export type NodeStyles = CSSStyles & NodeRectangle;
 
 export type Node = {
   id: string;
-  tag: NodeType;
-  type: string;
-  name?: string;
+  type: NodeType;
+  name: string;
+  styles: CSSStyles & NodeRectangle;
+  children: Node[];
+  visible: boolean;
+  printable: boolean;
+
   text?: string;
 
-  styles: CSSStyles & NodeRectangle;
   classList?: string[];
   attributes?: {
     [key: string]: string
   };
-  children?: Node[];
   selected?: boolean;
   dragged?: boolean;
   hovered?: boolean;
+  locked?: boolean;
 };
 
 export type TextProperty = NodeRectangle & {
@@ -59,6 +64,7 @@ export const ICON_MAP: {
   rectangle: 'rectangle',
   circle: 'circle',
   text: 'title',
+  frame: 'crop_free',
   group: 'layers',
   line: 'remove',
   image: 'image',
@@ -67,10 +73,10 @@ export const ICON_MAP: {
 
 export class NodeList {
   public items = session<Node[]>('main-node-list', []);
-  public rects = new Map<State<Node>, State<NodeStyles>>();
+  public rects = anchor(new Map<State<Node>, State<NodeStyles>>(), false);
   public selections = anchor<Node[]>([]);
 
-  public assign(nodes: State<Node[]>) {
+  public assign(nodes: State<Node[]>): this {
     this.rects.clear();
     this.selections.splice(0, this.selections.length);
 
@@ -83,9 +89,41 @@ export class NodeList {
         this.selections.push(node);
       }
     }
+
+    logger.debug('[node-list:assign] Node list assigned.');
+    return this;
   }
 
-  public create(tag: NodeType, name = tag): State<Node> {
+  public clear(clearNodes?: boolean): this {
+    this.rects.clear();
+    this.selections.splice(0, this.selections.length);
+
+    if (clearNodes) {
+      this.items.splice(0, this.items.length);
+    }
+
+    logger.debug('[node-list:clear] Node list cleaned up.');
+    return this;
+  }
+
+  public createRect(node: State<Node>): this {
+    this.rects.set(node, anchor({ ...node.styles }));
+
+    if (Array.isArray(node.children)) {
+      for (const child of node.children) {
+        this.createRect(child);
+      }
+    }
+
+    logger.debug('[node-list:create-rect] Node rectangle created.');
+    return this;
+  }
+
+  public create(
+    tag: NodeType,
+    name: string | NodeType = capitalize(tag),
+    initStyles?: Partial<NodeStyles>,
+  ): State<Node> {
     const picker = session<ColorPicker>(StorageKeys.COLOR_PICKER, {} as never);
 
     const styles: Partial<NodeStyles> = {
@@ -96,7 +134,7 @@ export class NodeList {
       position: 'absolute',
     };
 
-    if (tag !== 'group') {
+    if (![ 'group', 'text', 'image' ].includes(tag)) {
       Object.assign(styles, {
         backgroundColor: picker.recentFill,
         borderStyle: 'solid',
@@ -118,52 +156,68 @@ export class NodeList {
 
     const node = anchor<Node | TextNode>({
       id: nanoid(8),
-      tag,
       type: tag,
-      name: capitalize(name),
-      styles: styles as NodeStyles,
+      name: name,
+      styles: { ...styles, ...initStyles } as NodeStyles,
       children: [],
+      visible: true,
+      printable: true,
     });
 
     if (tag === 'text') {
       (node as State<TextNode>).text = 'Text';
     }
 
-    this.items.push(node);
-    this.createRect(node);
-    return node;
+    this.createRect(node as never);
+    this.items.push(node as never);
+    return node as never;
+  }
+
+  public import(files: FileList, left = 0, top = 0, dpi = DEFAULT_DPI) {
+    for (const file of files) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        const img = new Image();
+
+        img.onload = () => {
+          const node = this.create('image', file.name, {
+            top, left,
+            width: pxDrop(img.width, dpi, ruler.dpi),
+            height: pxDrop(img.height, dpi, ruler.dpi),
+            backgroundImage: `url(${ img.src })`,
+            backgroundSize: '100% 100%',
+          });
+
+          this.select(node);
+        };
+
+        img.src = reader.result as string;
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 
   public group(nodes: State<Node[]> = this.selections): State<Node> {
     const group = this.create('group');
 
-    const topNode = this.getTopMost(nodes);
-    const leftNode = this.getLeftMost(nodes);
-    const rightNode = this.getRightMost(nodes);
-    const bottomNode = this.getBottomMost(nodes);
-
-    console.log(
-      topNode.styles.top,
-      leftNode.styles.left,
-      rightNode.styles.left + rightNode.styles.width - leftNode.styles.left,
-      bottomNode.styles.top + bottomNode.styles.height - topNode.styles.top,
-    );
+    const { top, left, width, height } = this.getBoundingRects(nodes);
 
     while (nodes.length) {
       const node = nodes[0];
 
       if (node) {
         if (node.selected) {
-          node.selected = false;
+          this.deselect(node);
         }
 
         if (this.items.includes(node)) {
           this.items.splice(this.items.indexOf(node), 1);
         }
 
-        if (this.selections.includes(node)) {
-          this.selections.splice(this.selections.indexOf(node), 1);
-        }
+        node.styles.top -= top;
+        node.styles.left -= left;
 
         group.children?.push(node);
       }
@@ -172,13 +226,7 @@ export class NodeList {
     const rect = this.rects.get(group);
 
     if (rect) {
-      rect.set({
-        top: topNode.styles.top,
-        left: leftNode.styles.left,
-        width: rightNode.styles.left + rightNode.styles.width + leftNode.styles.left,
-        height: bottomNode.styles.top + bottomNode.styles.height + topNode.styles.top,
-      });
-
+      rect.set({ top, left, width, height });
       this.applyRect(group);
     }
 
@@ -188,12 +236,14 @@ export class NodeList {
   }
 
   public ungroup(group: State<Node>) {
+    const { top, left } = group.styles;
+
     while (group.children?.length) {
       const node = group.children[0];
 
       if (node) {
         if (node.selected) {
-          node.selected = false;
+          this.deselect(node);
         }
 
         if (group.children.includes(node)) {
@@ -201,55 +251,78 @@ export class NodeList {
         }
 
         this.items.splice(this.items.indexOf(group), 0, node as never);
+
+        node.styles.top += top;
+        node.styles.left += left;
       }
     }
 
     this.remove(group);
   }
 
+  public getBoundingRects(nodes: State<Node[]> = this.items, offset = 0) {
+    const tRect: NodeRectangle = this.rects.get(this.getTopMost(nodes)) as never;
+    const lRect: NodeRectangle = this.rects.get(this.getLeftMost(nodes)) as never;
+    const rRect: NodeRectangle = this.rects.get(this.getRightMost(nodes)) as never;
+    const bRect: NodeRectangle = this.rects.get(this.getBottomMost(nodes)) as never;
+
+    const { top } = tRect;
+    const { left } = lRect;
+    const width = (rRect.left - left) + rRect.width;
+    const height = (bRect.top - top) + bRect.height;
+
+    return {
+      top: top - (offset / 2),
+      left: left - (offset / 2),
+      width: width + offset,
+      height: height + offset,
+    };
+  }
+
   public getTopMost(nodes: State<Node[]> = this.items) {
     return nodes.reduce((prev, next) => {
-      if (prev.styles.top > next.styles.top) {
-        return prev;
-      } else {
+      if (next.styles.top < prev.styles.top) {
         return next;
+      } else {
+        return prev;
       }
     });
   }
 
   public getLeftMost(nodes: State<Node[]> = this.items) {
     return nodes.reduce((prev, next) => {
-      if (prev.styles.left > next.styles.left) {
-        return prev;
-      } else {
+      if (next.styles.left < prev.styles.left) {
         return next;
+      } else {
+        return prev;
       }
     });
   }
 
   public getRightMost(nodes: State<Node[]> = this.items) {
     return nodes.reduce((prev, next) => {
-      if (prev.styles.left < next.styles.left) {
-        return prev;
-      } else {
+      const { left: pl, width: pw } = prev.styles;
+      const { left: nl, width: nw } = next.styles;
+
+      if ((nl + nw) > (pl + pw)) {
         return next;
+      } else {
+        return prev;
       }
     });
   }
 
   public getBottomMost(nodes: State<Node[]> = this.items) {
     return nodes.reduce((prev, next) => {
-      if (prev.styles.top < next.styles.top) {
-        return prev;
-      } else {
+      const { top: pt, height: ph } = prev.styles;
+      const { top: nt, height: nh } = next.styles;
+
+      if ((nt + nh) > (pt + ph)) {
         return next;
+      } else {
+        return prev;
       }
     });
-  }
-
-  public createRect(node: State<Node>): this {
-    this.rects.set(node, anchor({ ...node.styles }));
-    return this;
   }
 
   public select(node: State<Node> | string, append?: boolean): State<Node> | void {
@@ -376,7 +449,7 @@ export class NodeList {
   }
 
   public deselectAll(except?: Node[]): State<Node[]> {
-    for (const node of this.items) {
+    for (const node of [ ...this.selections ]) {
       if (!except || !except.includes(node)) {
         this.deselect(node);
       }
@@ -385,8 +458,8 @@ export class NodeList {
     return this.selections;
   }
 
-  public move(e: MoveEvent): this {
-    const { x, y } = e.detail;
+  public move(e: DraggableEvent): this {
+    const { deltaX, deltaY } = e.detail;
 
     for (const [ node, rect ] of this.rects) {
       const { selected, styles } = node;
@@ -394,8 +467,8 @@ export class NodeList {
       if (selected) {
         rect.set({
           isDragging: true,
-          left: styles.left + x,
-          top: styles.top + y,
+          left: styles.left + deltaX,
+          top: styles.top + deltaY,
         });
       }
     }
@@ -403,8 +476,8 @@ export class NodeList {
     return this;
   }
 
-  public resize(e: MoveEvent, resizeX: MoveBound, resizeY: MoveBound): this {
-    const { x, y, e: ed } = e.detail;
+  public resize(e: DraggableEvent, resizeX: MoveBound, resizeY: MoveBound): this {
+    const { deltaX, deltaY } = e.detail;
 
     for (const [ node, rect ] of this.rects) {
       const { selected, styles } = node;
@@ -413,17 +486,17 @@ export class NodeList {
         const { left: cx, top: cy, width: cw, height: ch } = styles;
 
         if (resizeX === 'start') {
-          rect.width = (cw - x);
-          rect.left = rect.width > 0 ? (cx + x) : rect.left;
+          rect.width = (cw - deltaX);
+          rect.left = rect.width > 0 ? (cx + deltaX) : rect.left;
         } else if (resizeX === 'end') {
-          rect.width = (cw + x);
+          rect.width = (cw + deltaX);
         }
 
         if (resizeY === 'start') {
-          rect.height = ed.shiftKey ? rect.width : (ch - y);
-          rect.top = rect.height > 0 ? (cy + y) : rect.top;
+          rect.height = (ch - deltaY);
+          rect.top = rect.height > 0 ? (cy + deltaY) : rect.top;
         } else if (resizeY === 'end') {
-          rect.height = ed.shiftKey ? rect.width : (ch + y);
+          rect.height = (ch + deltaY);
         }
       }
     }
@@ -494,6 +567,144 @@ export class NodeList {
     this.rects.clear();
 
     return this;
+  }
+
+  public align(
+    nodes: State<Node[]>,
+    dir: 'vertical' | 'horizontal' | 'all',
+    align: 'start' | 'center' | 'end' | 'before' | 'after',
+  ) {
+    if (nodes.length < 2) {
+      return;
+    }
+
+    const last: Node = [ ...nodes ].pop() as never;
+    const rest = [ ...nodes ].slice(0, -1);
+    const { left, top, width, height } = last.styles;
+    const center = { left: left + (width / 2), top: top + (height / 2) };
+
+    for (const node of rest) {
+      const rect = { ...node.styles };
+
+      if (dir === 'vertical') {
+        if (align === 'start') {
+          rect.top = top;
+        } else if (align === 'center') {
+          rect.top = center.top - (rect.height / 2);
+        } else if (align === 'end') {
+          rect.top = top + height - rect.height;
+        } else if (align === 'before') {
+          rect.top = top - rect.height;
+        } else if (align === 'after') {
+          rect.top = top + height;
+        }
+      } else if (dir === 'horizontal') {
+        if (align === 'start') {
+          rect.left = left;
+        } else if (align === 'center') {
+          rect.left = center.left - (rect.width / 2);
+        } else if (align === 'end') {
+          rect.left = left + width - rect.width;
+        } else if (align === 'before') {
+          rect.left = left - rect.width;
+        } else if (align === 'after') {
+          rect.left = left + width;
+        }
+      } else if (dir === 'all') {
+        if (align === 'start') {
+          rect.top = top;
+          rect.left = left;
+        } else if (align === 'center') {
+          rect.top = center.top - (rect.height / 2);
+          rect.left = center.left - (rect.width / 2);
+        } else if (align === 'end') {
+          rect.top = top + height - rect.height;
+          rect.left = left + width - rect.width;
+        } else if (align === 'before') {
+          rect.top = top - rect.height;
+          rect.left = left - rect.width;
+        } else if (align === 'after') {
+          rect.top = top + height;
+          rect.left = left + width;
+        }
+      }
+
+      node.styles.set(rect);
+    }
+  }
+
+  public distribute(nodes: State<Node[]>, dir: 'vertical' | 'horizontal', align: 'start' | 'center' | 'end') {
+    return;
+  }
+
+  public createContextMenus(nodes = this.selections) {
+    const items: MenuItemData[] = [
+      {
+        type: 'button',
+        text: 'Copy',
+        icon: 'content_copy',
+        keys: [ 'Ctrl', 'C' ],
+        action: () => {
+          logger.info('[node-list:context-menu] Copy.');
+        },
+      },
+      {
+        type: 'button',
+        text: 'Cut',
+        icon: 'content_cut',
+        keys: [ 'Ctrl', 'X' ],
+        action: () => {
+          logger.info('[node-list:context-menu] Cut.');
+        },
+      },
+      {
+        type: 'hidden',
+        text: 'Paste',
+        icon: 'content_paste',
+        keys: [ 'Ctrl', 'V' ],
+        action: () => {
+          logger.info('[node-list:context-menu] Paste.');
+        },
+      },
+      {
+        type: 'button',
+        text: 'Delete',
+        icon: 'delete',
+        action: () => {
+          this.removeSelected();
+        },
+      },
+      {
+        type: 'separator',
+      },
+      {
+        type: nodes.length > 1 ? 'button' : 'hidden',
+        text: 'Group',
+        icon: 'layers',
+        keys: [ 'Ctrl', 'G' ],
+        action: () => {
+          this.group(nodes);
+        },
+      },
+      {
+        type: nodes[0]?.type === 'group' ? 'button' : 'hidden',
+        text: 'Ungroup',
+        icon: 'layers_clear',
+        keys: [ 'Ctrl', 'Shift', 'G' ],
+        action: () => {
+          this.ungroup(nodes[0]);
+        },
+      },
+      {
+        type: 'button',
+        text: 'Align',
+        icon: 'format_image_right',
+        action: () => null,
+        items: [],
+      },
+    ];
+
+    return items;
   }
 }
 

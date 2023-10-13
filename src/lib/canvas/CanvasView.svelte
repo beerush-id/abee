@@ -1,23 +1,31 @@
 <script lang="ts">
   import type { State } from '@beerush/anchor';
-  import { anchor, session } from '@beerush/anchor';
+  import { session } from '@beerush/anchor';
   import type { CanvasState, Node } from '@beerush/abee/document';
   import { NodeRect, NodeView } from '@beerush/abee/document';
   import type { Canvas } from '@beerush/abee/canvas';
   import { Ruler } from '@beerush/abee/canvas';
   import { onDestroy, onMount } from 'svelte';
   import { createRuler } from '@beerush/utils';
-  import { createNode, NODE_ELEMENTS, nodes, StorageKeys } from '../document/index.js';
+  import {
+    type CustomDragEvent,
+    type CustomWheelEvent,
+    getPointerPosition,
+    NODE_ELEMENTS,
+    nodes,
+    StorageKeys,
+  } from '../document/index.js';
   import { hotkey, style } from '@beerush/utils/client';
   import type { CanvasPointer, PointerEvent } from '../document/Pointer.js';
-  import { pointer } from '../document/Pointer.js';
+  import { drag, pointer, wheel } from '../document/Pointer.js';
 
   export let canvas: State<Canvas>;
   export let ruler = createRuler();
 
-  const { mm } = ruler;
+  const { mm, px } = ruler;
   const { viewport, document: page, settings } = canvas.state as State<CanvasState>;
   const cursor = session<CanvasPointer>(StorageKeys.POINTER, {} as never);
+  const { selections } = nodes;
 
   let canvasElement: HTMLElement;
   let boardElement: HTMLElement;
@@ -124,43 +132,57 @@
   const onDrop = (e: DragEvent) => {
     e.preventDefault();
 
+    console.log(e);
+
     if (e.dataTransfer?.files.length) {
-      const files = e.dataTransfer.files;
-
-      for (const file of files) {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          const img = new Image();
-
-          img.onload = () => {
-            const node = anchor(createNode('image', 'image'));
-
-            node.styles.set({
-              left: cursor.x,
-              top: cursor.y,
-              width: img.width,
-              height: img.height,
-              backgroundImage: `url(${ img.src })`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            });
-            page.nodes.push(node);
-          };
-
-          img.src = reader.result as string;
-        };
-
-        reader.readAsDataURL(file);
-      }
+      const { x, y } = getPointerPosition(e, viewport.element as never, viewport.scale);
+      nodes.import(e.dataTransfer.files, x, y, page.dpi);
     }
+  };
+
+  let dragStartX = 0;
+  let dragStartY = 0;
+
+  const dragStart = () => {
+    dragStartX = viewport.x;
+    dragStartY = viewport.y;
+  };
+
+  const dragMove = (e: CustomDragEvent) => {
+    viewport.set({
+      x: dragStartX + e.detail.x,
+      y: dragStartY + e.detail.y,
+    });
   };
 
   const selectAll = (e: KeyboardEvent) => {
     nodes.selectAll();
   };
 
-  console.log(nodes);
+  const onWheel = (e: CustomWheelEvent) => {
+    if (e.type === 'zoom:in' || e.type === 'zoom:out') {
+      e.type === 'zoom:in' ? canvas.zoomIn() : canvas.zoomOut();
+    } else if (e.type === 'move:up' || e.type === 'move:down') {
+      viewport.set({
+        y: e.type === 'move:up' ? viewport.y - e.detail : viewport.y + e.detail,
+      });
+    } else if (e.type === 'move:left' || e.type === 'move:right') {
+      viewport.set({
+        x: e.type === 'move:left' ? viewport.x - e.detail : viewport.x + e.detail,
+      });
+    }
+  };
+
+  let deltaScale = viewport.scale;
+  const unsubViewport = viewport.subscribe(() => {
+    if (viewport.scale !== deltaScale) {
+      deltaScale = viewport.scale;
+    }
+  });
+
+  onDestroy(() => {
+    unsubViewport();
+  });
 </script>
 
 <div class="canvas" bind:this={canvasElement}>
@@ -187,48 +209,62 @@
   {/if}
   <canvs-board class="canvas-board" role="button" tabindex="-1"
                bind:this={boardElement}
-               use:pointer={{ relative: viewport.element, button: 0 }}
+               use:drag={{ button: 1, deltaZoom: viewport.scale }}
+               use:wheel
+               use:pointer={{ relative: viewport.element }}
                use:hotkey={{ keys: ['ctrl', 'a'], handler: selectAll, stopPropagation: true, preventDefault: true }}
                on:mouseup={clearSelection}
+               on:drag:start={dragStart}
+               on:drag:move={dragMove}
                on:pointer:start={pointerStart}
                on:pointer:move={pointerMove}
+               on:zoom:in={onWheel}
+               on:zoom:out={onWheel}
+               on:move:up={onWheel}
+               on:move:down={onWheel}
+               on:move:left={onWheel}
+               on:move:right={onWheel}
                on:pointer:end={pointerEnd}
                on:dragenter|preventDefault={acceptDrag}
                on:dragover|preventDefault={acceptDrag}
                on:drop={onDrop}
                style:--canvas-cursor={$canvas.cursor}
-               style:--space-x="{$viewport.x}px"
-               style:--space-y="{$viewport.y}px"
-               style:--space-size="{mm($viewport.boardSize||5000).at($viewport.dpi).pxs}"
-               style:--space-scale={$viewport.scale}>
+               style:--board-size="{mm($viewport.boardSize||5000).at($viewport.dpi).pxs}"
+               style:--view-x="{$viewport.x}px"
+               style:--view-y="{$viewport.y}px"
+               style:--view-scale={$viewport.scale}>
     <div role="button" tabindex="-1" class="canvas-viewport"
          bind:this={viewport.element}
          style:--guide-top="{$page.settings.marginTop}mm"
          style:--guide-right="{$page.settings.marginRight}mm"
          style:--guide-bottom="{$page.settings.marginBottom}mm"
          style:--guide-left="{$page.settings.marginLeft}mm"
-         style:width="{mm($page.width).at($viewport.dpi).pxs}"
-         style:height="{mm($page.height).at($viewport.dpi).pxs}">
+         style:--row-gap="{mm($page.settings.rowGap||0).at($viewport.dpi).pxs}"
+         style:--column-gap="{mm($page.settings.columnGap||0).at($viewport.dpi).pxs}"
+         style:--margin-left="{mm($page.settings.marginLeft).at($viewport.dpi).pxs}"
+         style:--margin-right="{mm($page.settings.marginRight).at($viewport.dpi).pxs}"
+         style:--margin-top="{mm($page.settings.marginTop).at($viewport.dpi).pxs}"
+         style:--margin-bottom="{mm($page.settings.marginBottom).at($viewport.dpi).pxs}"
+         style:--page-width="{mm($page.width).at($viewport.dpi).pxs}"
+         style:--page-height="{mm($page.height).at($viewport.dpi).pxs}">
       <div class="canvas-guide guide-top"></div>
       <div class="canvas-guide guide-right"></div>
       <div class="canvas-guide guide-bottom"></div>
       <div class="canvas-guide guide-left"></div>
       {#each $page.nodes as node (node.id)}
-        <NodeView {node} editable={$canvas.cursorMode !== 'select'} />
-
-        {#if $canvas.cursorMode === 'select' && node.selected}
-          <NodeRect {node} scale={$viewport.scale} />
-        {/if}
+        <NodeView interactive {node} editable={$canvas.cursorMode !== 'select'} />
       {/each}
       {#if $node}
         <div class="node-view"
-             class:ellipse={$node.tag === 'ellipse'}
-             use:style={$node.styles}
+             use:style={{ styles: $node.styles }}
              style:pointer-events="none"
              style:position="absolute" />
       {/if}
+      {#if $selections.length && $canvas.cursorMode === 'select'}
+        <NodeRect scale={$viewport.scale} />
+      {/if}
       {#if selectMark}
-        <div class="node-view select" use:style={selectMark}></div>
+        <div class="node-view select" use:style={{ styles: selectMark }}></div>
       {/if}
     </div>
   </canvs-board>
@@ -275,17 +311,20 @@
   }
 
   .canvas-board {
+    //background: var(--tq-color-background-tint);
+    background-image: radial-gradient(circle, rgba(0, 0, 0, .1) 1.5px, rgba(0, 0, 0, 0) 1.5px);
+    background-size: 16px 16px;
+    background-repeat: repeat;
     cursor: var(--canvas-cursor);
-    width: var(--space-size);
-    height: var(--space-size);
+    width: var(--board-size);
+    height: var(--board-size);
     position: absolute;
-    top: calc((50% - (var(--space-size) / 2)) + var(--space-y) / var(--space-scale));
-    left: calc((50% - (var(--space-size) / 2)) + var(--space-x) / var(--space-scale));
+    top: calc((50% - (var(--board-size) / 2)) + var(--view-y) / var(--view-scale));
+    left: calc((50% - (var(--board-size) / 2)) + var(--view-x) / var(--view-scale));
     display: flex;
     align-items: center;
     justify-content: center;
-    zoom: var(--space-scale);
-    -webkit-font-smoothing: subpixel-antialiased;
+    zoom: var(--view-scale);
   }
 
   .node-view.select {

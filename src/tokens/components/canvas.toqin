@@ -73,91 +73,6 @@
       },
       "children": [
         {
-          "name": "ruler-background",
-          "selectors": [ ".canvas-ruler-background" ],
-          "rules": {
-            "background-image": [
-              "linear-gradient(90deg, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)"
-            ],
-            "background-size": [
-              "@canvas.ruler.unit @canvas.ruler.height.quarter"
-            ],
-            "background-repeat": [ "repeat-x" ]
-          }
-        },
-        {
-          "name": "ruler",
-          "selectors": [ ".canvas-ruler-h", ".canvas-ruler-v" ],
-          "rules": {
-            "display": "flex",
-            "position": "absolute",
-            "z-index": "1",
-            "top": "0",
-            "left": "0"
-          }
-        },
-        {
-          "name": "ruler-h",
-          "selectors": [ ".canvas-ruler-h" ],
-          "rules": {
-            "flex-direction": "row",
-            "width": "calc(100% - @canvas.ruler.height)",
-            "height": "@canvas.ruler.height",
-            "margin-left": "@canvas.ruler.height",
-            "box-shadow": "inset 1px 0 0 @canvas.ruler.color",
-            "background-image": [
-              "linear-gradient(90deg, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)",
-              "linear-gradient(90deg, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)",
-              "linear-gradient(90deg, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)"
-            ],
-            "background-size": [
-              "calc(@canvas.ruler.unit * 10) @canvas.ruler.height",
-              "calc(@canvas.ruler.unit * 5) @canvas.ruler.height.half",
-              "@canvas.ruler.unit @canvas.ruler.height.quarter"
-            ],
-            "background-repeat": [ "repeat-x", "repeat-x", "repeat-x" ]
-          }
-        },
-        {
-          "name": "ruler-v",
-          "selectors": [ ".canvas-ruler-v" ],
-          "rules": {
-            "flex-direction": "column",
-            "width": "@canvas.ruler.height",
-            "height": "calc(100% - @canvas.ruler.height)",
-            "margin-top": "@canvas.ruler.height",
-            "box-shadow": "inset 0 1px 0 @canvas.ruler.color",
-            "background-image": [
-              "linear-gradient(0, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)",
-              "linear-gradient(0, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)",
-              "linear-gradient(0, @canvas.ruler.color 0 ~ruler.width|@canvas.ruler.width, transparent 0)"
-            ],
-            "background-size": [
-              "@canvas.ruler.height calc(@canvas.ruler.unit * 10)",
-              "@canvas.ruler.height.half calc(@canvas.ruler.unit * 5)",
-              "@canvas.ruler.height.quarter @canvas.ruler.unit"
-            ],
-            "background-repeat": [ "repeat-y", "repeat-y", "repeat-y" ]
-          }
-        },
-        {
-          "name": "drawer",
-          "selectors": [ ".canvas-drawer" ],
-          "rules": {
-            "flex": "1 1 0",
-            "padding": "calc(@canvas.ruler.height * 2) @canvas.ruler.height calc(@canvas.ruler.height * 2) @canvas.ruler.height",
-            "overflow": "hidden",
-            "position": "relative",
-            "z-index": "0",
-            "display": "flex",
-            "flex-direction": "row",
-            "align-items": "center",
-            "justify-content": "center",
-            "cursor": "~canvas.cursor",
-            "user-select": "none"
-          }
-        },
-        {
           "name": "viewport",
           "selectors": [ ".canvas-viewport" ],
           "rules": {
@@ -165,13 +80,19 @@
             "flex-direction": "row",
             "flex-wrap": "wrap",
             "align-items": "flex-start",
+            "row-gap": "~row.gap",
+            "column-gap": "~column.gap",
+            "width": "~page.width",
+            "height": "~page.height",
+            "padding-top": "~margin.top",
+            "padding-right": "~margin.right",
+            "padding-bottom": "~margin.bottom",
+            "padding-left": "~margin.left",
             "cursor": "~canvas.cursor",
             "color": "@palette.black",
             "background-color": "@palette.white",
             "transform": "translate3d(~canvas.x, ~canvas.y, 0) scale(~canvas.scale)",
             "transform-origin": "center",
-            "width": "~canvas-width",
-            "height": "~canvas-height",
             "outline": "1px solid $palette.black=50",
             "position": "relative",
             "pointer-events": "none"

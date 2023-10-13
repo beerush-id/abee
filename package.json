@@ -73,6 +73,7 @@
   },
   "devDependencies": {
     "@beerush/anchor": "*",
+    "@beerush/composer": "*",
     "@beerush/borderless": "*",
     "@beerush/reactor": "*",
     "@beerush/spawn": "*",

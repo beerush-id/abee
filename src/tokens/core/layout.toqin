@@ -137,6 +137,15 @@
       }
     },
     {
+      "name": "flex-fit",
+      "layer": "layout",
+      "selectors": [ ".flex-fit" ],
+      "description": "Flex sizing",
+      "rules": {
+        "flex": "1 0 0"
+      }
+    },
+    {
       "name": "flex-shrink",
       "layer": "layout",
       "selectors": [ ".flex-shrink" ],

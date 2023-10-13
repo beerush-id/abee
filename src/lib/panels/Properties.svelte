@@ -60,6 +60,7 @@
   let linkSize = false;
 
   $: unit = $viewport.unit;
+  $: node = $selections[0];
   $: rect = rects.get($selections[0]);
   $: idtWidth = $selections.every((node) => node.styles.width === rect?.width);
   $: idtHeight = $selections.every((node) => node.styles.height === rect?.height);
@@ -107,7 +108,7 @@
             tooltip={ $rect?.position === 'absolute' ? 'Switch to Relative' : 'Switch to Absolute' }
             on:click={togglePosition} />
     </div>
-    {#if $selections[0]?.tag !== 'circle'}
+    {#if node?.tag !== 'circle' && node?.tag !== 'text'}
       <Radius />
     {/if}
     <h6>Rotation</h6>

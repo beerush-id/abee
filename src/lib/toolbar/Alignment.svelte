@@ -36,27 +36,39 @@
     }
   };
 
-  const alignNodes = (scope: 'vertical' | 'horizontal' | 'all', align: 'start' | 'center' | 'end') => {
+  const alignNodes = (
+    dir: 'vertical' | 'horizontal' | 'all',
+    align: 'start' | 'center' | 'end' | 'before' | 'after',
+  ) => {
     const last = [ ...selections ].pop();
     const rest = selections.slice(0, -1);
 
     const { left, top, width, height } = alignTarget === 'selection'
                                          ? last?.styles || { left: 0, top: 0, width: 0, height: 0 }
-                                         : { left: 0, top: 0, width: ruler.mm(page.width).px, height: ruler.mm(page.height).px };
+                                         : {
+        left: 0,
+        top: 0,
+        width: ruler.mm(page.width).px,
+        height: ruler.mm(page.height).px,
+      };
 
     const center = { left: left + width / 2, top: top + height / 2 };
     for (const node of (alignTarget === 'selection' ? rest : selections)) {
       const rect = { ...node.styles };
 
-      if (scope === 'vertical') {
+      if (dir === 'vertical') {
         if (align === 'start') rect.top = top;
         else if (align === 'center') rect.top = center.top - rect.height / 2;
         else if (align === 'end') rect.top = top + height - rect.height;
-      } else if (scope === 'horizontal') {
+        else if (align === 'before') rect.top = top - rect.height;
+        else if (align === 'after') rect.top = top + height;
+      } else if (dir === 'horizontal') {
         if (align === 'start') rect.left = left;
         else if (align === 'center') rect.left = center.left - rect.width / 2;
         else if (align === 'end') rect.left = left + width - rect.width;
-      } else if (scope === 'all') {
+        else if (align === 'before') rect.left = left - rect.width;
+        else if (align === 'after') rect.left = left + width;
+      } else if (dir === 'all') {
         if (align === 'start') {
           rect.left = left;
           rect.top = top;
@@ -66,6 +78,12 @@
         } else if (align === 'end') {
           rect.left = left + width - rect.width;
           rect.top = top + height - rect.height;
+        } else if (align === 'before') {
+          rect.left = left - rect.width;
+          rect.top = top - rect.height;
+        } else if (align === 'after') {
+          rect.left = left + width;
+          rect.top = top + height;
         }
       }
 

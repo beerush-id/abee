@@ -12,7 +12,7 @@
       "name": "icon",
       "selectors": [ ".icon" ],
       "rules": {
-        "font-variation-settings": "'FILL' 0, 'wght' 200, 'GRAD' 200, 'opsz' 40",
+        "font-variation-settings": "'FILL' 0, 'wght' 100, 'GRAD' 200, 'opsz' 40",
         "font-size": "~icon-size|24px",
         "cursor": "~icon-cursor"
       },
@@ -42,7 +42,7 @@
           "name": "lg",
           "selectors": [ "icon-lg" ],
           "rules": {
-            "font-size": "~icon-size|24px"
+            "font-size": "~icon-size|20px"
           }
         },
         {
@@ -63,6 +63,14 @@
               ":hover": "~icon-color|@color.primary.hover",
               ":active": "~icon-color-active|@color.primary.active"
             }
+          }
+        },
+        {
+          "name": "disabled",
+          "selectors": [ ".disabled" ],
+          "rules": {
+            "opacity": "0.5",
+            "pointer-events": "none"
           }
         }
       ]

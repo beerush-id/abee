@@ -1,4 +1,3 @@
-import { pointermove } from '@beerush/utils/client';
 import type { CanvasState, CursorMode } from '@beerush/abee/document';
 import { CURSOR_MAP } from '@beerush/abee/document';
 import { anchor, type State } from '@beerush/anchor';
@@ -44,8 +43,8 @@ export class Canvas {
 
   public capturePointer(container: HTMLElement) {
     const { deltaScale, deltaMove } = this.state.settings;
-    const pointer = pointermove(container, this.state.viewport, 1, deltaScale, deltaMove);
-    this.leavePointer = pointer.destroy;
+    // const pointer = pointermove(container, this.state.viewport, 1, deltaScale, deltaMove);
+    // this.leavePointer = pointer.destroy;
   }
 
   public leave() {

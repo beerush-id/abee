@@ -8,6 +8,8 @@
 
   export let node: State<Node>;
   export let editable = false;
+  export let interactive = false;
+
   const rect = nodes.rects.get(node) || anchor({ ...node.styles });
   let element: HTMLDivElement;
 
@@ -41,13 +43,19 @@
 </script>
 
 {#if $node.type === 'text' && editable}
-  <node-view contenteditable class="node-view" class:selected={$node.selected}
+  <node-view contenteditable class="node-view"
+             class:selected={$node.selected}
+             class:printable={$node.printable}
+             class:visible={$node.visible}
+             class:locked={$node.locked}
+             class:dragging={$rect.isDragging}
+             class:interactive
              bind:this={bindings.element}
              bind:innerHTML={$node.text}
-             use:style={$rect}>
+             use:style={{ styles: $rect }}>
     {#if $node.children?.length}
       {#each $node.children as child}
-        <svelte:self node={child} {editable} />
+        <svelte:self node={child} interactive={false} {editable} />
       {/each}
     {/if}
   </node-view>
@@ -55,15 +63,20 @@
   <node-view class="node-view"
              class:selected={$node.selected}
              class:hover={$node.hovered}
+             class:printable={$node.printable}
+             class:visible={$node.visible}
+             class:locked={$node.locked}
+             class:dragging={$rect.isDragging}
+             class:interactive
              bind:this={bindings.element}
-             use:style={$rect}>
+             use:style={{ styles: $rect }}>
     {#if $node.type === 'text'}
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       {@html $node.text}
     {/if}
     {#if $node.children?.length}
       {#each $node.children as child}
-        <svelte:self node={child} {editable} />
+        <svelte:self node={child} interactive={false} {editable} />
       {/each}
     {/if}
   </node-view>
@@ -71,7 +84,8 @@
 
 <style lang="scss">
   .node-view {
-    display: flex;
+    --select-offset: 10px;
+    display: none;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -79,18 +93,30 @@
     cursor: default;
     pointer-events: all;
 
+    &.visible {
+      display: flex;
+    }
+
     &.selected {
       pointer-events: none;
     }
 
-    &.hover:not(.selected):before {
+    &.locked {
+      pointer-events: none;
+    }
+
+    &.hover:not(.dragging):before, &.selected:not(.dragging):before {
       content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: dashed 1px rgba(0, 0, 255, 0.5);
+      top: calc((var(--select-offset) / 2) * -1);
+      left: calc((var(--select-offset) / 2) * -1);
+      width: calc(100% + var(--select-offset));
+      height: calc(100% + var(--select-offset));
+      outline: dashed 1px rgba(255, 0, 255, 0.5);
+    }
+
+    &:not(.interactive) {
+      pointer-events: none;
     }
   }
 </style>

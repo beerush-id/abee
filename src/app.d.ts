@@ -1,6 +1,8 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 
+import type { CustomDragEvent, CustomWheelEvent, PointerEvent } from '$lib/document/index.js';
+
 export type MediaQuery = {
   [key: string]: string;
 };
@@ -24,12 +26,22 @@ declare global {
 }
 
 declare namespace svelteHTML {
-  interface IntrinsicElements {
-    'node-view': {
-      'on:pointer:start'?: (e: CustomEvent) => void;
-      'on:pointer:move'?: (e: CustomEvent) => void;
-      'on:pointer:end'?: (e: CustomEvent) => void;
-    };
+  interface HTMLAttributes<T> {
+    'on:pointer:start'?: (e: PointerEvent) => void;
+    'on:pointer:move'?: (e: PointerEvent) => void;
+    'on:pointer:end'?: (e: PointerEvent) => void;
+    'on:drag:start'?: (e: CustomDragEvent) => void;
+    'on:drag:move'?: (e: CustomDragEvent) => void;
+    'on:drag:end'?: (e: CustomDragEvent) => void;
+    'on:zoom:in': (e: CustomWheelEvent) => void;
+    'on:zoom:out': (e: CustomWheelEvent) => void;
+    'on:move:up': (e: CustomWheelEvent) => void;
+    'on:move:down': (e: CustomWheelEvent) => void;
+    'on:move:left': (e: CustomWheelEvent) => void;
+    'on:move:right': (e: CustomWheelEvent) => void;
+    'on:menu:open': (e: CustomEvent) => void;
+    'on:menu-select': (e: CustomEvent) => void;
+    'on:menu-close': (e: CustomEvent) => void;
   }
 }
 

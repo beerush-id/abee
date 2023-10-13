@@ -1,0 +1,165 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "tree",
+  "displayName": "Tree",
+  "description": "Tree Designs",
+  "tokens": [ ],
+  "designs": [
+    {
+      "name": "tree-list",
+      "description": "Tree",
+      "layer": "tree",
+      "selectors": [ ".tree-list" ],
+      "rules": {
+        "display": "flex",
+        "flex-direction": "column"
+      }
+    },
+    {
+      "name": "tree-item",
+      "description": "Tree Item",
+      "layer": "tree",
+      "selectors": [ ".tree-item" ],
+      "rules": {
+        "--icon-size": "18px",
+        "--fill-color": {
+          "@": "@palette.neutral.50",
+          "@dark": "@palette.neutral.950"
+        },
+        "--outline-color": {
+          "@": "@palette.neutral.200",
+          "@dark": "@palette.neutral.700"
+        },
+        "display": "flex",
+        "flex-direction": "column",
+        "appearance": "none",
+        "border-radius": "@radius.md",
+        "outline": "dashed 1px transparent",
+        "position": "relative"
+      },
+      "children": [
+        {
+          "name": "tree-header",
+          "description": "Tree Header",
+          "selectors": [ ".tree-header" ],
+          "rules": {
+            "display": "flex",
+            "align-items": "center",
+            "gap": "@space.xs",
+            "cursor": "default",
+            "user-select": "none",
+            "font-size": "@font.size.xs",
+            "padding": "0 @space.xs",
+            "border-radius": "@radius.md",
+            "transition": "@transition.ultra-fast",
+            "pointer-events": {
+              ":disabled": "none"
+            },
+            "opacity": {
+              ":disabled": "0.5"
+            },
+            "background": {
+              ":hover": "~fill-color"
+            }
+          },
+          "variants": [
+            {
+              "name": "show-actions",
+              "description": "Show Actions",
+              "selectors": [ ":hover .tree-actions" ],
+              "rules": {
+                "opacity": "1",
+                "visibility": "visible"
+              }
+            }
+          ]
+        },
+        {
+          "name": "tree-expander",
+          "description": "Expander",
+          "selectors": [ ".tree-expander" ],
+          "rules": {
+            "display": "flex",
+            "align-items": "center",
+            "justify-content": "center"
+          }
+        },
+        {
+          "name": "tree-button",
+          "description": "Tree Button",
+          "selectors": [ ".tree-button" ],
+          "rules": {
+            "transition": "@transition.ultra-fast",
+            "outline": "none",
+            "appearance": "none",
+            "padding": "@space.xs 0",
+            "color": {
+              ":hover": "@color.primary",
+              ":active": "@color.primary"
+            }
+          }
+        },
+        {
+          "name": "tree-actions",
+          "description": "Tree Actions",
+          "selectors": [ ".tree-actions" ],
+          "rules": {
+            "display": "flex",
+            "align-items": "center",
+            "gap": "@space.xs",
+            "transition": "@transition.fast",
+            "opacity": "0",
+            "visibility": "hidden"
+          },
+          "variants": [
+            {
+              "name": "visible",
+              "description": "Visible",
+              "selectors": [ ".visible" ],
+              "rules": {
+                "opacity": "1",
+                "visibility": "visible"
+              }
+            }
+          ]
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder",
+          "selectors": [ ".placeholder" ],
+          "rules": {
+            "opacity": "0.5"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tree-children",
+      "description": "Tree Children",
+      "selectors": [ ".tree-children" ],
+      "layer": "tree",
+      "rules": {
+        "padding-left": "calc(@space.xs + ~icon.size)",
+        "position": "relative"
+      },
+      "variants": [
+        {
+          "name": "line",
+          "description": "Line",
+          "selectors": [ ":before" ],
+          "rules": {
+            "content": "''",
+            "display": "block",
+            "width": "calc((@space.xs + ~icon.size) / 2)",
+            "height": "100%",
+            "position": "absolute",
+            "top": "0",
+            "left": "calc((@space.xs + ~icon.size) / 2)",
+            "border-left": "1px dashed ~outline-color",
+            "margin-left": "2px"
+          }
+        }
+      ]
+    }
+  ]
+}

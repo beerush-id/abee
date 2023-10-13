@@ -1,27 +1,43 @@
 <script lang="ts">
-  import type { MoveBound, MoveEvent } from './Pointer.js';
-  import { drag } from './Pointer.js';
-  import type { State } from '@beerush/anchor';
-  import { style } from '@beerush/utils/client';
-  import { type Node, nodes } from './Node.js';
+  import { nodes } from './Node.js';
+  import type { DragOptions, MoveBound } from './Pointer.js';
+  import { doubleclick } from './Pointer.js';
+  import { Menu } from '../core/index.js';
+  import {
+    createDraggable,
+    createMenu,
+    type DraggableEvent,
+    DraggableEventType,
+    MenuTpl,
+    style,
+  } from '@beerush/composer';
+  import { onDestroy } from 'svelte';
 
-  export let node: State<Node>;
   export let scale: number;
+  const { selections } = nodes;
+  const offset = 10;
 
   let resizeX: MoveBound | void;
   let resizeY: MoveBound | void;
+  let dragging = false;
 
-  const moveBy = (e: MoveEvent) => {
+  const dragMove = (e: DraggableEvent) => {
     e.stopPropagation();
     e.preventDefault();
+
+    if (!dragging) {
+      dragging = true;
+    }
 
     if (resizeX && resizeY) {
       nodes.resize(e, resizeX, resizeY);
     } else {
       nodes.move(e);
     }
+
+    styles = nodes.getBoundingRects($selections, offset);
   };
-  const applyMove = (e: MoveEvent) => {
+  const dragEnd = (e: DraggableEvent) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -29,6 +45,7 @@
 
     resizeX = undefined;
     resizeY = undefined;
+    dragging = false;
   };
 
   const setResizePoint = (x: MoveBound, y: MoveBound) => {
@@ -43,30 +60,39 @@
 
   const remove = (e: KeyboardEvent) => {
     if (e.key === 'Delete') {
-      console.log(node);
+      console.log(selections);
     }
   };
 
-  $: rect = nodes.rects.get(node);
-  $: styles = {
-    left: $rect?.left,
-    top: $rect?.top,
-    width: $rect?.width,
-    height: $rect?.height,
-    rotate: $rect?.rotate,
-  };
+  const pointer = createDraggable();
+  pointer.subscribe(e => {
+    if (e.type === DraggableEventType.Move) {
+      dragMove(e);
+    } else if (e.type === DraggableEventType.End) {
+      dragEnd(e);
+    }
+  });
+
+  $: dragOptions = { deltaScale: scale } satisfies DragOptions;
+  $: styles = nodes.getBoundingRects($selections, offset);
+
+  const menu = createMenu();
+
+  onDestroy(() => {
+    pointer.destroy();
+  });
 </script>
 
 <node-rect class="node-rect"
            role="button"
            tabindex="-1"
-           class:dragging={$rect?.isDragging}
+           class:dragging
            class:resize={resizeX || resizeY}
-           use:drag="{{ draggable: true, deltaScale: scale }}"
-           use:style={styles}
-           on:keyup={remove}
-           on:mover:move={moveBy}
-           on:mover:end={applyMove}>
+           use:menu.trigger={MenuTpl.Context}
+           use:pointer.drag="{dragOptions}"
+           use:doubleclick
+           use:style={ styles }
+           on:keyup={remove}>
   <button class="reset node-transform top-left"
           on:mouseup={unsetResizeMode}
           on:mousedown={() => setResizePoint('start', 'start')}>
@@ -101,12 +127,13 @@
           on:mouseup={unsetResizeMode}
           on:mousedown={() => setResizePoint('center', 'end')}></button>
 </node-rect>
+<Menu {menu} items={nodes.createContextMenus($selections)} />
 
 <style lang="scss">
   .node-rect {
     --modifier-size: 10px;
     position: absolute;
-    outline: 1px dashed blue;
+    //outline: 1px dashed blue;
     opacity: 0.5;
     pointer-events: all;
     cursor: default;

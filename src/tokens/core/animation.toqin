@@ -10,6 +10,11 @@
       "description": "Beerush Durations",
       "tokens": [
         {
+          "name": "ultra-fast",
+          "description": "Ultra fast duration",
+          "value": "0.1s"
+        },
+        {
           "name": "fast",
           "description": "Fast duration",
           "value": "0.2s"

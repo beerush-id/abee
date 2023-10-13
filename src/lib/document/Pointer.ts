@@ -2,31 +2,7 @@ import { logger } from '@beerush/utils';
 import { session } from '@beerush/anchor';
 import { StorageKeys } from './Registry.js';
 
-export type MoveOptions = {
-  draggable: boolean;
-  deltaScale?: number;
-}
-
-export type MoveEvent = CustomEvent<{
-  e: DragEvent | TouchEvent;
-  x: number;
-  y: number;
-  sw: number;
-  sh: number;
-}>;
-
-export type MoveInstance = {
-  update: (options: MoveOptions) => void;
-  destroy: () => void;
-}
-
 export type MoveBound = 'start' | 'center' | 'end';
-export type MouseEventPlus = MouseEvent & {
-  sourceCapabilities: {
-    firesTouchEvents: boolean;
-  }
-}
-
 export type CanvasPointer = {
   x: number;
   y: number;
@@ -40,7 +16,6 @@ export type PointerOptions = {
   relative?: HTMLElement;
   button?: number;
 }
-
 export type PointerEvent = CustomEvent<{
   e: MouseEvent,
   x: number;
@@ -50,8 +25,12 @@ export type PointerEvent = CustomEvent<{
   mw: number;
   mh: number;
 }>;
+export type PointerInstance = {
+  update: (options: PointerOptions) => void;
+  destroy: () => void;
+}
 
-export function pointer(element: HTMLElement, options: PointerOptions) {
+export function pointer(element: HTMLElement, options: PointerOptions): PointerInstance {
   let { button = 0, relative = element } = options;
 
   const viewport = session(StorageKeys.VIEWPORT, { scale: 1 });
@@ -69,9 +48,11 @@ export function pointer(element: HTMLElement, options: PointerOptions) {
   const mousemove = (event: MouseEvent) => {
     if (dragInit && !dragging) {
       dragging = true;
+      const { x, y } = getPointerPosition(event, relative, viewport.scale);
+
       pointer.set({
-        sx: pointer.x,
-        sy: pointer.y,
+        sx: x,
+        sy: y,
         mw: 0,
         mh: 0,
       });
@@ -83,12 +64,7 @@ export function pointer(element: HTMLElement, options: PointerOptions) {
       logger.debug(`[pointer] Pointer started.`);
     }
 
-    const { x: bx, y: by } = relative.getBoundingClientRect();
-    const { clientX, clientY } = event;
-    const { scale } = viewport;
-
-    const x = ((clientX - (bx * scale)) / scale);
-    const y = ((clientY - (by * scale)) / scale);
+    const { x, y } = getPointerPosition(event, relative, viewport.scale);
 
     pointer.set({
       x, y,
@@ -102,11 +78,14 @@ export function pointer(element: HTMLElement, options: PointerOptions) {
   };
 
   const mouseup = (event: MouseEvent) => {
-    if (event.button === button && dragInit) {
+    if (dragInit) {
       dragInit = false;
 
       if (dragging) {
-        event.preventDefault();
+        if (event instanceof MouseEvent) {
+          event.preventDefault();
+        }
+
         event.stopPropagation();
 
         dragging = false;
@@ -120,9 +99,37 @@ export function pointer(element: HTMLElement, options: PointerOptions) {
     }
   };
 
-  element.addEventListener('mousemove', mousemove);
+  const touchstart = (event: TouchEvent) => {
+    if (event.touches.length === 1) {
+      const touch = event.touches[0];
+      const { clientX: x, clientY: y } = touch;
+      Object.assign(touch, { x, y, button });
+      mousedown(touch as never);
+    }
+  };
+
+  const touchmove = (event: TouchEvent) => {
+    if (event.touches.length === 1) {
+      const touch = event.touches[0];
+      const { clientX: x, clientY: y } = touch;
+      Object.assign(touch, { x, y, button });
+      mousemove(touch as never);
+    }
+  };
+
+  const touchend = (event: TouchEvent) => {
+    if (event.touches.length === 0) {
+      mouseup(event as never);
+    }
+  };
+
   element.addEventListener('mousedown', mousedown);
+  element.addEventListener('mousemove', mousemove);
   element.addEventListener('mouseup', mouseup);
+
+  element.addEventListener('touchstart', touchstart, { passive: false });
+  element.addEventListener('touchmove', touchmove, { passive: false });
+  element.addEventListener('touchend', touchend, { passive: false });
 
   logger.debug(`[pointer] Pointer registered.`);
 
@@ -134,17 +141,40 @@ export function pointer(element: HTMLElement, options: PointerOptions) {
       logger.debug(`[pointer] Pointer reconfigured.`);
     },
     destroy: () => {
-      element.removeEventListener('mousemove', mousemove);
       element.removeEventListener('mousedown', mousedown);
+      element.removeEventListener('mousemove', mousemove);
       element.removeEventListener('mouseup', mouseup);
+
+      element.removeEventListener('touchstart', touchstart);
+      element.removeEventListener('touchmove', touchmove);
+      element.removeEventListener('touchend', touchend);
 
       logger.debug(`[pointer] Pointer unregistered.`);
     },
   };
 }
 
-export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
-  let { deltaScale = 1 } = options;
+export type DragOptions = {
+  draggable?: boolean;
+  deltaScale?: number;
+  deltaZoom?: number;
+  deltaMove?: number;
+  button?: number;
+}
+export type CustomDragEvent = CustomEvent<{
+  e: DragEvent | TouchEvent;
+  x: number;
+  y: number;
+  sw: number;
+  sh: number;
+}>;
+export type DragInstance = {
+  update: (options: DragOptions) => void;
+  destroy: () => void;
+}
+
+export function drag(element: HTMLElement, options: DragOptions): DragInstance {
+  let { deltaScale = 1, deltaZoom = 1, deltaMove = 1, button = 0, draggable = true } = options;
 
   let psx = 0; // Pointer Start X.
   let psy = 0; // Pointer Start Y.
@@ -156,8 +186,8 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
   let dragging = false;
 
   const dragStart = (e: MouseEvent) => {
-    if (e instanceof MouseEvent && e.button !== 0) return;
-    if (e.target !== element && (e.target as HTMLElement).parentElement !== element) return;
+    if (e instanceof MouseEvent && e.button !== button) return;
+    if (!element.contains(e.target as never)) return;
 
     dragInit = true;
   };
@@ -179,7 +209,7 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
       ssw = width;
       ssh = height;
 
-      const event = new CustomEvent('mover:start', {
+      const event = new CustomEvent('drag:start', {
         detail: { e, x: pcx, y: pcy, width: ssw, height: ssh },
       });
       element.dispatchEvent(event);
@@ -188,23 +218,24 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
     if (!dragging) return;
     if (e.x === 0 && e.y === 0) return;
 
-    const x = ((e.x - psx) / deltaScale);
-    const y = ((e.y - psy) / deltaScale);
+    const x = (((e.x - psx) * deltaZoom) / deltaScale);
+    const y = (((e.y - psy) * deltaZoom) / deltaScale);
 
     if (pcx !== x || pcy !== y) {
       pcx = x;
       pcy = y;
 
-      const event = new CustomEvent('mover:move', {
+      const event = new CustomEvent('drag:move', {
         detail: { e, x, y, width: ssw, height: ssh },
       });
+
       element.dispatchEvent(event);
     }
   };
 
   const dragEnd = (e: MouseEvent) => {
-    if (e instanceof MouseEvent && e.button !== 0) return;
-    if (e.target !== element && (e.target as HTMLElement).parentElement !== element) return;
+    if (e instanceof MouseEvent && e.button !== button) return;
+    if (!element.contains(e.target as never)) return;
     if (!dragInit) return;
 
     if (dragInit && !dragging) {
@@ -212,7 +243,13 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
       return;
     }
 
-    const event = new CustomEvent('mover:end', {
+    if (e instanceof MouseEvent) {
+      e.preventDefault();
+    }
+
+    e.stopPropagation();
+
+    const event = new CustomEvent('drag:end', {
       detail: { e, x: pcx, y: pcy, width: ssw, height: ssh },
     });
     element.dispatchEvent(event);
@@ -225,7 +262,18 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
 
   let touch: Touch | undefined;
   const touchStart = (e: TouchEvent) => {
-    if (e.touches.length === 1) {
+    if (button === 1 && e.touches.length === 2) {
+      const [ a, b ] = e.touches;
+
+      const xDistance = Math.abs(a.clientX - b.clientX);
+      const yDistance = Math.abs(a.clientY - b.clientY);
+
+      if (xDistance < 100 && yDistance < 100) {
+        touch = a;
+        const { clientX: x, clientY: y } = touch;
+        dragStart({ x, y, target: touch.target } as never);
+      }
+    } else if (button === 0 && e.touches.length === 1) {
       touch = e.touches[0];
       const { clientX: x, clientY: y } = touch;
       dragStart({ x, y, target: touch.target } as never);
@@ -233,9 +281,10 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
   };
 
   const touchMove = (e: TouchEvent) => {
-    e.stopPropagation();
+    if ((button === 0 && e.touches.length === 1) || (button === 1 && e.touches.length === 2)) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    if (e.touches.length === 1) {
       touch = e.touches[0];
       const { clientX: x, clientY: y } = touch;
       dragMove({ x, y, target: e.target } as never);
@@ -243,7 +292,7 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
   };
 
   const touchEnd = (e: TouchEvent) => {
-    if (e.touches.length === 0) {
+    if (e.touches.length === 0 && touch) {
       dragEnd(e as never);
       touch = undefined;
     }
@@ -251,19 +300,19 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
 
   const register = () => {
     element.addEventListener('mousedown', dragStart);
-    window.addEventListener('mousemove', dragMove);
+    document.addEventListener('mousemove', dragMove);
     element.addEventListener('mouseup', dragEnd);
 
-    element.addEventListener('touchstart', touchStart, { passive: true });
-    element.addEventListener('touchmove', touchMove, { passive: true });
-    element.addEventListener('touchend', touchEnd, { passive: true });
+    element.addEventListener('touchstart', touchStart, { passive: false });
+    element.addEventListener('touchmove', touchMove, { passive: false });
+    element.addEventListener('touchend', touchEnd, { passive: false });
 
     logger.debug(`[drag] Drag registered.`);
   };
 
   const unregister = () => {
     element.removeEventListener('mousedown', dragStart);
-    window.removeEventListener('mousemove', dragMove);
+    document.removeEventListener('mousemove', dragMove);
     element.removeEventListener('mouseup', dragEnd);
 
     element.removeEventListener('touchstart', touchStart);
@@ -273,23 +322,135 @@ export function drag(element: HTMLElement, options: MoveOptions): MoveInstance {
     logger.debug(`[drag] Drag unregistered.`);
   };
 
-  if (options.draggable) {
+  if (draggable) {
     register();
   }
 
   return {
-    update: (opt: MoveOptions) => {
+    update: (opt: DragOptions) => {
       logger.debug(`[drag] Drag reconfigure.`);
-      unregister();
+
+      if (opt.draggable !== draggable) {
+        unregister();
+
+        draggable = opt.draggable || draggable;
+
+        if (draggable) {
+          register();
+        }
+      }
 
       deltaScale = opt.deltaScale || deltaScale;
-
-      if (opt.draggable) {
-        register();
-      }
+      deltaMove = opt.deltaMove || deltaMove;
+      button = opt.button || button;
     },
     destroy: () => {
       unregister();
     },
+  };
+}
+
+export type WheelOptions = {
+  deltaMove?: number;
+  deltaScale?: number;
+  zoomAlt?: boolean;
+  natural?: boolean;
+};
+export type CustomWheelEvent = CustomEvent<number>;
+export type WheelInstance = {
+  update: (options?: WheelOptions) => void;
+  destroy: () => void;
+}
+
+export function wheel(element: HTMLElement, options?: WheelOptions): WheelInstance {
+  let { zoomAlt = true, deltaScale = 0.1, deltaMove = 20, natural = false } = options || {} as WheelOptions;
+
+  const onWheel = (e: WheelEvent) => {
+    if (e.shiftKey) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      element.dispatchEvent(new CustomEvent(
+        (natural ? e.deltaY < 0 : e.deltaY > -1) ? 'move:left' : 'move:right',
+        { detail: deltaMove },
+      ));
+      return;
+    }
+
+    if ((zoomAlt && !e.altKey) || (!zoomAlt && e.altKey)) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      element.dispatchEvent(new CustomEvent(
+        (natural ? e.deltaY < 0 : e.deltaY > -1) ? 'move:up' : 'move:down',
+        { detail: deltaMove },
+      ));
+      return;
+    }
+
+    if ((zoomAlt && e.altKey) || !zoomAlt) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      element.dispatchEvent(new CustomEvent(
+        (natural ? e.deltaY < 0 : e.deltaY > -1) ? 'zoom:out' : 'zoom:in',
+        { detail: deltaScale },
+      ));
+      return;
+    }
+  };
+
+  element.addEventListener('wheel', onWheel, { passive: false });
+
+  return {
+    update: (opt?: WheelOptions) => {
+      deltaScale = opt?.deltaScale || deltaScale;
+      deltaMove = opt?.deltaMove || deltaMove;
+      zoomAlt = opt?.zoomAlt || zoomAlt;
+      natural = opt?.natural || natural;
+    },
+    destroy: () => {
+      element.removeEventListener('wheel', onWheel);
+    },
+  };
+}
+
+export function doubleclick(element: HTMLElement, debounce = 250) {
+  let clickCount = 0;
+  let timer: number | undefined;
+
+  const click = (e: MouseEvent) => {
+    if (clickCount === 0) {
+      clickCount++;
+
+      timer = window.setTimeout(() => {
+        clickCount = 0;
+      }, debounce);
+    } else if (clickCount === 1) {
+      clickCount = 0;
+      clearTimeout(timer);
+      element.dispatchEvent(new CustomEvent<MouseEvent>('doubleclick', { detail: e }));
+    }
+  };
+
+  element.addEventListener('click', click);
+
+  return {
+    update: (d = 250) => {
+      debounce = d;
+    },
+    destroy: () => {
+      element.removeEventListener('click', click);
+    },
+  };
+}
+
+export function getPointerPosition(event: MouseEvent, relative: HTMLElement, scale = 1, altScale = scale) {
+  const { x: rectX, y: rectY } = relative.getBoundingClientRect();
+  const { clientX, clientY } = event;
+
+  return {
+    x: (clientX - (rectX * altScale)) / scale,
+    y: (clientY - (rectY * altScale)) / scale,
   };
 }

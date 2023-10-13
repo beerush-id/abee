@@ -13,7 +13,7 @@
 
 {#if collapsible}
   <details class="flex-col card elevated elevated-md {className}" bind:open>
-    <summary class="flex-row items-center p-md gap-md">
+    <summary class="flex-row items-center p-md pb-0 gap-md">
       {#if icon}
         <Icon class="icon-md" name={icon} />
       {/if}
@@ -26,7 +26,7 @@
               class="icon-sm" />
       {/if}
     </summary>
-    <section class="flex-col gap-md pt-0 p-md"
+    <section class="flex-col gap-md px-md my-md flex-fit"
              class:scrollable
              style:--icon-size="var(--tq-button-icon-size-sm)"
              style:--input-width="calc(100% - var(--icon-size))">
@@ -35,7 +35,7 @@
   </details>
 {:else}
   <div class="flex-col card elevated elevated-md {className}">
-    <div class="flex-row items-center p-md gap-md">
+    <div class="flex-row items-center p-md pb-0 gap-md">
       {#if icon}
         <Icon class="icon-md" name={icon} />
       {/if}
@@ -43,7 +43,7 @@
       <span class="flex-1" />
       <slot name="header"></slot>
     </div>
-    <section class="flex-col gap-md pt-0 p-md"
+    <section class="flex-col gap-md px-md my-md flex-fit"
              class:scrollable
              style:--icon-size="var(--tq-button-icon-size-sm)"
              style:--input-width="calc(100% - var(--icon-size))">
@@ -56,9 +56,5 @@
   summary {
     cursor: default;
     user-select: none;
-  }
-
-  .scrollable {
-    overflow-y: auto;
   }
 </style>

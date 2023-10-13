@@ -71,8 +71,7 @@ export function createNode(tag: string, type: NodeType): Node {
 
   return {
     id: nanoid(8),
-    tag,
-    type,
+    type: tag,
     name: tag,
     styles: {
       left: 0,
