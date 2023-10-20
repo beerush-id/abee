@@ -2,7 +2,7 @@
   import type { State } from '@beerush/anchor';
   import { anchor } from '@beerush/anchor';
   import { onDestroy } from 'svelte';
-  import { style } from '@beerush/utils/client';
+  import { style } from '@beerush/composer';
   import { NODE_ELEMENTS } from './Registry.js';
   import { type Node, nodes } from './Node.js';
 
@@ -52,7 +52,7 @@
              class:interactive
              bind:this={bindings.element}
              bind:innerHTML={$node.text}
-             use:style={{ styles: $rect }}>
+             use:style={rect}>
     {#if $node.children?.length}
       {#each $node.children as child}
         <svelte:self node={child} interactive={false} {editable} />
@@ -69,7 +69,7 @@
              class:dragging={$rect.isDragging}
              class:interactive
              bind:this={bindings.element}
-             use:style={{ styles: $rect }}>
+             use:style={rect}>
     {#if $node.type === 'text'}
       <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       {@html $node.text}

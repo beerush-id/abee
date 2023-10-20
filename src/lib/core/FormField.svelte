@@ -8,9 +8,11 @@
   export let select = false;
   let className = '';
   export { className as class };
+
+  $: options = { title: placeholder };
 </script>
 
-<div use:inputfield={{title:placeholder}} class="form-field {className}" class:indeterminate>
+<div use:inputfield={options} class="form-field {className}" class:indeterminate>
   <slot></slot>
   {#if placeholder}
     <span class="placeholder">{placeholder}</span>

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "slider",
+  "displayName": "Slider",
+  "description": "Slider Designs",
+  "tokens": [
+    {
+      "name": "slider",
+      "tokens": [
+        {
+          "name": "color",
+          "value": "@color.primary"
+        },
+        {
+          "name": "size",
+          "value": "15px",
+          "tokens": [
+            {
+              "name": "track",
+              "tokens": [
+                {
+                  "name": "ratio",
+                  "value": "1/1"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "value": "@radius.md"
+        }
+      ]
+    }
+  ],
+  "designs": [
+    {
+      "name": "sliders",
+      "layer": "slider",
+      "selectors": [ ".slider", ".color-slider" ],
+      "rules": {
+        "display": "flex",
+        "align-items": "center",
+        "position": "relative"
+      },
+      "children": [
+        {
+          "name": "track",
+          "selectors": [ ".slider-track" ],
+          "directChildren": true,
+          "rules": {
+            "position": "absolute",
+            "top": "~track.y|0",
+            "left": "~track.x|0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "slider",
+      "layer": "slider",
+      "selectors": [ ".slider" ],
+      "rules": { },
+      "children": [
+        {
+          "name": "track",
+          "selectors": [ ".slider-track" ],
+          "directChildren": true,
+          "rules": {
+            "color": "@color.primary"
+          }
+        }
+      ]
+    },
+    {
+      "name": "color-slider",
+      "layer": "slider",
+      "selectors": [ ".color-slider" ],
+      "rules": {
+        "--slider-width": "100%",
+        "--slider-height": "@slider.size",
+        "--slider-radius": "@slider.radius",
+        "width": "~slider.width",
+        "height": "~slider.height",
+        "background": {
+          ":before": "~slider.fill"
+        },
+        "border-radius": {
+          "@": "~slider.radius",
+          ":before": "~slider.radius"
+        },
+        "color": "@color.primary"
+      },
+      "variants": [
+        {
+          "name": "vertical",
+          "selectors": [ ".vertical" ],
+          "rules": {
+            "--slider-width": "@slider.size",
+            "--slider-height": "100%"
+          },
+          "children": [
+            {
+              "name": "track",
+              "selectors": [ ".slider-track" ],
+              "directChildren": true,
+              "rules": {
+                "--track-width": "100%",
+                "--track-height": "4px",
+                "transform": "translateY(-50%)"
+              }
+            }
+          ]
+        }
+      ],
+      "children": [
+        {
+          "name": "track",
+          "selectors": [ ".slider-track" ],
+          "directChildren": true,
+          "rules": {
+            "--track-color": "#ffffff",
+            "--track-width": "4px",
+            "--track-height": "100%",
+            "--track-x": "0",
+            "--track-y": "0",
+            "width": "~track.width",
+            "height": "~track.height",
+            "border-radius": "~slider.radius",
+            "background-color": "~track.color",
+            "box-shadow": [ "0 0 0 2px #ffffff", "0 0 0 3px ~track.color" ],
+            "color": "@color.primary",
+            "transform": "translateX(-50%)"
+          }
+        }
+      ]
+    }
+  ]
+}

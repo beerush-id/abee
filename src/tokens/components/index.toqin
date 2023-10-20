@@ -10,6 +10,7 @@
     "./button.toqin",
     "./card.toqin",
     "./popup.toqin",
+    "./slider.toqin",
     "./tree.toqin"
   ],
   "layers": [ "input", "button", "card", "popup" ]

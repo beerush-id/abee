@@ -42,6 +42,7 @@ declare namespace svelteHTML {
     'on:menu:open': (e: CustomEvent) => void;
     'on:menu-select': (e: CustomEvent) => void;
     'on:menu-close': (e: CustomEvent) => void;
+    'on:color': (e: CustomEvent) => void;
   }
 }
 

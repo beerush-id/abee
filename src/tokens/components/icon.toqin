@@ -72,6 +72,14 @@
             "opacity": "0.5",
             "pointer-events": "none"
           }
+        },
+        {
+          "name": "vertical",
+          "selectors": [ ".vertical" ],
+          "rules": {
+            "writing-mode": "vertical-rl",
+            "text-orientation": "mixed"
+          }
         }
       ]
     }

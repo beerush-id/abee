@@ -34,6 +34,12 @@
       "import": "./dist/core/index.js",
       "require": "./dist/core/index.js"
     },
+    "./color": {
+      "types": "./dist/core/colors/index.d.ts",
+      "svelte": "./dist/core/colors/index.js",
+      "import": "./dist/core/colors/index.js",
+      "require": "./dist/core/colors/index.js"
+    },
     "./document": {
       "types": "./dist/document/index.d.ts",
       "svelte": "./dist/document/index.js",

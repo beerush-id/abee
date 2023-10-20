@@ -7,7 +7,7 @@
     {
       "name": "palette",
       "type": "color",
-      "tags": ["color", "palette", "theme"],
+      "tags": [ "color", "palette", "theme" ],
       "description": "Base Color Palettes",
       "tokens": [
         {

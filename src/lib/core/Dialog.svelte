@@ -44,7 +44,7 @@
   };
 
   onMount(() => {
-    dialog = createDialog(element as HTMLDialogElement, { container: '.popup-container', overlay });
+    dialog = createDialog(element as HTMLDialogElement, { container: '.popup-portal', overlay });
 
     if (state.open) {
       dialog.show();

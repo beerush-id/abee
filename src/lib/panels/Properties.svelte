@@ -69,7 +69,9 @@
   $: idtRotate = $selections.every((node) => node.styles.rotate === rect?.rotate);
 </script>
 
-<ToolPanel title={$rect ? 'Layer Properties' : 'Page Properties'} icon="aspect_ratio" collapsible={false}>
+<ToolPanel compact title={$rect ? 'Layer Properties' : 'Page Properties'}
+           icon="aspect_ratio"
+           collapsible={false}>
   {#if $rect}
     <div class="flex-row items-center gap-md">
       <InputUnit class="small gap-sm" {unit}

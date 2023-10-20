@@ -329,7 +329,7 @@
       "name": "input",
       "layer": "input",
       "description": "Input Design",
-      "selectors": [ "input", "textarea", "select" ],
+      "selectors": [ "input", "textarea", "select", ".range-input" ],
       "rules": {
         "flex": "1 1 auto",
         "width": "~input.width|auto",
@@ -344,9 +344,9 @@
         "padding": "~gap.y|@input.gap-y ~gap.x|@input.gap-x",
         "outline": "none",
         "border-radius": "~radius|@input.radius",
-        "border-width": "~line.size",
+        "border-width": "~line.size|1px",
         "border-style": "solid",
-        "border-color": "~line.color",
+        "border-color": "~line.color|@input.outline.color",
         "box-shadow": {
           "@": "none",
           "::focus": "0 0 0 ~ring.size|@button.ring.size ~ring.color|@color.primary.ring"
@@ -370,60 +370,73 @@
             "pointer-events": "none",
             "user-select": "none"
           }
+        }
+      ]
+    },
+    {
+      "name": "number-input",
+      "description": "Number Input",
+      "layer": "input",
+      "selectors": [ "input[type=number]" ],
+      "rules": {
+        "appearance": {
+          "::-webkit-inner-spin-button": "none",
+          "::-webkit-outer-spin-button": "none"
+        }
+      }
+    },
+    {
+      "name": "checkbox-input",
+      "description": "Checkbox",
+      "layer": "input",
+      "selectors": [ "input[type=checkbox]" ],
+      "rules": {
+        "--line-size": "2px",
+        "--line-color": {
+          "@": "@input.outline.color",
+          ":focus": "~color.outline|@color.primary",
+          ":hover": "~color.hover|@color.primary.hover",
+          ":checked": "~color.outline|@color.primary",
+          ":indeterminate": "~color.outline|@color.primary",
+          ":disabled": {
+            "@": "@color.border",
+            ":after": "@color.disabled"
+          }
+        },
+        "flex": "0 1 auto",
+        "width": "24px",
+        "height": "24px",
+        "padding": "0",
+        "position": "relative",
+        "border-radius": "4px"
+      },
+      "variants": [
+        {
+          "name": "decoration",
+          "selectors": [ ":checked:after", ":indeterminate:after", ".checked:after", ".indeterminate:after" ],
+          "rules": {
+            "content": "''",
+            "width": "65%",
+            "height": "8px",
+            "border-bottom": "~line-size solid ~line-color",
+            "border-left": "~line-size solid ~line-color",
+            "position": "absolute",
+            "left": "50%",
+            "top": "50%",
+            "transform": "translate(calc(-50% - 1px), calc(-50% + 3px)) rotate(-45deg)",
+            "transform-origin": "left top",
+            "animation": "@animation.fade-in"
+          }
         },
         {
-          "name": "checkbox",
-          "description": "Checkbox",
-          "selectors": [ "[type=checkbox]" ],
+          "name": "indeterminate",
+          "selectors": [ ":indeterminate:after", ".indeterminate:after" ],
           "rules": {
-            "--line-size": "2px",
-            "--line-color": {
-              "@": "@input.outline.color",
-              ":focus": "~color.outline|@color.primary",
-              ":hover": "~color.hover|@color.primary.hover",
-              ":checked": "~color.outline|@color.primary",
-              ":indeterminate": "~color.outline|@color.primary",
-              ":disabled": {
-                "@": "@color.border",
-                ":after": "@color.disabled"
-              }
-            },
-            "flex": "0 1 auto",
-            "width": "24px",
-            "height": "24px",
-            "padding": "0",
-            "position": "relative",
-            "border-radius": "4px"
-          },
-          "variants": [
-            {
-              "name": "decoration",
-              "selectors": [ ":checked:after", ":indeterminate:after", ".checked:after", ".indeterminate:after" ],
-              "rules": {
-                "content": "''",
-                "width": "65%",
-                "height": "8px",
-                "border-bottom": "~line-size solid ~line-color",
-                "border-left": "~line-size solid ~line-color",
-                "position": "absolute",
-                "left": "50%",
-                "top": "50%",
-                "transform": "translate(calc(-50% - 1px), calc(-50% + 3px)) rotate(-45deg)",
-                "transform-origin": "left top",
-                "animation": "@animation.fade-in"
-              }
-            },
-            {
-              "name": "indeterminate",
-              "selectors": [ ":indeterminate:after", ".indeterminate:after" ],
-              "rules": {
-                "height": "2px",
-                "border-bottom": "~line-size solid ~line-color",
-                "border-left": "none",
-                "transform": "translate(-50%, -50%)"
-              }
-            }
-          ]
+            "height": "2px",
+            "border-bottom": "~line-size solid ~line-color",
+            "border-left": "none",
+            "transform": "translate(-50%, -50%)"
+          }
         }
       ]
     },
@@ -442,6 +455,35 @@
         "line-height": "1",
         "pointer-events": {
           ":disabled": "none"
+        }
+      }
+    },
+    {
+      "name": "color",
+      "description": "Color Input",
+      "selectors": [ "input[type=color]" ],
+      "layer": "input",
+      "rules": {
+        "padding": {
+          "@": "0",
+          "::-webkit-color-swatch-wrapper": "0",
+          "::-moz-color-swatch-wrapper": "0"
+        },
+        "display": {
+          "::-webkit-color-swatch": "block",
+          "::-moz-color-swatch": "block"
+        },
+        "box-sizing": {
+          "::-webkit-color-swatch": "border-box",
+          "::-moz-color-swatch": "border-box"
+        },
+        "border": {
+          "::-webkit-color-swatch": "none",
+          "::-moz-color-swatch": "none"
+        },
+        "height": {
+          "::-webkit-color-swatch": "@font.height",
+          "::-moz-color-swatch": "@font.height"
         }
       }
     }

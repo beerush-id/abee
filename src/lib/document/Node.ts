@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid';
 import type { CSSStyles } from '@beerush/utils/client';
 import { capitalize, DEFAULT_DPI, logger, pxDrop, ruler } from '@beerush/utils';
 import type { MenuItemData } from '../core/Menu.js';
-import type { DraggableEvent } from '@beerush/composer';
+import type { DragChange } from '@beerush/composer';
 
 export type NodeRectangle = {
   top: number;
@@ -30,6 +30,7 @@ export type Node = {
   children: Node[];
   visible: boolean;
   printable: boolean;
+  orientation?: 'portrait' | 'landscape';
 
   text?: string;
 
@@ -162,6 +163,7 @@ export class NodeList {
       children: [],
       visible: true,
       printable: true,
+      orientation: 'portrait',
     });
 
     if (tag === 'text') {
@@ -377,20 +379,24 @@ export class NodeList {
 
   public selectBound(pointer: CanvasPointer): State<Node[]> {
     for (const node of this.items) {
-      if (!node.selected) {
-        const { sx, sy, mw, mh } = pointer;
-        const { left, top, width, height } = node.styles;
+      const { sx, sy, mw, mh } = pointer;
+      const { left, top, width, height } = node.styles;
 
-        const x = mw < 0 ? sx + mw : sx;
-        const y = mh < 0 ? sy + mh : sy;
-        const w = Math.abs(mw);
-        const h = Math.abs(mh);
+      const x = mw < 0 ? sx + mw : sx;
+      const y = mh < 0 ? sy + mh : sy;
+      const w = Math.abs(mw);
+      const h = Math.abs(mh);
 
-        if (
-          (left >= x && (left + width) <= (x + w)) &&
-          (top >= y && (top + height) <= (y + h))
-        ) {
+      if (
+        (left >= x && (left + width) <= (x + w)) &&
+        (top >= y && (top + height) <= (y + h))
+      ) {
+        if (!node.selected) {
           this.select(node, true);
+        }
+      } else {
+        if (node.selected) {
+          this.deselect(node);
         }
       }
     }
@@ -458,7 +464,7 @@ export class NodeList {
     return this.selections;
   }
 
-  public move(e: DraggableEvent): this {
+  public move(e: DragChange): this {
     const { deltaX, deltaY } = e.detail;
 
     for (const [ node, rect ] of this.rects) {
@@ -476,7 +482,7 @@ export class NodeList {
     return this;
   }
 
-  public resize(e: DraggableEvent, resizeX: MoveBound, resizeY: MoveBound): this {
+  public resize(e: DragChange, resizeX: MoveBound, resizeY: MoveBound): this {
     const { deltaX, deltaY } = e.detail;
 
     for (const [ node, rect ] of this.rects) {

@@ -3,15 +3,7 @@
   import type { DragOptions, MoveBound } from './Pointer.js';
   import { doubleclick } from './Pointer.js';
   import { Menu } from '../core/index.js';
-  import {
-    createDraggable,
-    createMenu,
-    type DraggableEvent,
-    DraggableEventType,
-    MenuTpl,
-    style,
-  } from '@beerush/composer';
-  import { onDestroy } from 'svelte';
+  import { createMenu, draggable, type DraggableEvent, MenuTpl, style } from '@beerush/composer';
 
   export let scale: number;
   const { selections } = nodes;
@@ -64,23 +56,10 @@
     }
   };
 
-  const pointer = createDraggable();
-  pointer.subscribe(e => {
-    if (e.type === DraggableEventType.Move) {
-      dragMove(e);
-    } else if (e.type === DraggableEventType.End) {
-      dragEnd(e);
-    }
-  });
-
   $: dragOptions = { deltaScale: scale } satisfies DragOptions;
   $: styles = nodes.getBoundingRects($selections, offset);
 
   const menu = createMenu();
-
-  onDestroy(() => {
-    pointer.destroy();
-  });
 </script>
 
 <node-rect class="node-rect"
@@ -89,9 +68,11 @@
            class:dragging
            class:resize={resizeX || resizeY}
            use:menu.trigger={MenuTpl.Context}
-           use:pointer.drag="{dragOptions}"
+           use:draggable={dragOptions}
            use:doubleclick
            use:style={ styles }
+           on:drag-move={dragMove}
+           on:drag-end={dragEnd}
            on:keyup={remove}>
   <button class="reset node-transform top-left"
           on:mouseup={unsetResizeMode}

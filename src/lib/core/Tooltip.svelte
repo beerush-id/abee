@@ -7,7 +7,7 @@
   export let yDir: DirectionY = 'below';
   export let bounding: HTMLElement | undefined = undefined;
 </script>
-<div use:popup={ { action: 'hover', container: '.popup-container', options: { xDir,yDir, bounding } } }
+<div use:popup={ { action: 'hover', container: '.popup-portal', options: { xDir,yDir, bounding } } }
      class="tooltip fade-in">
   <slot>
     {#if text}

@@ -36,8 +36,8 @@
   ],
   "designs": [
     {
-      "name": "popup-container",
-      "selectors": [ ".popup-container", ".menu-portal" ],
+      "name": "popup-portal",
+      "selectors": [ ".popup-container", ".menu-portal", ".popup-portal" ],
       "layer": "popup",
       "description": "Popup container style",
       "rules": {

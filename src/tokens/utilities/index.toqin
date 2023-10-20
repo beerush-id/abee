@@ -4,5 +4,53 @@
   "displayName": "Utility Tokens",
   "description": "Utility Tokens",
   "tokens": [ ],
-  "designs": [ ]
+  "designs": [
+    {
+      "name": "transparent-pattern",
+      "layer": "utils",
+      "selectors": [ ".transparent-pattern" ],
+      "rules": {
+        "--pattern-size": "10px",
+        "--pattern-offset": "calc(~pattern.size / 2)",
+        "--pattern-n-offset": "calc(~pattern.offset * -1)",
+        "background-image": [
+          "linear-gradient(45deg, #808080 25%, transparent 25%)",
+          "linear-gradient(-45deg, #808080 25%, transparent 25%)",
+          "linear-gradient(45deg, transparent 75%, #808080 75%)",
+          "linear-gradient(-45deg, transparent 75%, #808080 75%)"
+        ],
+        "background-size": "~pattern-size ~pattern-size",
+        "background-position": [
+          "0 0",
+          "0 ~pattern-offset",
+          "~pattern-offset ~pattern-n-offset",
+          "~pattern-n-offset 0"
+        ]
+      }
+    },
+    {
+      "name": "before-fill",
+      "layer": "utils",
+      "selectors": [ ".fill-before" ],
+      "rules": {
+        "position": "relative"
+      },
+      "variants": [
+        {
+          "name": "before",
+          "selectors": [ ":before" ],
+          "rules": {
+            "content": "''",
+            "display": "block",
+            "position": "absolute",
+            "top": "0",
+            "left": "0",
+            "width": "100%",
+            "height": "100%",
+            "z-index": 0
+          }
+        }
+      ]
+    }
+  ]
 }

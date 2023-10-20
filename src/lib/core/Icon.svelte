@@ -9,6 +9,7 @@
   export let tooltip = '';
   export let clickable = false;
   export let disabled = false;
+  export let vertical = false;
   export let xDir: DirectionX = 'between';
   export let yDir: DirectionY = 'below';
 
@@ -22,6 +23,7 @@
 <span role={clickable ? 'button' : ''} class="icon material-symbols-outlined {className}"
       class:clickable
       class:disabled
+      class:vertical
       on:click={e => dispatch('click', e)}
       style:--icon-size={size}
       style:--icon-color={color}>

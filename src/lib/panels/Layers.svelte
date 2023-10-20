@@ -7,7 +7,7 @@
   export let page = session<Document>(StorageKeys.DOCUMENT, {} as never);
   const { selections } = nodes;
 </script>
-<ToolPanel title="Layers" icon="layers" class="flex-1" scrollable collapsible={false}>
+<ToolPanel compact title="Layers" icon="layers" class="flex-1" scrollable collapsible={false}>
   <svelte:fragment slot="header">
     <div class="clickable flex-row items-center gap-xs">
       {#if $selections.length > 1}
