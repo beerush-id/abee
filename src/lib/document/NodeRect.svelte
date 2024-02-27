@@ -3,7 +3,7 @@
   import type { DragOptions, MoveBound } from './Pointer.js';
   import { doubleclick } from './Pointer.js';
   import { Menu } from '../core/index.js';
-  import { createMenu, draggable, type DraggableEvent, MenuTpl, style } from '@beerush/composer';
+  import { createMenu, type DragChange, draggable, MenuTpl, style } from '@beerush/composer';
 
   export let scale: number;
   const { selections } = nodes;
@@ -13,7 +13,7 @@
   let resizeY: MoveBound | void;
   let dragging = false;
 
-  const dragMove = (e: DraggableEvent) => {
+  const dragMove = (e: DragChange) => {
     e.stopPropagation();
     e.preventDefault();
 
@@ -29,7 +29,7 @@
 
     styles = nodes.getBoundingRects($selections, offset);
   };
-  const dragEnd = (e: DraggableEvent) => {
+  const dragEnd = (e: DragChange) => {
     e.stopPropagation();
     e.preventDefault();
 

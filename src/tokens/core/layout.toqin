@@ -77,6 +77,15 @@
       }
     },
     {
+      "name": "flex-item-start",
+      "layer": "layout",
+      "selectors": [ ".items-start" ],
+      "description": "Flex item start layout",
+      "rules": {
+        "align-items": "start"
+      }
+    },
+    {
       "name": "flex-item-center",
       "layer": "layout",
       "selectors": [ ".items-center" ],
@@ -86,12 +95,39 @@
       }
     },
     {
+      "name": "flex-item-end",
+      "layer": "layout",
+      "selectors": [ ".items-end" ],
+      "description": "Flex item end layout",
+      "rules": {
+        "align-items": "end"
+      }
+    },
+    {
+      "name": "justify-start",
+      "layer": "layout",
+      "selectors": [ ".justify-start" ],
+      "description": "Flex justify start layout",
+      "rules": {
+        "justify-content": "start"
+      }
+    },
+    {
       "name": "justify-center",
       "layer": "layout",
       "selectors": [ ".justify-center" ],
       "description": "Flex justify center layout",
       "rules": {
         "justify-content": "center"
+      }
+    },
+    {
+      "name": "justify-end",
+      "layer": "layout",
+      "selectors": [ ".justify-end" ],
+      "description": "Flex justify end layout",
+      "rules": {
+        "justify-content": "end"
       }
     },
     {
@@ -143,6 +179,15 @@
       "description": "Flex sizing",
       "rules": {
         "flex": "1 0 0"
+      }
+    },
+    {
+      "name": "flex-fill",
+      "layer": "layout",
+      "selectors": [ ".flex-fill" ],
+      "description": "Flex sizing",
+      "rules": {
+        "flex": "1"
       }
     },
     {

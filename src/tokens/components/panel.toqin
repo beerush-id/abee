@@ -3,6 +3,35 @@
   "name": "panel",
   "displayName": "Panel",
   "description": "Panel Design Tokens",
-  "tokens": [ ],
+  "tokens": [
+    {
+      "name": "panel",
+      "tokens": [
+        {
+          "name": "header",
+          "tokens": [
+            {
+              "name": "height",
+              "value": "36px",
+              "tokens": [
+                {
+                  "name": "sm",
+                  "value": "30px"
+                },
+                {
+                  "name": "md",
+                  "value": "36px"
+                },
+                {
+                  "name": "lg",
+                  "value": "42px"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "designs": [ ]
 }

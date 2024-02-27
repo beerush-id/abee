@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beerush-id/toqin/main/tokens/schemas/spec.schema.json",
+  "name": "link",
+  "displayName": "Link",
+  "description": "Link Designs",
+  "tokens": [ ],
+  "designs": [
+    {
+      "name": "anchor",
+      "layer": "anchor",
+      "selectors": [ "a", ".link" ],
+      "rules": {
+        "cursor": "pointer"
+      }
+    }
+  ]
+}

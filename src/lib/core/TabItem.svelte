@@ -31,11 +31,12 @@
 {/if}
 
 <style lang="scss">
-  .tab-item:not(.compact) {
-    padding: var(--tq-space-md);
-  }
-
-  .tab-item.vertical {
+  .tab-item {
+    width: 100%;
     height: 100%;
+
+    &:not(.compact) {
+      padding: var(--tq-space-md);
+    }
   }
 </style>

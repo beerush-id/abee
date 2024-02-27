@@ -52,8 +52,9 @@
     outline: none;
     transition: var(--tq-transition-ultra-fast);
     gap: var(--tq-space-xs);
-    padding: 7px;
+    padding: var(--tq-space-sm) var(--tq-space-md);
     line-height: 1;
+    height: 36px;
 
     &:hover {
       color: var(--tq-color-primary);
@@ -71,6 +72,9 @@
       flex-direction: column;
       border-bottom: none;
       border-left: 2px solid transparent;
+      padding: var(--tq-space-sm) var(--tq-space-xs);
+      height: unset;
+      width: 30px;
 
       &.active {
         border-color: var(--tq-color-primary);

@@ -22,7 +22,7 @@
   const cursor = session<CanvasPointer>(StorageKeys.POINTER, {} as never);
   const { selections } = nodes;
 
-  let canvasElement: HTMLElement;
+  let drawerElement: HTMLElement;
   let boardElement: HTMLElement;
   let selectMark: Writable<{
     left: number,
@@ -34,15 +34,6 @@
   let node: State<Node>;
   let rect: State<NodeRect>;
   let selecting = false;
-
-  onMount(() => {
-    canvas.setViewport(viewport.element as never, canvasElement, boardElement, true);
-  });
-
-  onDestroy(() => {
-    canvas.leave();
-    nodes.deselectAll();
-  });
 
   const clearSelection = (e: MouseEvent) => {
     if (selecting) {
@@ -75,8 +66,6 @@
   };
   const onDrop = (e: DragEvent) => {
     e.preventDefault();
-
-    console.log(e);
 
     if (e.dataTransfer?.files.length) {
       const { x, y } = getPointerPosition(e, viewport.element as never, viewport.scale);
@@ -219,20 +208,32 @@
     nodes.selectAll();
   };
 
+  onMount(() => {
+    canvas.setViewport(viewport.element as never, drawerElement);
+  });
+
   onDestroy(() => {
     leaveViewport();
 
     pointer.destroy();
     wheel.destroy();
+    nodes.deselectAll();
+
+    canvas.leave();
   });
 
-  const portalOptions: PortalOptions = { target: '.canvas-frame', anchor: true };
+  const portalOptions: PortalOptions = {
+    target: '.canvas-frame',
+    anchor: true,
+    change: () => {
+      canvas.zoomFit();
+    },
+  };
 </script>
 
 <div class="canvas">
   {#if $settings.showRulers}
-    <div class="ruler-corner"></div>
-    <div class="ruler-h">
+    <div class="ruler-h top">
       <Ruler maxLength={$viewport.boardSize}
              length={$page.width}
              scale={$viewport.scale}
@@ -241,7 +242,7 @@
              dpi="{$viewport.dpi}"
              guideX={$cursor.x} />
     </div>
-    <div class="ruler-v">
+    <div class="ruler-v left">
       <Ruler vertical maxLength={$viewport.boardSize}
              length={$page.height}
              scale={$viewport.scale}
@@ -251,7 +252,8 @@
              guideY={$cursor.y} />
     </div>
   {/if}
-  <div use:portal={portalOptions} bind:this={canvasElement} class="canvas-drawer">
+  <div bind:this={drawerElement} class="canvas-drawer"
+       use:portal={portalOptions}>
     <div class="canvas-board" role="button" tabindex="-1"
          bind:this={boardElement}
          use:pointer.capture
@@ -306,40 +308,43 @@
 
 <style lang="scss">
   .ruler-h {
-    width: calc(100% - 32px);
+    width: 100%;
     position: absolute;
-    top: 0;
-    left: 32px;
+    left: 0;
     height: 32px;
     overflow: hidden;
     box-shadow: 0 0 12px var(--tq-shadow-color-dark);
-    z-index: 1;
+    z-index: 2;
+
+    &.top {
+      top: 0;
+    }
+
+    &.bottom {
+      bottom: 0;
+    }
   }
 
   .ruler-v {
-    height: calc(100% - 32px);
+    height: 100%;
     position: absolute;
-    top: 32px;
-    left: 0;
+    top: 0;
     width: 32px;
     overflow: hidden;
     box-shadow: 0 0 12px var(--tq-shadow-color-dark);
     z-index: 1;
-  }
 
-  .ruler-corner {
-    width: 32px;
-    height: 32px;
-    backdrop-filter: blur(32px);
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    border-bottom-right-radius: 5px;
+    &.left {
+      left: 0;
+    }
+
+    &.right {
+      right: 0;
+    }
   }
 
   .canvas {
-    --ruler-translate: 16px;
+    --ruler-translate: 0px;
     padding: 20mm;
     user-select: none;
   }
@@ -352,6 +357,8 @@
     -webkit-backface-visibility: hidden;
     -webkit-font-smoothing: subpixel-antialiased;
     backface-visibility: hidden;
+    padding: 64px;
+    border-radius: 7px;
   }
 
   .canvas-board {

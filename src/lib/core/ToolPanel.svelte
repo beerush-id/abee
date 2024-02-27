@@ -16,9 +16,9 @@
   <details class:card={!compact}
            class:elevated={!compact}
            class:elevated-md={!compact}
-           class="flex-col {className}"
+           class="tool-panel flex-col {className}"
            bind:open>
-    <summary class="flex-row items-center p-md gap-md" class:pb-0={open}>
+    <summary class="panel-header flex-row items-center px-md py-sm gap-md" class:pb-0={open}>
       {#if icon}
         <Icon class="icon-md" name={icon} />
       {/if}
@@ -39,9 +39,12 @@
     </section>
   </details>
 {:else}
-  <div class:card={!compact} class:elevated={!compact} class:elevated-md={!compact} class="flex-col {className}">
+  <div class:card={!compact}
+       class:elevated={!compact}
+       class:elevated-md={!compact}
+       class="tool-panel flex-col {className}">
     {#if title || icon}
-      <div class="flex-row items-center p-md pb-0 gap-md">
+      <div class="panel-header flex-row items-center px-md py-sm gap-md">
         {#if icon}
           <Icon class="icon-md" name={icon} />
         {/if}
@@ -65,6 +68,14 @@
   summary {
     cursor: default;
     user-select: none;
+  }
+
+  .panel-header {
+    height: var(--tq-panel-header-height);
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--tq-color-border);
+    }
   }
 
   .card {

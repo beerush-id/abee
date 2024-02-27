@@ -7,7 +7,6 @@
   export let reversed = false;
   export let compact = false;
   export let collapsible = false;
-  export let rounded = false;
   export let styles: StyleDeclarations = {};
   const tab = createTab(name, { allowEmpty: collapsible, reversed, vertical, compact });
 
@@ -15,27 +14,28 @@
   export { className as class };
 
   setContext('tab', tab);
+
+  $: open = $tab.active !== -1;
 </script>
 
 <div class="tab {className}"
-     class:open={$tab.active !== -1}
-     class:rounded
+     class:open
      class:vertical
      class:reversed
      class:compact
      use:style={styles}>
   {#if !vertical && !reversed}
-    <div class="tab-header">
+    <div class="tab-header" class:vertical class:open>
       <slot name="header"></slot>
     </div>
   {/if}
-  {#if $tab.active !== -1}
-    <div class="tab-content {className}">
+  {#if open}
+    <div class="tab-content" class:vertical class:reversed class:open>
       <slot></slot>
     </div>
   {/if}
   {#if vertical || reversed}
-    <div class="tab-header">
+    <div class="tab-header" class:vertical class:reversed class:open>
       <slot name="header"></slot>
     </div>
   {/if}
@@ -44,86 +44,31 @@
 <style lang="scss">
   .tab {
     --content-width: 100%;
-    width: 100%;
     display: flex;
     flex-direction: column;
 
-    &.rounded.open {
-      border-radius: var(--tq-radius-lg);
-    }
-
-    &:not(.open).rounded {
-      overflow: hidden;
-
-      &.vertical {
-        border-top-left-radius: var(--tq-radius-lg);
-        border-bottom-left-radius: var(--tq-radius-lg);
-      }
-
-      &:not(.vertical) {
-        border-bottom-right-radius: var(--tq-radius-lg);
-        border-bottom-left-radius: var(--tq-radius-lg);
-      }
+    &.open {
+      width: var(--content-width);
     }
 
     &.vertical {
       flex-direction: row;
-      height: 100%;
 
-      & > .tab-header {
-        flex-direction: column;
-        height: 100%;
-        border-top-left-radius: 0;
-
-        &:after {
-          width: var(--tab-header-border-width, 1px);
-          height: 100%;
-        }
-      }
-
-      & > .tab-content {
-        flex: 1;
-        height: 100%;
-      }
-    }
-
-    & > .tab-content {
-      width: var(--content-width);
-    }
-
-    &:not(.open) > .tab-header:after {
-      display: none;
-    }
-
-    &.reversed {
-      &:not(.vertical) {
-        & > .tab-header {
-          &:after {
-            top: 0;
-            border-bottom: none;
-            border-top: 1px solid var(--tab-header-border-color, var(--tq-color-border));
-          }
-        }
-      }
-
-      &.vertical {
-        & > .tab-header {
-          &:after {
-            width: 100%;
-            height: var(--tab-header-border-width, 1px);
-          }
-        }
+      &:not(.flex-1) {
+        height: var(--content-height, 100%);
       }
     }
   }
 
   .tab-header {
+    width: 100%;
+    height: var(--header-height, var(--tq-panel-header-height));
     display: flex;
     flex-direction: row;
     position: relative;
     background: var(--tq-color-background-shade);
     border-top-left-radius: var(--tq-radius-lg);
-    overflow: hidden;
+    overflow: auto;
 
     &:after {
       content: "";
@@ -135,10 +80,42 @@
       height: var(--tab-header-border-width, 1px);
       background-color: var(--tab-header-border-color, var(--tq-color-border));
     }
+
+    &:not(.open):after {
+      display: none;
+    }
+
+    &.vertical {
+      height: 100%;
+      width: var(--header-width, var(--tq-panel-header-height-sm));
+      flex-direction: column;
+      border-top-left-radius: 0;
+
+      &:after {
+        width: var(--tab-header-border-width, 1px);
+        height: 100%;
+      }
+
+      &.reversed:after {
+        width: 100%;
+        height: var(--tab-header-border-width, 1px);
+      }
+    }
+
+    &.reversed:after {
+      top: 0;
+      border-bottom: none;
+      border-top: 1px solid var(--tab-header-border-color, var(--tq-color-border));
+    }
   }
 
   .tab-content {
     width: 100%;
-    overflow: auto;
+    height: calc(100% - var(--header-height, var(--tq-panel-header-height)));
+
+    &.vertical {
+      height: 100%;
+      width: calc(100% - var(--header-width, var(--tq-panel-header-height-sm)));
+    }
   }
 </style>

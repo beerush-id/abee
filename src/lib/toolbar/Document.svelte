@@ -1,21 +1,21 @@
 <script lang="ts">
   import type { CanvasSettings, Document } from '../document/index.js';
   import { Icon, Tooltip } from '../core/index.js';
-  import { persistent, type State } from '@beerush/anchor';
+  import { history, persistent, type State } from '@beerush/anchor';
   import { onDestroy } from 'svelte';
   import { hotkey } from '@beerush/utils/client';
 
   export let doc: State<Document>;
   const settings = persistent<CanvasSettings>('main-settings', {});
 
-  // const record = history<Document>(doc);
-  // record.excludes = [ 'selectedNodes' ];
-  // const unsub = record.subscribe((d, e) => {
-  //   console.log(d, e);
-  // }, false);
+  const record = history<Document>(doc);
+  record.excludes = [ 'selectedNodes' ];
+  const unsub = record.subscribe((d, e) => {
+    console.log(d, e);
+  }, false);
 
   onDestroy(() => {
-    // unsub();
+    unsub();
   });
 
   $: small = $settings.smallToolButton;

@@ -4,11 +4,13 @@
   "displayName": "Components",
   "description": "Beerush Components",
   "includes": [
+    "./link.toqin",
     "./canvas.toqin",
     "./icon.toqin",
     "./input.toqin",
     "./button.toqin",
     "./card.toqin",
+    "./panel.toqin",
     "./popup.toqin",
     "./slider.toqin",
     "./tree.toqin"

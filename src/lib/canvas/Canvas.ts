@@ -24,13 +24,10 @@ export class Canvas {
   public setViewport(
     viewport: HTMLElement | SVGElement,
     container?: HTMLElement,
-    board?: HTMLElement,
     zoomFit?: boolean,
   ) {
     this.viewportElement = viewport;
     this.containerElement = container ?? viewport.parentElement as HTMLElement;
-
-    this.capturePointer(board || viewport.parentElement as HTMLElement);
 
     if (!this.state.viewport.initialized) {
       if (zoomFit) {
@@ -39,12 +36,6 @@ export class Canvas {
 
       this.state.viewport.initialized = true;
     }
-  }
-
-  public capturePointer(container: HTMLElement) {
-    const { deltaScale, deltaMove } = this.state.settings;
-    // const pointer = pointermove(container, this.state.viewport, 1, deltaScale, deltaMove);
-    // this.leavePointer = pointer.destroy;
   }
 
   public leave() {
@@ -92,7 +83,7 @@ export class Canvas {
         this.moveTo(0, 0);
       } else if (bound === 'width') {
         viewport.scale = areaWidth / viewWidth;
-        this.moveTo(0, (viewHeight / 2) + parseFloat(paddingTop));
+        this.moveTo(0, mmToPx(this.state.document.height / 4, this.state.viewport.dpi));
       } else if (bound === 'height') {
         viewport.scale = areaHeight / viewHeight;
         this.moveTo(0, 0);
